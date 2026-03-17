@@ -60,7 +60,7 @@ export const ProfileCard = ({
           <button className="secondary-button" type="button" onClick={() => onStartEdit(profile)}>
             Modifica
           </button>
-          <button className="danger-button" type="button" disabled={isActive} onClick={() => void onDelete(profile)}>
+          <button className="danger-button" type="button" onClick={() => void onDelete(profile)}>
             Cancella
           </button>
         </div>
@@ -68,3 +68,4 @@ export const ProfileCard = ({
     ) : null}
   </div>
 );
+
