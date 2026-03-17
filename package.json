@@ -1,5 +1,5 @@
 {
-  "name": "gymapp",
+  "name": "callegymapp",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -31,3 +31,4 @@
     "vite-plugin-pwa": "^0.21.1"
   }
 }
+

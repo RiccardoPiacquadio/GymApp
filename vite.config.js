@@ -8,8 +8,8 @@ export default defineConfig({
             registerType: "autoUpdate",
             includeAssets: ["favicon.svg", "icon-192.svg", "icon-512.svg"],
             manifest: {
-                name: "GymApp Workout Tracker",
-                short_name: "GymApp",
+                name: "CalleGymApp",
+                short_name: "CalleGymApp",
                 description: "Workout tracker mobile-first offline-first per registrare allenamenti in palestra.",
                 theme_color: "#0f172a",
                 background_color: "#f8fafc",

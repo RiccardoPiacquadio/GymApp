@@ -1,4 +1,4 @@
-# GymApp Workout Tracker
+# CalleGymApp
 
 Web app mobile-first installabile come PWA per tracciare allenamenti in palestra con storage locale offline-first.
 
@@ -105,3 +105,4 @@ con alias italiani e inglesi come richiesto.
 ## Evoluzioni
 
 Vedi [TODO.md](./TODO.md).
+

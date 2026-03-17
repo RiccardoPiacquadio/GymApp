@@ -24,10 +24,8 @@ export const AppShell = ({ children }: PropsWithChildren) => {
       <div className="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-28 pt-5">
         <header className="mb-5 flex items-start justify-between gap-4 text-white">
           <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-chrome">GymApp PWA</p>
-            <h1 className="mt-1 text-2xl font-semibold text-white">
-              {profile ? `Ciao ${profile.displayName}` : "Workout tracker"}
-            </h1>
+            <p className="text-xs uppercase tracking-[0.24em] text-chrome">CalleGymApp</p>
+            <h1 className="mt-1 text-2xl font-semibold text-white">{profile ? `Ciao ${profile.displayName}` : "CalleGymApp"}</h1>
           </div>
           {activeSession ? <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">Sessione attiva</span> : null}
         </header>
@@ -56,3 +54,4 @@ export const AppShell = ({ children }: PropsWithChildren) => {
     </div>
   );
 };
+
