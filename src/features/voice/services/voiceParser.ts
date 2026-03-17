@@ -113,6 +113,16 @@ const englishTens: Array<{ full: string; value: number }> = [
   { full: "ninety", value: 90 }
 ];
 
+const normalizeSpeechArtifacts = (text: string) =>
+  text
+    .replace(/\bper\s+cento\b/gi, " 100 ")
+    .replace(/\bpercento\b/gi, " 100 ")
+    .replace(/\bchilogrammo\b/gi, " chilogrammi ")
+    .replace(/\bchilo\b/gi, " chili ")
+    .replace(/\brap\b/gi, " rep ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const parseItalianNumberWord = (word: string): number | null => {
   if (word in italianDirectNumberMap) {
     return italianDirectNumberMap[word];
@@ -236,9 +246,9 @@ const extractSetCount = (text: string) => {
 
 const extractWeightAndReps = (text: string) => {
   const combinedPatterns = [
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/i,
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/i,
-    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/i
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/i,
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/i,
+    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/i
   ];
 
   for (const pattern of combinedPatterns) {
@@ -258,8 +268,8 @@ const extractWeightAndReps = (text: string) => {
     text.match(/\b(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\b/i);
 
   const repsMatch =
-    text.match(/\b(?:per|x|rep|reps|rip|ripetizioni|colpo|colpi)\s*(\d+)\b/i) ??
-    text.match(/\b(\d+)\s*(?:rep|reps|rip|ripetizioni|colpo|colpi)\b/i);
+    text.match(/\b(?:per|x|rep|reps|rap|rip|ripetizioni|colpo|colpi)\s*(\d+)\b/i) ??
+    text.match(/\b(\d+)\s*(?:rep|reps|rap|rip|ripetizioni|colpo|colpi)\b/i);
 
   if (!weightMatch && !repsMatch) {
     return null;
@@ -276,20 +286,21 @@ const extractExerciseText = (text: string) =>
     .replace(/\b(?:serie|set)\s*\d+\b/gi, " ")
     .replace(/\b\d+\s*(?:serie|set)\b/gi, " ")
     .replace(/\b(?:primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)(?:\s+(?:serie|set))?\b/gi, " ")
-    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/gi, " ")
-    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b\d+\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/gi, " ")
-    .replace(/\d+(?:[.,]\d+)?\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/gi, " ")
+    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/gi, " ")
+    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/gi, " ")
+    .replace(/\d+(?:[.,]\d+)?\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/gi, " ")
     .replace(/(?:con\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
-    .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?\b/gi, " ")
-    .replace(/\b\d+\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/gi, " ")
-    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|colpo|colpi|anche|di nuovo|ancora|uguale|stessa|stesso)\b/gi, " ")
+    .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?\b/gi, " ")
+    .replace(/\b\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/gi, " ")
+    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|rap|colpo|colpi|anche|di nuovo|ancora|uguale|stessa|stesso)\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 
 export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> => {
   const normalizedText = normalizeExerciseInput(rawText);
-  const normalizedTextWithDigits = replaceWordNumbers(normalizedText);
+  const normalizedSpeechText = normalizeSpeechArtifacts(normalizedText);
+  const normalizedTextWithDigits = replaceWordNumbers(normalizedSpeechText);
   const numericData = extractWeightAndReps(normalizedTextWithDigits);
   const setNumber = extractSetNumber(normalizedTextWithDigits);
   const setCount = extractSetCount(normalizedTextWithDigits);
@@ -333,4 +344,3 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
     candidateExerciseIds: aliasResolution.candidateExerciseIds
   };
 };
-
