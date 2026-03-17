@@ -96,6 +96,22 @@ export const getSessionExercises = async (sessionId: string): Promise<SessionExe
   }));
 };
 
+export const getLastSessionExercise = async (sessionId: string) => {
+  const sessionExercises = await db.sessionExercises
+    .where("sessionId")
+    .equals(sessionId)
+    .sortBy("exerciseOrder");
+  return sessionExercises[sessionExercises.length - 1];
+};
+
+export const getLastSetForSessionExercise = async (sessionExerciseId: string) => {
+  const sets = await db.setEntries
+    .where("sessionExerciseId")
+    .equals(sessionExerciseId)
+    .sortBy("setNumber");
+  return sets[sets.length - 1];
+};
+
 export const addSetEntry = async (params: {
   sessionExerciseId: string;
   reps: number;
@@ -154,6 +170,16 @@ export const deleteSetEntry = async (setEntryId: string) => {
       )
     );
   });
+};
+
+export const deleteLastSetEntry = async (sessionExerciseId: string) => {
+  const lastSet = await getLastSetForSessionExercise(sessionExerciseId);
+  if (!lastSet) {
+    return null;
+  }
+
+  await deleteSetEntry(lastSet.id);
+  return lastSet;
 };
 
 export const getCompletedSessionsForUser = async (
@@ -226,4 +252,3 @@ export const getLatestExerciseSnapshot = async (userId: string, canonicalExercis
 };
 
 export const getWorkoutSessionById = (sessionId: string) => db.workoutSessions.get(sessionId);
-

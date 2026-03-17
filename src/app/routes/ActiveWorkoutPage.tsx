@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { getExerciseById } from "../../features/exercises/services/exerciseRepository";
 import {
-  addExerciseToSession,
-  addSetEntry,
   completeWorkoutSession,
   getActiveSessionForUser,
   getSessionExercises,
@@ -15,9 +13,20 @@ import { SessionSummaryCard } from "../../features/sessions/components/SessionSu
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 import { VoiceCaptureButton } from "../../features/voice/components/VoiceCaptureButton";
 import { VoiceParsePreview } from "../../features/voice/components/VoiceParsePreview";
-import { captureSpeechOnce, getSpeechSupportState } from "../../features/voice/services/speechCapture";
-import { parseVoiceSet } from "../../features/voice/services/voiceParser";
-import type { ParsedVoiceSet, SpeechCaptureState } from "../../features/voice/types/voice";
+import { processVoiceCommand } from "../../features/voice/services/voiceCommandProcessor";
+import {
+  captureSpeechOnce,
+  getSpeechSupportState
+} from "../../features/voice/services/speechCapture";
+import {
+  getVoiceConversationState,
+  setVoiceConversationState
+} from "../../features/voice/services/voiceConversationStore";
+import type {
+  ParsedVoiceSet,
+  SpeechCaptureState,
+  VoiceConversationState
+} from "../../features/voice/types/voice";
 
 export const ActiveWorkoutPage = () => {
   const navigate = useNavigate();
@@ -42,61 +51,77 @@ export const ActiveWorkoutPage = () => {
   const [parsedVoiceSet, setParsedVoiceSet] = useState<ParsedVoiceSet | null>(null);
   const [voiceExerciseName, setVoiceExerciseName] = useState<string>();
   const [voiceCandidateNames, setVoiceCandidateNames] = useState<string[]>([]);
+  const [voiceFeedback, setVoiceFeedback] = useState<string>();
+  const [conversationState, setConversationStateLocal] = useState<VoiceConversationState>();
+  const [activeExerciseName, setActiveExerciseName] = useState<string>();
+
+  useEffect(() => {
+    const loadConversationState = async () => {
+      const state = await getVoiceConversationState();
+      setConversationStateLocal(state);
+      if (state.activeExerciseId) {
+        const exercise = await getExerciseById(state.activeExerciseId);
+        setActiveExerciseName(exercise?.canonicalName);
+      } else {
+        setActiveExerciseName(undefined);
+      }
+      setVoiceFeedback(state.lastFeedback);
+    };
+
+    void loadConversationState();
+  }, [activeSession?.id]);
 
   const handleComplete = async () => {
     if (!activeSession) {
       return;
     }
     await completeWorkoutSession(activeSession.id);
+    await setVoiceConversationState({ lastFeedback: "Sessione chiusa." });
     navigate("/history");
   };
 
   const handleVoiceCapture = async () => {
+    if (!activeProfileId) {
+      return;
+    }
+
     try {
       setSpeechState("listening");
       const transcript = await captureSpeechOnce("it-IT");
-      const parsed = await parseVoiceSet(transcript);
-      setParsedVoiceSet(parsed);
+      const result = await processVoiceCommand(transcript, activeProfileId);
+      setVoiceFeedback(result.feedback);
 
-      if (parsed.canonicalExerciseId) {
-        const exercise = await getExerciseById(parsed.canonicalExerciseId);
-        setVoiceExerciseName(exercise?.canonicalName);
-      } else {
-        setVoiceExerciseName(undefined);
+      if (result.conversationState) {
+        setConversationStateLocal(result.conversationState);
+        if (result.conversationState.activeExerciseId) {
+          const exercise = await getExerciseById(result.conversationState.activeExerciseId);
+          setActiveExerciseName(exercise?.canonicalName);
+        } else {
+          setActiveExerciseName(undefined);
+        }
       }
 
-      if (parsed.candidateExerciseIds && parsed.candidateExerciseIds.length > 0) {
-        const candidates = await Promise.all(parsed.candidateExerciseIds.map((exerciseId) => getExerciseById(exerciseId)));
-        setVoiceCandidateNames(candidates.filter(Boolean).map((exercise) => exercise!.canonicalName));
+      if (result.parsedVoiceSet) {
+        setParsedVoiceSet(result.parsedVoiceSet);
+        if (result.parsedVoiceSet.canonicalExerciseId) {
+          const exercise = await getExerciseById(result.parsedVoiceSet.canonicalExerciseId);
+          setVoiceExerciseName(exercise?.canonicalName);
+        } else {
+          setVoiceExerciseName(undefined);
+        }
+        setVoiceCandidateNames(result.candidateNames ?? []);
       } else {
+        setParsedVoiceSet(null);
+        setVoiceExerciseName(undefined);
         setVoiceCandidateNames([]);
       }
 
       setSpeechState(getSpeechSupportState());
     } catch {
       setSpeechState("error");
+      setVoiceFeedback("Errore durante il riconoscimento vocale.");
       setSpeechState(getSpeechSupportState());
     }
-  };
-
-  const handleVoiceConfirm = async () => {
-    if (!activeSession || !parsedVoiceSet?.canonicalExerciseId || !parsedVoiceSet.weight || !parsedVoiceSet.reps) {
-      return;
-    }
-    const exercise = await getExerciseById(parsedVoiceSet.canonicalExerciseId);
-    if (!exercise) {
-      return;
-    }
-    const sessionExercise = await addExerciseToSession(activeSession.id, exercise);
-    await addSetEntry({
-      sessionExerciseId: sessionExercise.id,
-      reps: parsedVoiceSet.reps,
-      weight: parsedVoiceSet.weight,
-      inputMode: "voice"
-    });
-    setParsedVoiceSet(null);
-    setVoiceExerciseName(undefined);
-    setVoiceCandidateNames([]);
   };
 
   if (!activeSession) {
@@ -114,7 +139,7 @@ export const ActiveWorkoutPage = () => {
     <div className="space-y-5">
       <SectionTitle
         title="Sessione attiva"
-        subtitle="Aggiungi esercizi e serie reali, modifica al volo e chiudi quando hai finito."
+        subtitle="Voice-first: puoi dettare set completi o usare comandi contestuali come uguale, ancora 8, no 7, cancella ultima."
         action={
           <button className="secondary-button px-3 py-2 text-xs" type="button" onClick={() => void handleComplete()}>
             Chiudi
@@ -123,6 +148,22 @@ export const ActiveWorkoutPage = () => {
       />
 
       <SessionSummaryCard {...sessionSummary} />
+
+      <div className="dark-panel space-y-3 p-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-orange-300">Contesto vocale</p>
+            <p className="mt-1 text-lg font-semibold text-white">{activeExerciseName ?? "Nessun esercizio attivo"}</p>
+            <p className="mt-1 text-sm text-white/75">
+              Ultimo set: {conversationState?.lastWeight ?? "-"} kg x {conversationState?.lastReps ?? "-"}
+            </p>
+          </div>
+          {conversationState?.lastSetNumber ? (
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">Serie {conversationState.lastSetNumber}</span>
+          ) : null}
+        </div>
+        {voiceFeedback ? <p className="text-sm text-white/90">{voiceFeedback}</p> : null}
+      </div>
 
       <div className="grid grid-cols-2 gap-3">
         <Link className="primary-button" to="/workout/active/exercises">
@@ -136,7 +177,11 @@ export const ActiveWorkoutPage = () => {
           parsed={parsedVoiceSet}
           exerciseName={voiceExerciseName}
           candidateNames={voiceCandidateNames}
-          onConfirm={handleVoiceConfirm}
+          onConfirm={async () => {
+            setParsedVoiceSet(null);
+            setVoiceExerciseName(undefined);
+            setVoiceCandidateNames([]);
+          }}
           onCancel={() => {
             setParsedVoiceSet(null);
             setVoiceExerciseName(undefined);
