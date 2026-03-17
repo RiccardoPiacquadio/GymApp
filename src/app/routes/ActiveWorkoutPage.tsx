@@ -28,6 +28,8 @@ import type {
   VoiceConversationState
 } from "../../features/voice/types/voice";
 
+type ListeningPhase = "idle" | "listening" | "hearing" | "processing";
+
 export const ActiveWorkoutPage = () => {
   const navigate = useNavigate();
   const { activeProfileId } = useActiveProfile();
@@ -54,6 +56,8 @@ export const ActiveWorkoutPage = () => {
   const [voiceFeedback, setVoiceFeedback] = useState<string>();
   const [conversationState, setConversationStateLocal] = useState<VoiceConversationState>();
   const [activeExerciseName, setActiveExerciseName] = useState<string>();
+  const [liveTranscript, setLiveTranscript] = useState("");
+  const [listeningPhase, setListeningPhase] = useState<ListeningPhase>("idle");
 
   useEffect(() => {
     const loadConversationState = async () => {
@@ -87,7 +91,16 @@ export const ActiveWorkoutPage = () => {
 
     try {
       setSpeechState("listening");
-      const transcript = await captureSpeechOnce("it-IT");
+      setListeningPhase("listening");
+      setLiveTranscript("");
+
+      const transcript = await captureSpeechOnce({
+        lang: "it-IT",
+        silenceMs: 4000,
+        onTranscriptChange: (value) => setLiveTranscript(value),
+        onStateChange: (state) => setListeningPhase(state)
+      });
+
       const result = await processVoiceCommand(transcript, activeProfileId);
       setVoiceFeedback(result.feedback);
 
@@ -115,12 +128,14 @@ export const ActiveWorkoutPage = () => {
         setVoiceExerciseName(undefined);
         setVoiceCandidateNames([]);
       }
-
-      setSpeechState(getSpeechSupportState());
-    } catch {
+    } catch (error) {
       setSpeechState("error");
-      setVoiceFeedback("Errore durante il riconoscimento vocale.");
+      setVoiceFeedback(error instanceof Error && error.message === "Nessun testo riconosciuto"
+        ? "Non ho sentito niente di utile. Riprova o correggi a mano."
+        : "Errore durante il riconoscimento vocale.");
+    } finally {
       setSpeechState(getSpeechSupportState());
+      setListeningPhase("idle");
     }
   };
 
@@ -172,6 +187,27 @@ export const ActiveWorkoutPage = () => {
         <VoiceCaptureButton state={speechState} onStart={handleVoiceCapture} />
       </div>
 
+      {speechState === "listening" ? (
+        <div className={`dark-panel space-y-3 p-4 ${listeningPhase === "hearing" ? "ring-2 ring-accent" : ""}`}>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className={`h-3 w-3 rounded-full ${listeningPhase === "hearing" ? "bg-accent animate-pulse" : "bg-white/70 animate-pulse"}`} />
+              <p className="text-sm font-semibold text-white">
+                {listeningPhase === "processing"
+                  ? "Sto chiudendo l'ascolto..."
+                  : listeningPhase === "hearing"
+                    ? "Ti sto sentendo"
+                    : "In ascolto"}
+              </p>
+            </div>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">stop dopo 4s di silenzio</span>
+          </div>
+          <p className={`min-h-[3rem] rounded-2xl border px-3 py-3 text-sm ${liveTranscript ? "border-accent/40 bg-[#111111] text-white" : "border-white/15 bg-[#0b0b0b] text-chrome"}`}>
+            {liveTranscript || "Parla pure. Appena sente parole, qui sotto vedrai il testo che sta arrivando."}
+          </p>
+        </div>
+      ) : null}
+
       {parsedVoiceSet ? (
         <VoiceParsePreview
           parsed={parsedVoiceSet}
@@ -213,5 +249,3 @@ export const ActiveWorkoutPage = () => {
     </div>
   );
 };
-
-

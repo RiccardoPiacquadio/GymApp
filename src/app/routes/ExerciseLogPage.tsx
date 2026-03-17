@@ -28,11 +28,12 @@ export const ExerciseLogPage = () => {
       if (!sessionExercise) {
         return null;
       }
-      const [exercise, sets] = await Promise.all([
+      const [session, exercise, sets] = await Promise.all([
+        db.workoutSessions.get(sessionExercise.sessionId),
         db.exerciseCanonicals.get(sessionExercise.canonicalExerciseId),
         db.setEntries.where("sessionExerciseId").equals(sessionExercise.id).sortBy("setNumber")
       ]);
-      return exercise ? { sessionExercise, exercise, sets } : null;
+      return session && exercise ? { sessionExercise, session, exercise, sets } : null;
     },
     [sessionExerciseId]
   );
@@ -81,14 +82,18 @@ export const ExerciseLogPage = () => {
     return <div className="app-panel p-4 text-sm text-ink/70">Esercizio non trovato.</div>;
   }
 
+  const isCompletedSession = detail.session.status === "completed";
+  const backLink = isCompletedSession ? `/history/${detail.session.id}` : "/workout/active";
+  const backLabel = isCompletedSession ? "Torna alla sessione" : "Torna sessione";
+
   return (
     <div className="space-y-5">
       <SectionTitle
         title={detail.exercise.canonicalName}
-        subtitle="Aggiungi serie manualmente. Le ultime performance vengono usate come suggerimento."
+        subtitle={isCompletedSession ? "Puoi correggere anche gli allenamenti gia chiusi." : "Aggiungi serie manualmente. Le ultime performance vengono usate come suggerimento."}
         action={
-          <Link className="secondary-button px-3 py-2 text-xs" to="/workout/active">
-            Torna sessione
+          <Link className="secondary-button px-3 py-2 text-xs" to={backLink}>
+            {backLabel}
           </Link>
         }
       />
@@ -130,4 +135,3 @@ export const ExerciseLogPage = () => {
     </div>
   );
 };
-

@@ -17,7 +17,7 @@ const ProtectedApp = () => {
   const { activeProfileId, isReady } = useAppBoot();
 
   if (!isReady) {
-    return <div className="flex min-h-screen items-center justify-center text-ink/70">Caricamento...</div>;
+    return <div className="flex min-h-screen items-center justify-center text-white">Caricamento...</div>;
   }
 
   if (!activeProfileId && location.pathname !== "/profiles") {
@@ -36,6 +36,8 @@ const ProtectedApp = () => {
         <Route path="/workout/active/exercises/:sessionExerciseId" element={<ExerciseLogPage />} />
         <Route path="/history" element={<WorkoutHistoryPage />} />
         <Route path="/history/:sessionId" element={<WorkoutDetailPage />} />
+        <Route path="/history/:sessionId/exercises" element={<ExerciseSearchPage />} />
+        <Route path="/history/:sessionId/exercises/:sessionExerciseId" element={<ExerciseLogPage />} />
         <Route path="/exercises/:exerciseId" element={<ExerciseDetailPage />} />
       </Routes>
     </AppShell>
@@ -49,5 +51,3 @@ export default function App() {
     </AppProviders>
   );
 }
-
-
