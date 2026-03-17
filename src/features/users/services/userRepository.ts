@@ -38,9 +38,6 @@ export type DeleteProfileResult =
       status: "blocked_active_profile";
     }
   | {
-      status: "blocked_has_sessions";
-    }
-  | {
       status: "not_found";
     };
 
@@ -129,12 +126,39 @@ export const deleteProfile = async (profileId: string): Promise<DeleteProfileRes
     return { status: "blocked_active_profile" };
   }
 
-  const linkedSessionsCount = await db.workoutSessions.where("userId").equals(profileId).count();
-  if (linkedSessionsCount > 0) {
-    return { status: "blocked_has_sessions" };
-  }
+  await db.transaction(
+    "rw",
+    db.userProfiles,
+    db.workoutSessions,
+    db.sessionExercises,
+    db.setEntries,
+    async () => {
+      const linkedSessions = await db.workoutSessions.where("userId").equals(profileId).toArray();
+      const linkedSessionIds = new Set(linkedSessions.map((session) => session.id));
+      const linkedSessionExercises = (await db.sessionExercises.toArray()).filter((sessionExercise) =>
+        linkedSessionIds.has(sessionExercise.sessionId)
+      );
+      const linkedSessionExerciseIds = new Set(linkedSessionExercises.map((sessionExercise) => sessionExercise.id));
+      const linkedSetEntries = (await db.setEntries.toArray()).filter((setEntry) =>
+        linkedSessionExerciseIds.has(setEntry.sessionExerciseId)
+      );
 
-  await db.userProfiles.delete(profileId);
+      if (linkedSetEntries.length > 0) {
+        await db.setEntries.bulkDelete(linkedSetEntries.map((setEntry) => setEntry.id));
+      }
+
+      if (linkedSessionExercises.length > 0) {
+        await db.sessionExercises.bulkDelete(linkedSessionExercises.map((sessionExercise) => sessionExercise.id));
+      }
+
+      if (linkedSessions.length > 0) {
+        await db.workoutSessions.bulkDelete(linkedSessions.map((session) => session.id));
+      }
+
+      await db.userProfiles.delete(profileId);
+    }
+  );
+
   return { status: "deleted" };
 };
 

@@ -73,24 +73,21 @@ export const ProfileSelectPage = () => {
   };
 
   const handleDelete = async (profile: UserProfile) => {
-    const shouldDelete = window.confirm(`Vuoi cancellare il profilo ${profile.displayName}?`);
+    const shouldDelete = window.confirm(
+      `Vuoi cancellare il profilo ${profile.displayName}? Verranno eliminati anche sessioni, esercizi e serie salvate di quel profilo.`
+    );
     if (!shouldDelete) {
       return;
     }
 
     const result = await deleteProfile(profile.id);
     if (result.status === "deleted") {
-      setProfileAdminMessage("Profilo cancellato.");
+      setProfileAdminMessage("Profilo e relativo storico cancellati.");
       return;
     }
 
     if (result.status === "blocked_active_profile") {
       setProfileAdminMessage("Non puoi cancellare il profilo attualmente loggato.");
-      return;
-    }
-
-    if (result.status === "blocked_has_sessions") {
-      setProfileAdminMessage("Non puoi cancellare un profilo che ha già sessioni salvate.");
     }
   };
 
@@ -103,7 +100,7 @@ export const ProfileSelectPage = () => {
         />
         {canManageProfiles ? (
           <div className="app-panel mb-3 p-4 text-sm text-slate-700">
-            Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione è bloccata per il profilo attivo e per i profili con sessioni salvate.
+            Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione è bloccata solo per il profilo attivo; sugli altri profili elimina anche tutto lo storico collegato.
           </div>
         ) : null}
         {profileAdminMessage ? <div className="app-panel mb-3 p-4 text-sm text-slate-700">{profileAdminMessage}</div> : null}
