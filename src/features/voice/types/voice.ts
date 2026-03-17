@@ -3,6 +3,7 @@ export type ParsedVoiceSet = {
   normalizedText: string;
   canonicalExerciseId?: string;
   matchedAlias?: string;
+  setNumber?: number;
   weight?: number;
   reps?: number;
   confidence: number;

@@ -23,6 +23,7 @@ export const VoiceParsePreview = ({
     <div className="space-y-1 text-sm text-white/90">
       <p>Testo: {parsed.rawText}</p>
       <p>Esercizio: {exerciseName ?? "Non riconosciuto"}</p>
+      <p>Serie: {parsed.setNumber ?? "-"}</p>
       <p>
         Set: {parsed.weight ?? "-"} kg x {parsed.reps ?? "-"}
       </p>
