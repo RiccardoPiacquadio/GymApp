@@ -1,6 +1,7 @@
 export type UserProfile = {
   id: string;
   displayName: string;
+  normalizedDisplayName: string;
   createdAt: string;
   updatedAt: string;
 };

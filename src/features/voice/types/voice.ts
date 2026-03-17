@@ -7,6 +7,9 @@ export type ParsedVoiceSet = {
   reps?: number;
   confidence: number;
   isValid: boolean;
+  requiresConfirmation: boolean;
+  feedbackMessage?: string;
+  candidateExerciseIds?: string[];
 };
 
 export type SpeechCaptureState = "idle" | "listening" | "unsupported" | "error";

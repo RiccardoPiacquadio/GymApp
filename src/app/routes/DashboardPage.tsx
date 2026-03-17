@@ -34,9 +34,9 @@ export const DashboardPage = () => {
     <div className="space-y-5">
       <section className="hero-panel space-y-5 p-5">
         <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Profilo attivo</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-orange-300">Profilo attivo</p>
           <h2 className="mt-2 text-3xl font-semibold text-white">{profile?.displayName ?? "Nessun profilo"}</h2>
-          <p className="mt-3 max-w-[26ch] text-sm text-slate-300">
+          <p className="mt-3 max-w-[26ch] text-sm text-white/85">
             Interfaccia rapida da palestra: carichi veri, poche tap, niente schede obbligatorie.
           </p>
         </div>
@@ -44,21 +44,21 @@ export const DashboardPage = () => {
           <Link className="primary-button" to={activeSession ? "/workout/active" : "/workout/start"}>
             {activeSession ? "Continua workout" : "Inizia allenamento"}
           </Link>
-          <Link className="rounded-2xl border border-white/15 bg-white/8 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/12" to="/history">
+          <Link className="rounded-2xl border border-white bg-white px-4 py-3 text-center text-sm font-semibold text-ink transition hover:bg-mist" to="/history">
             Vedi storico
           </Link>
         </div>
         <div className="grid grid-cols-3 gap-3 text-sm">
-          <div className="rounded-2xl border border-white/10 bg-white/6 p-3">
-            <p className="text-slate-400">Focus</p>
+          <div className="rounded-2xl border border-white/12 bg-accent px-3 py-3 text-white">
+            <p className="text-white/75">Focus</p>
             <p className="mt-1 font-semibold text-white">Logging libero</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/6 p-3">
-            <p className="text-slate-400">Storage</p>
-            <p className="mt-1 font-semibold text-white">Offline-first</p>
+          <div className="rounded-2xl border border-white bg-white p-3 text-ink">
+            <p className="text-slate-500">Storage</p>
+            <p className="mt-1 font-semibold text-ink">Offline-first</p>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-white/6 p-3">
-            <p className="text-slate-400">Input</p>
+          <div className="rounded-2xl border border-white/12 bg-[#1f1f1f] p-3 text-white">
+            <p className="text-white/70">Input</p>
             <p className="mt-1 font-semibold text-white">Manuale + voce</p>
           </div>
         </div>
@@ -76,7 +76,7 @@ export const DashboardPage = () => {
                     {session.totalExercises} esercizi • {session.totalSets} serie
                   </p>
                 </div>
-                <span className="pill bg-accent/10 text-accent">{session.totalVolume} vol</span>
+                <span className="rounded-full bg-ink px-3 py-1 text-xs font-medium text-white">{session.totalVolume} vol</span>
               </div>
             </Link>
           ))}

@@ -21,10 +21,23 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
     ? normalizedText.replace(/(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)/i, "").trim()
     : normalizedText;
   const aliasResolution = await resolveExerciseAlias(exerciseText);
-  const isValid = Boolean(aliasResolution.canonicalExerciseId && numericData?.weight && numericData?.reps);
-  const confidence = isValid
-    ? Math.min(1, aliasResolution.confidence * 0.7 + 0.3)
-    : aliasResolution.confidence * 0.5;
+  const isValid = Boolean(
+    !aliasResolution.isAmbiguous &&
+      aliasResolution.canonicalExerciseId &&
+      numericData?.weight &&
+      numericData?.reps
+  );
+
+  let feedbackMessage: string | undefined;
+  if (aliasResolution.isAmbiguous) {
+    feedbackMessage = "Nome ambiguo: scegli l'esercizio corretto prima di salvare.";
+  } else if (!aliasResolution.canonicalExerciseId) {
+    feedbackMessage = "Esercizio non riconosciuto.";
+  } else if (!numericData?.weight || !numericData?.reps) {
+    feedbackMessage = "Mancano peso o ripetizioni nel comando vocale.";
+  } else {
+    feedbackMessage = "Comando riconosciuto.";
+  }
 
   return {
     rawText,
@@ -33,7 +46,12 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
     matchedAlias: aliasResolution.matchedAlias,
     weight: numericData?.weight,
     reps: numericData?.reps,
-    confidence,
-    isValid
+    confidence: isValid
+      ? Math.min(1, aliasResolution.confidence * 0.7 + 0.3)
+      : aliasResolution.confidence * 0.6,
+    isValid,
+    requiresConfirmation: !isValid || aliasResolution.confidence < 0.9,
+    feedbackMessage,
+    candidateExerciseIds: aliasResolution.candidateExerciseIds
   };
 };

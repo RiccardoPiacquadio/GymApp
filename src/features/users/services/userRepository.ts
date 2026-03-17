@@ -1,22 +1,54 @@
 import { db } from "../../../db";
+import { normalizeText } from "../../../lib/normalize";
 import { toIsoNow } from "../../../lib/dates";
 import { createId } from "../../../lib/ids";
 import type { UserProfile } from "../../../types";
 
 const LAST_PROFILE_KEY = "lastActiveProfileId";
 
-export const createProfile = async (displayName: string) => {
+export type CreateProfileResult =
+  | {
+      status: "created";
+      profile: UserProfile;
+    }
+  | {
+      status: "duplicate";
+      profile: UserProfile;
+    };
+
+export const normalizeProfileName = (displayName: string) => normalizeText(displayName);
+
+export const findProfileByNormalizedName = async (displayName: string) =>
+  db.userProfiles.where("normalizedDisplayName").equals(normalizeProfileName(displayName)).first();
+
+export const createProfile = async (displayName: string): Promise<CreateProfileResult> => {
+  const trimmedDisplayName = displayName.trim();
+  const normalizedDisplayName = normalizeProfileName(trimmedDisplayName);
+  const existingProfile = await findProfileByNormalizedName(trimmedDisplayName);
+
+  if (existingProfile) {
+    return {
+      status: "duplicate",
+      profile: existingProfile
+    };
+  }
+
   const now = toIsoNow();
   const profile: UserProfile = {
     id: createId(),
-    displayName: displayName.trim(),
+    displayName: trimmedDisplayName,
+    normalizedDisplayName,
     createdAt: now,
     updatedAt: now
   };
 
   await db.userProfiles.add(profile);
   await db.appSettings.put({ key: LAST_PROFILE_KEY, value: profile.id });
-  return profile;
+
+  return {
+    status: "created",
+    profile
+  };
 };
 
 export const getProfileById = (id: string) => db.userProfiles.get(id);

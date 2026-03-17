@@ -32,7 +32,8 @@ export const ActiveWorkoutPage = () => {
     []
   );
   const sessionSummary = useLiveQuery(
-    async () => (activeSession ? await getSessionSummary(activeSession.id) : { totalExercises: 0, totalSets: 0, totalVolume: 0 }),
+    async () =>
+      activeSession ? await getSessionSummary(activeSession.id) : { totalExercises: 0, totalSets: 0, totalVolume: 0 },
     [activeSession?.id],
     { totalExercises: 0, totalSets: 0, totalVolume: 0 }
   );
@@ -40,6 +41,7 @@ export const ActiveWorkoutPage = () => {
   const [speechState, setSpeechState] = useState<SpeechCaptureState>(getSpeechSupportState());
   const [parsedVoiceSet, setParsedVoiceSet] = useState<ParsedVoiceSet | null>(null);
   const [voiceExerciseName, setVoiceExerciseName] = useState<string>();
+  const [voiceCandidateNames, setVoiceCandidateNames] = useState<string[]>([]);
 
   const handleComplete = async () => {
     if (!activeSession) {
@@ -55,12 +57,21 @@ export const ActiveWorkoutPage = () => {
       const transcript = await captureSpeechOnce("it-IT");
       const parsed = await parseVoiceSet(transcript);
       setParsedVoiceSet(parsed);
+
       if (parsed.canonicalExerciseId) {
         const exercise = await getExerciseById(parsed.canonicalExerciseId);
         setVoiceExerciseName(exercise?.canonicalName);
       } else {
         setVoiceExerciseName(undefined);
       }
+
+      if (parsed.candidateExerciseIds && parsed.candidateExerciseIds.length > 0) {
+        const candidates = await Promise.all(parsed.candidateExerciseIds.map((exerciseId) => getExerciseById(exerciseId)));
+        setVoiceCandidateNames(candidates.filter(Boolean).map((exercise) => exercise!.canonicalName));
+      } else {
+        setVoiceCandidateNames([]);
+      }
+
       setSpeechState(getSpeechSupportState());
     } catch {
       setSpeechState("error");
@@ -85,6 +96,7 @@ export const ActiveWorkoutPage = () => {
     });
     setParsedVoiceSet(null);
     setVoiceExerciseName(undefined);
+    setVoiceCandidateNames([]);
   };
 
   if (!activeSession) {
@@ -123,10 +135,12 @@ export const ActiveWorkoutPage = () => {
         <VoiceParsePreview
           parsed={parsedVoiceSet}
           exerciseName={voiceExerciseName}
+          candidateNames={voiceCandidateNames}
           onConfirm={handleVoiceConfirm}
           onCancel={() => {
             setParsedVoiceSet(null);
             setVoiceExerciseName(undefined);
+            setVoiceCandidateNames([]);
           }}
         />
       ) : null}

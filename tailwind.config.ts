@@ -5,23 +5,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#14181f",
-        panel: "#f4f0e8",
-        mist: "#d6d0c4",
-        accent: "#ef5b2a",
-        flare: "#f59e0b",
+        ink: "#090909",
+        panel: "#ffffff",
+        mist: "#efefef",
+        accent: "#f97316",
+        flare: "#fb923c",
         success: "#3f9b64",
         danger: "#c0392b",
-        steel: "#2b3440",
-        chrome: "#c8c0b4",
-        concrete: "#ece6db"
+        steel: "#262626",
+        chrome: "#bdbdbd",
+        concrete: "#e5e5e5"
       },
       boxShadow: {
-        panel: "0 18px 45px rgba(20, 24, 31, 0.14)"
+        panel: "0 18px 45px rgba(9, 9, 9, 0.16)"
       },
       backgroundImage: {
         "app-glow":
-          "radial-gradient(circle at top left, rgba(239, 91, 42, 0.16), transparent 34%), radial-gradient(circle at top right, rgba(245, 158, 11, 0.14), transparent 24%), linear-gradient(180deg, #262d36 0%, #1a1f27 18%, #e7e1d6 18%, #ece6db 100%)"
+          "radial-gradient(circle at top left, rgba(249, 115, 22, 0.2), transparent 32%), radial-gradient(circle at top right, rgba(251, 146, 60, 0.12), transparent 24%), linear-gradient(180deg, #090909 0%, #171717 20%, #f5f5f5 20%, #ebebeb 100%)"
       }
     }
   },

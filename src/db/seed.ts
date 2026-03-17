@@ -1,126 +1,192 @@
+import { seedExercises } from "./seedExercises";
 import type { ExerciseAlias, ExerciseCanonical } from "../types";
 import { toIsoNow } from "../lib/dates";
 import { createId } from "../lib/ids";
 import { normalizeExerciseInput } from "../lib/normalize";
 import { db } from "./schema";
 
-type SeedExercise = {
-  canonicalName: string;
-  slug: string;
-  aliases: Array<{ text: string; language: "it" | "en" }>;
+const italianHints = new Set([
+  "panca",
+  "bilanciere",
+  "manubri",
+  "macchina",
+  "croci",
+  "petto",
+  "piegamenti",
+  "flessioni",
+  "lento",
+  "spalle",
+  "alzate",
+  "tirate",
+  "viso",
+  "mento",
+  "trazioni",
+  "rematore",
+  "busto",
+  "stacco",
+  "rumeni",
+  "gambe",
+  "affondi",
+  "femorali",
+  "quadricipiti",
+  "glutei",
+  "seduto",
+  "sdraiato",
+  "inclinata",
+  "declinata",
+  "presa",
+  "larga",
+  "stretta",
+  "corda",
+  "sopra",
+  "testa",
+  "parallele",
+  "addominali",
+  "sbarra",
+  "assistite",
+  "multipower"
+]);
+
+const englishHints = new Set([
+  "bench",
+  "press",
+  "barbell",
+  "dumbbell",
+  "machine",
+  "fly",
+  "push",
+  "pushup",
+  "pushups",
+  "shoulder",
+  "military",
+  "overhead",
+  "raise",
+  "rear",
+  "delt",
+  "face",
+  "upright",
+  "row",
+  "lat",
+  "pulldown",
+  "pull",
+  "pullup",
+  "pullups",
+  "chin",
+  "cable",
+  "low",
+  "t",
+  "landmine",
+  "pullover",
+  "squat",
+  "goblet",
+  "leg",
+  "hack",
+  "bulgarian",
+  "walking",
+  "static",
+  "split",
+  "romanian",
+  "rdl",
+  "stiff",
+  "deadlift",
+  "sumo",
+  "hip",
+  "thrust",
+  "bridge",
+  "extension",
+  "curl",
+  "standing",
+  "seated",
+  "lying",
+  "calf",
+  "ez",
+  "hammer",
+  "incline",
+  "preacher",
+  "rope",
+  "skull",
+  "crusher",
+  "dips",
+  "dip",
+  "crunch",
+  "plank",
+  "wheel",
+  "assisted",
+  "smith",
+  "arnold"
+]);
+
+const detectAliasLanguage = (aliasText: string): "it" | "en" => {
+  const tokens = normalizeExerciseInput(aliasText).split(" ");
+  if (tokens.some((token) => italianHints.has(token))) {
+    return "it";
+  }
+  if (tokens.some((token) => englishHints.has(token))) {
+    return "en";
+  }
+  return "en";
 };
 
-const seedExercises: SeedExercise[] = [
-  {
-    canonicalName: "Bench Press",
-    slug: "bench_press_flat_barbell",
-    aliases: [
-      { text: "panca piana", language: "it" },
-      { text: "bench press", language: "en" },
-      { text: "barbell bench press", language: "en" },
-      { text: "panca bilanciere", language: "it" }
-    ]
-  },
-  {
-    canonicalName: "Shoulder Press",
-    slug: "shoulder_press",
-    aliases: [
-      { text: "shoulder press", language: "en" },
-      { text: "military press", language: "en" },
-      { text: "lento avanti", language: "it" },
-      { text: "overhead press", language: "en" }
-    ]
-  },
-  {
-    canonicalName: "Squat",
-    slug: "barbell_back_squat",
-    aliases: [
-      { text: "squat", language: "en" },
-      { text: "back squat", language: "en" },
-      { text: "squat bilanciere", language: "it" }
-    ]
-  },
-  {
-    canonicalName: "Deadlift",
-    slug: "deadlift",
-    aliases: [
-      { text: "deadlift", language: "en" },
-      { text: "stacco", language: "it" },
-      { text: "stacco da terra", language: "it" }
-    ]
-  },
-  {
-    canonicalName: "Lat Pulldown",
-    slug: "lat_pulldown",
-    aliases: [
-      { text: "lat machine", language: "it" },
-      { text: "lat pulldown", language: "en" },
-      { text: "pulley alto", language: "it" }
-    ]
-  },
-  {
-    canonicalName: "Barbell Row",
-    slug: "barbell_row",
-    aliases: [
-      { text: "rematore bilanciere", language: "it" },
-      { text: "barbell row", language: "en" },
-      { text: "bent over row", language: "en" }
-    ]
-  },
-  {
-    canonicalName: "Dumbbell Curl",
-    slug: "dumbbell_curl",
-    aliases: [
-      { text: "curl manubri", language: "it" },
-      { text: "dumbbell curl", language: "en" },
-      { text: "biceps curl", language: "en" }
-    ]
-  },
-  {
-    canonicalName: "Triceps Pushdown",
-    slug: "triceps_pushdown",
-    aliases: [
-      { text: "pushdown tricipiti", language: "it" },
-      { text: "triceps pushdown", language: "en" },
-      { text: "cavo tricipiti", language: "it" }
-    ]
-  }
-];
-
 export const seedDatabase = async () => {
-  const canonicalCount = await db.exerciseCanonicals.count();
-  if (canonicalCount > 0) {
-    return;
-  }
-
   const now = toIsoNow();
-  const canonicals: ExerciseCanonical[] = [];
-  const aliases: ExerciseAlias[] = [];
+  const [existingCanonicals, existingAliases] = await Promise.all([
+    db.exerciseCanonicals.toArray(),
+    db.exerciseAliases.toArray()
+  ]);
+
+  const canonicalsBySlug = new Map(existingCanonicals.map((canonical) => [canonical.slug, canonical]));
+  const aliasKeys = new Set(
+    existingAliases.map((alias) => `${alias.canonicalExerciseId}:${alias.normalizedAliasText}`)
+  );
+
+  const canonicalsToPut: ExerciseCanonical[] = [];
+  const aliasesToAdd: ExerciseAlias[] = [];
 
   for (const exercise of seedExercises) {
-    const canonicalId = createId();
-    canonicals.push({
+    const existingCanonical = canonicalsBySlug.get(exercise.slug);
+    const canonicalId = existingCanonical?.id ?? createId();
+
+    canonicalsToPut.push({
       id: canonicalId,
       canonicalName: exercise.canonicalName,
       slug: exercise.slug,
-      createdAt: now,
+      createdAt: existingCanonical?.createdAt ?? now,
       updatedAt: now
     });
 
-    aliases.push(
-      ...exercise.aliases.map((alias) => ({
+    const uniqueAliases = new Map<string, string>();
+    for (const aliasText of exercise.aliases) {
+      const normalizedAliasText = normalizeExerciseInput(aliasText);
+      if (!normalizedAliasText) {
+        continue;
+      }
+      if (!uniqueAliases.has(normalizedAliasText)) {
+        uniqueAliases.set(normalizedAliasText, aliasText);
+      }
+    }
+
+    for (const [normalizedAliasText, aliasText] of uniqueAliases.entries()) {
+      const aliasKey = `${canonicalId}:${normalizedAliasText}`;
+      if (aliasKeys.has(aliasKey)) {
+        continue;
+      }
+
+      aliasesToAdd.push({
         id: createId(),
         canonicalExerciseId: canonicalId,
-        aliasText: alias.text,
-        normalizedAliasText: normalizeExerciseInput(alias.text),
-        language: alias.language,
+        aliasText,
+        normalizedAliasText,
+        language: detectAliasLanguage(aliasText),
         createdAt: now
-      }))
-    );
+      });
+      aliasKeys.add(aliasKey);
+    }
   }
 
   await db.transaction("rw", db.exerciseCanonicals, db.exerciseAliases, async () => {
-    await db.exerciseCanonicals.bulkAdd(canonicals);
-    await db.exerciseAliases.bulkAdd(aliases);
+    await db.exerciseCanonicals.bulkPut(canonicalsToPut);
+    if (aliasesToAdd.length > 0) {
+      await db.exerciseAliases.bulkAdd(aliasesToAdd);
+    }
   });
 };

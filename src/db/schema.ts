@@ -1,4 +1,5 @@
 import Dexie, { Table } from "dexie";
+import { normalizeText } from "../lib/normalize";
 import type {
   AppSetting,
   ExerciseAlias,
@@ -30,6 +31,25 @@ export class GymAppDatabase extends Dexie {
       setEntries: "id, sessionExerciseId, setNumber, reps, weight, inputMode, createdAt, updatedAt",
       appSettings: "key"
     });
+
+    this.version(2)
+      .stores({
+        userProfiles: "id, displayName, normalizedDisplayName, createdAt, updatedAt",
+        exerciseCanonicals: "id, slug, canonicalName, createdAt, updatedAt",
+        exerciseAliases: "id, canonicalExerciseId, normalizedAliasText, language, createdAt",
+        workoutSessions: "id, userId, startedAt, endedAt, status, createdAt, updatedAt",
+        sessionExercises: "id, sessionId, canonicalExerciseId, exerciseOrder, createdAt",
+        setEntries: "id, sessionExerciseId, setNumber, reps, weight, inputMode, createdAt, updatedAt",
+        appSettings: "key"
+      })
+      .upgrade((tx) =>
+        tx
+          .table("userProfiles")
+          .toCollection()
+          .modify((profile: Partial<UserProfile>) => {
+            profile.normalizedDisplayName = normalizeText(profile.displayName ?? "");
+          })
+      );
   }
 }
 

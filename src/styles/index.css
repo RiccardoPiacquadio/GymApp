@@ -6,10 +6,10 @@
   color-scheme: light;
   font-family: Bahnschrift, Aptos, "Trebuchet MS", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(239, 91, 42, 0.14), transparent 30%),
-    radial-gradient(circle at top right, rgba(245, 158, 11, 0.14), transparent 24%),
-    linear-gradient(180deg, #262d36 0%, #1a1f27 18%, #e7e1d6 18%, #ece6db 100%);
-  color: #14181f;
+    radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 30%),
+    radial-gradient(circle at top right, rgba(251, 146, 60, 0.14), transparent 22%),
+    linear-gradient(180deg, #090909 0%, #171717 20%, #f5f5f5 20%, #ebebeb 100%);
+  color: #090909;
 }
 
 body {
@@ -39,15 +39,15 @@ body {
 
 @layer components {
   .app-panel {
-    @apply rounded-[24px] border border-chrome/70 bg-panel shadow-panel backdrop-blur;
+    @apply rounded-[24px] border border-concrete bg-panel shadow-panel backdrop-blur;
   }
 
   .primary-button {
-    @apply inline-flex items-center justify-center rounded-2xl bg-accent px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#d84d1c] disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-2xl bg-accent px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#ea580c] disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .secondary-button {
-    @apply inline-flex items-center justify-center rounded-2xl border border-steel/20 bg-steel px-4 py-3 text-sm font-semibold text-white transition hover:border-steel/40 hover:bg-[#202830];
+    @apply inline-flex items-center justify-center rounded-2xl border border-steel bg-steel px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#000000];
   }
 
   .danger-button {
@@ -55,14 +55,18 @@ body {
   }
 
   .field-input {
-    @apply w-full rounded-2xl border border-chrome/70 bg-[#fbf8f1] px-4 py-3 text-base text-ink placeholder:text-slate-400 focus:border-accent;
+    @apply w-full rounded-2xl border border-concrete bg-white px-4 py-3 text-base text-ink placeholder:text-slate-400 focus:border-accent;
   }
 
   .pill {
-    @apply inline-flex items-center rounded-full bg-mist px-3 py-1 text-xs font-medium text-steel;
+    @apply inline-flex items-center rounded-full bg-mist px-3 py-1 text-xs font-medium text-ink;
   }
 
   .hero-panel {
-    @apply rounded-[28px] border border-[#4b5563] bg-[linear-gradient(145deg,#232a33_0%,#171b22_100%)] text-white shadow-panel;
+    @apply rounded-[28px] border border-[#2f2f2f] bg-[linear-gradient(145deg,#111111_0%,#000000_100%)] text-white shadow-panel;
+  }
+
+  .dark-panel {
+    @apply rounded-[24px] border border-[#2f2f2f] bg-[linear-gradient(145deg,#161616_0%,#050505_100%)] text-white shadow-panel;
   }
 }
