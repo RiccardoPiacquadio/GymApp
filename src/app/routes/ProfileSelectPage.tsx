@@ -99,11 +99,11 @@ export const ProfileSelectPage = () => {
           subtitle="Login leggero locale: scegli un profilo esistente o creane uno nuovo."
         />
         {canManageProfiles ? (
-          <div className="app-panel mb-3 p-4 text-sm text-slate-700">
+          <div className="app-panel mb-3 p-4 text-sm text-ink/80">
             Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione è bloccata solo per il profilo attivo; sugli altri profili elimina anche tutto lo storico collegato.
           </div>
         ) : null}
-        {profileAdminMessage ? <div className="app-panel mb-3 p-4 text-sm text-slate-700">{profileAdminMessage}</div> : null}
+        {profileAdminMessage ? <div className="app-panel mb-3 p-4 text-sm text-ink/80">{profileAdminMessage}</div> : null}
         <div className="space-y-3">
           {profiles.map((profile) => (
             <ProfileCard
@@ -125,7 +125,7 @@ export const ProfileSelectPage = () => {
             />
           ))}
           {profiles.length === 0 ? (
-            <div className="app-panel p-4 text-sm text-slate-500">Nessun profilo creato. Inizia dal modulo qui sotto.</div>
+            <div className="app-panel p-4 text-sm text-ink/70">Nessun profilo creato. Inizia dal modulo qui sotto.</div>
           ) : null}
         </div>
       </section>
@@ -141,3 +141,4 @@ export const ProfileSelectPage = () => {
     </div>
   );
 };
+

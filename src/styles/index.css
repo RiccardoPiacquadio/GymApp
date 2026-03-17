@@ -39,7 +39,7 @@ body {
 
 @layer components {
   .app-panel {
-    @apply rounded-[24px] border border-concrete bg-panel shadow-panel backdrop-blur;
+    @apply rounded-[24px] border border-concrete bg-panel text-ink shadow-panel backdrop-blur;
   }
 
   .primary-button {
@@ -55,7 +55,7 @@ body {
   }
 
   .field-input {
-    @apply w-full rounded-2xl border border-concrete bg-white px-4 py-3 text-base text-ink placeholder:text-slate-400 focus:border-accent;
+    @apply w-full rounded-2xl border border-concrete bg-white px-4 py-3 text-base text-ink placeholder:text-ink/40 focus:border-accent;
   }
 
   .pill {

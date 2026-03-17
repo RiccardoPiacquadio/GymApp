@@ -211,8 +211,9 @@ const extractSetNumber = (text: string) => {
     return Number(explicitNumeric[1]);
   }
 
-  const ordinalMatch = text.match(/^(primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)\b/i)
-    ?? text.match(/\b(primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)\s+(?:serie|set)\b/i);
+  const ordinalMatch =
+    text.match(/^(primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)\b/i) ??
+    text.match(/\b(primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)\s+(?:serie|set)\b/i);
 
   if (!ordinalMatch) {
     return undefined;
@@ -221,11 +222,23 @@ const extractSetNumber = (text: string) => {
   return ordinalSetMap[ordinalMatch[1].toLowerCase()];
 };
 
+const extractSetCount = (text: string) => {
+  const countMatch =
+    text.match(/\b(?:anche\s+|altre\s+|ho fatto anche\s+|ne ho fatte\s+|fatte\s+|faccio\s+|di nuovo\s+|ancora\s+)?(\d+)\s*(?:serie|set)\b/i) ??
+    text.match(/\b(?:serie|set)\s*(\d+)\b/i);
+
+  if (!countMatch) {
+    return undefined;
+  }
+
+  return Number(countMatch[1]);
+};
+
 const extractWeightAndReps = (text: string) => {
   const combinedPatterns = [
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|reps|ripetizioni))?/i,
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|reps|ripetizioni)\b/i,
-    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|reps|ripetizioni))?/i
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/i,
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/i,
+    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/i
   ];
 
   for (const pattern of combinedPatterns) {
@@ -245,8 +258,8 @@ const extractWeightAndReps = (text: string) => {
     text.match(/\b(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\b/i);
 
   const repsMatch =
-    text.match(/\b(?:per|x|reps|rip|ripetizioni)\s*(\d+)\b/i) ??
-    text.match(/\b(\d+)\s*(?:reps|rip|ripetizioni)\b/i);
+    text.match(/\b(?:per|x|rep|reps|rip|ripetizioni|colpo|colpi)\s*(\d+)\b/i) ??
+    text.match(/\b(\d+)\s*(?:rep|reps|rip|ripetizioni|colpo|colpi)\b/i);
 
   if (!weightMatch && !repsMatch) {
     return null;
@@ -261,14 +274,15 @@ const extractWeightAndReps = (text: string) => {
 const extractExerciseText = (text: string) =>
   text
     .replace(/\b(?:serie|set)\s*\d+\b/gi, " ")
+    .replace(/\b\d+\s*(?:serie|set)\b/gi, " ")
     .replace(/\b(?:primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)(?:\s+(?:serie|set))?\b/gi, " ")
-    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*\d+(?:\s*(?:rip|reps|ripetizioni))?/gi, " ")
-    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b\d+\s*(?:rip|reps|ripetizioni)\b/gi, " ")
-    .replace(/\d+(?:[.,]\d+)?\s*(?:x|per)\s*\d+(?:\s*(?:rip|reps|ripetizioni))?/gi, " ")
+    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/gi, " ")
+    .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b\d+\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/gi, " ")
+    .replace(/\d+(?:[.,]\d+)?\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?/gi, " ")
     .replace(/(?:con\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
-    .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|reps|ripetizioni))?\b/gi, " ")
-    .replace(/\b\d+\s*(?:rip|reps|ripetizioni)\b/gi, " ")
-    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|reps)\b/gi, " ")
+    .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|rep|reps|ripetizioni|colpo|colpi))?\b/gi, " ")
+    .replace(/\b\d+\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/gi, " ")
+    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|colpo|colpi|anche|di nuovo|ancora|uguale|stessa|stesso)\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -278,16 +292,20 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
   const normalizedTextWithDigits = replaceWordNumbers(normalizedText);
   const numericData = extractWeightAndReps(normalizedTextWithDigits);
   const setNumber = extractSetNumber(normalizedTextWithDigits);
+  const setCount = extractSetCount(normalizedTextWithDigits);
   const exerciseText = extractExerciseText(normalizedTextWithDigits);
   const aliasResolution = await resolveExerciseAlias(exerciseText);
   const hasWeight = numericData?.weight !== undefined;
   const hasReps = numericData?.reps !== undefined;
-  const isValid = Boolean(!aliasResolution.isAmbiguous && aliasResolution.canonicalExerciseId && hasWeight && hasReps);
+  const hasExercise = Boolean(aliasResolution.canonicalExerciseId);
+  const isValid = Boolean(!aliasResolution.isAmbiguous && hasExercise && hasWeight && hasReps);
 
   let feedbackMessage: string | undefined;
   if (aliasResolution.isAmbiguous) {
     feedbackMessage = "Nome ambiguo: scegli l'esercizio corretto prima di salvare.";
-  } else if (!aliasResolution.canonicalExerciseId) {
+  } else if (!hasExercise && hasWeight && hasReps) {
+    feedbackMessage = "Peso e ripetizioni riconosciuti: uso il contesto dell'esercizio attivo se disponibile.";
+  } else if (!hasExercise) {
     feedbackMessage = "Esercizio non riconosciuto.";
   } else if (!hasWeight || !hasReps) {
     feedbackMessage = "Mancano peso o ripetizioni nel comando vocale.";
@@ -301,14 +319,18 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
     canonicalExerciseId: aliasResolution.canonicalExerciseId,
     matchedAlias: aliasResolution.matchedAlias,
     setNumber,
+    setCount,
     weight: numericData?.weight,
     reps: numericData?.reps,
     confidence: isValid
       ? Math.min(1, aliasResolution.confidence * 0.7 + 0.3)
-      : aliasResolution.confidence * 0.6,
+      : hasWeight && hasReps && !aliasResolution.isAmbiguous
+        ? 0.72
+        : aliasResolution.confidence * 0.6,
     isValid,
     requiresConfirmation: !isValid || aliasResolution.confidence < 0.9,
     feedbackMessage,
     candidateExerciseIds: aliasResolution.candidateExerciseIds
   };
 };
+

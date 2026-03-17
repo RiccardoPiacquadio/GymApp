@@ -78,7 +78,7 @@ export const ExerciseLogPage = () => {
   };
 
   if (!detail) {
-    return <div className="app-panel p-4 text-sm text-slate-500">Esercizio non trovato.</div>;
+    return <div className="app-panel p-4 text-sm text-ink/70">Esercizio non trovato.</div>;
   }
 
   return (
@@ -97,7 +97,7 @@ export const ExerciseLogPage = () => {
         <div className="app-panel flex items-center justify-between gap-4 p-4">
           <div>
             <p className="text-sm font-semibold">Ultimo storico</p>
-            <p className="mt-1 text-sm text-slate-500">{latestSnapshot.lastPerformedAt}</p>
+            <p className="mt-1 text-sm text-ink/70">{latestSnapshot.lastPerformedAt}</p>
           </div>
           <div className="text-right">
             <p className="text-lg font-semibold">{latestSnapshot.lastWeight} kg x {latestSnapshot.lastReps}</p>
@@ -130,3 +130,4 @@ export const ExerciseLogPage = () => {
     </div>
   );
 };
+

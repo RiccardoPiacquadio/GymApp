@@ -36,7 +36,7 @@ export const SetEntryForm = ({ defaultValues, submitLabel = "Aggiungi serie", on
     <form className="app-panel space-y-4 p-4" onSubmit={handleSubmit}>
       <div className="grid grid-cols-2 gap-3">
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">Peso (kg)</span>
+          <span className="mb-2 block text-sm font-medium text-ink/80">Peso (kg)</span>
           <input
             className="field-input"
             inputMode="decimal"
@@ -45,7 +45,7 @@ export const SetEntryForm = ({ defaultValues, submitLabel = "Aggiungi serie", on
           />
         </label>
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-slate-700">Ripetizioni</span>
+          <span className="mb-2 block text-sm font-medium text-ink/80">Ripetizioni</span>
           <input
             className="field-input"
             inputMode="numeric"
@@ -60,3 +60,4 @@ export const SetEntryForm = ({ defaultValues, submitLabel = "Aggiungi serie", on
     </form>
   );
 };
+

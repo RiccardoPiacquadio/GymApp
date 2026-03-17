@@ -10,7 +10,7 @@ type SetEntryTableProps = {
 export const SetEntryTable = ({ setEntries, editingId, onEdit, onDelete }: SetEntryTableProps) => (
   <div className="app-panel overflow-hidden">
     <table className="w-full text-sm">
-      <thead className="bg-slate-50 text-slate-500">
+      <thead className="bg-slate-50 text-ink/70">
         <tr>
           <th className="px-4 py-3 text-left font-medium">Serie</th>
           <th className="px-4 py-3 text-left font-medium">Peso</th>
@@ -40,3 +40,4 @@ export const SetEntryTable = ({ setEntries, editingId, onEdit, onDelete }: SetEn
     </table>
   </div>
 );
+

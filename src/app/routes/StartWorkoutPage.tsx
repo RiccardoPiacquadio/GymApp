@@ -25,7 +25,7 @@ export const StartWorkoutPage = () => {
       <SectionTitle title="Inizia allenamento" subtitle="Apri o riprendi una sessione attiva per il profilo locale selezionato." />
       <div className="app-panel space-y-4 p-5">
         <div>
-          <p className="text-sm text-slate-500">Profilo</p>
+          <p className="text-sm text-ink/70">Profilo</p>
           <p className="text-xl font-semibold">{profile?.displayName ?? "Nessun profilo"}</p>
         </div>
         <button className="primary-button w-full" type="button" onClick={() => void handleStart()}>
@@ -35,3 +35,4 @@ export const StartWorkoutPage = () => {
     </div>
   );
 };
+

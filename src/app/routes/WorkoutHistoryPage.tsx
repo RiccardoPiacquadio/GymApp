@@ -22,7 +22,7 @@ export const WorkoutHistoryPage = () => {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-base font-semibold">{formatDate(session.startedAt)}</p>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-ink/70">
                   {session.totalExercises} esercizi • {session.totalSets} serie
                 </p>
               </div>
@@ -30,8 +30,9 @@ export const WorkoutHistoryPage = () => {
             </div>
           </Link>
         ))}
-        {sessions.length === 0 ? <div className="app-panel p-4 text-sm text-slate-500">Nessuna sessione completata.</div> : null}
+        {sessions.length === 0 ? <div className="app-panel p-4 text-sm text-ink/70">Nessuna sessione completata.</div> : null}
       </div>
     </div>
   );
 };
+

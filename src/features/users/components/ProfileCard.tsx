@@ -31,7 +31,7 @@ export const ProfileCard = ({
     <div className="flex items-center justify-between gap-3">
       <button type="button" onClick={() => void onSelect(profile.id)} className="flex-1 text-left">
         <p className="text-base font-semibold text-ink">{profile.displayName}</p>
-        <p className="text-sm text-slate-500">Profilo locale</p>
+        <p className="text-sm text-ink/70">Profilo locale</p>
       </button>
       <button
         type="button"
@@ -68,4 +68,5 @@ export const ProfileCard = ({
     ) : null}
   </div>
 );
+
 

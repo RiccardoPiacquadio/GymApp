@@ -139,7 +139,7 @@ export const ActiveWorkoutPage = () => {
     <div className="space-y-5">
       <SectionTitle
         title="Sessione attiva"
-        subtitle="Voice-first: puoi dettare set completi o usare comandi contestuali come uguale, ancora 8, no 7, cancella ultima."
+        subtitle="Voice-first: puoi dettare comandi naturali come squat 100 per 8, ancora 8 rep, no 7 colpi, ho fatto anche 4 serie, cancella ultima."
         action={
           <button className="secondary-button px-3 py-2 text-xs" type="button" onClick={() => void handleComplete()}>
             Chiudi
@@ -152,7 +152,7 @@ export const ActiveWorkoutPage = () => {
       <div className="dark-panel space-y-3 p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.18em] text-orange-300">Contesto vocale</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-chrome">Contesto vocale</p>
             <p className="mt-1 text-lg font-semibold text-white">{activeExerciseName ?? "Nessun esercizio attivo"}</p>
             <p className="mt-1 text-sm text-white/75">
               Ultimo set: {conversationState?.lastWeight ?? "-"} kg x {conversationState?.lastReps ?? "-"}
@@ -200,16 +200,18 @@ export const ActiveWorkoutPage = () => {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-base font-semibold">{bundle.exercise.canonicalName}</p>
-                    <p className="mt-1 text-sm text-slate-500">{bundle.sets.length} serie registrate</p>
+                    <p className="mt-1 text-sm text-ink/70">{bundle.sets.length} serie registrate</p>
                   </div>
                   <span className="pill">{volume} vol</span>
                 </div>
               </Link>
             );
           })}
-          {sessionBundles.length === 0 ? <div className="app-panel p-4 text-sm text-slate-500">Aggiungi il primo esercizio della sessione.</div> : null}
+          {sessionBundles.length === 0 ? <div className="app-panel p-4 text-sm text-ink/70">Aggiungi il primo esercizio della sessione.</div> : null}
         </div>
       </section>
     </div>
   );
 };
+
+

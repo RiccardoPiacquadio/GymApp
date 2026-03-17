@@ -40,7 +40,7 @@ export const ExerciseDetailPage = () => {
   );
 
   if (!exercise) {
-    return <div className="app-panel p-4 text-sm text-slate-500">Esercizio non trovato.</div>;
+    return <div className="app-panel p-4 text-sm text-ink/70">Esercizio non trovato.</div>;
   }
 
   return (
@@ -60,25 +60,26 @@ export const ExerciseDetailPage = () => {
       {frequencySeries.length > 0 ? <FrequencyChart data={frequencySeries} /> : null}
 
       <div className="app-panel p-4">
-        <p className="mb-3 text-sm font-semibold text-slate-800">Storico sessioni</p>
+        <p className="mb-3 text-sm font-semibold text-ink">Storico sessioni</p>
         <div className="space-y-3">
           {history.map((item) => (
             <div key={item.sessionId} className="rounded-2xl bg-slate-50 p-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-medium">{formatDate(item.sessionDate)}</p>
-                  <p className="mt-1 text-sm text-slate-500">{item.totalSets} serie • {item.totalReps} reps</p>
+                  <p className="mt-1 text-sm text-ink/70">{item.totalSets} serie • {item.totalReps} reps</p>
                 </div>
                 <div className="text-right text-sm">
                   <p className="font-semibold">{item.volume} vol</p>
-                  <p className="text-slate-500">max {item.topWeight} kg</p>
+                  <p className="text-ink/70">max {item.topWeight} kg</p>
                 </div>
               </div>
             </div>
           ))}
-          {history.length === 0 ? <p className="text-sm text-slate-500">Nessun dato disponibile.</p> : null}
+          {history.length === 0 ? <p className="text-sm text-ink/70">Nessun dato disponibile.</p> : null}
         </div>
       </div>
     </div>
   );
 };
+

@@ -16,7 +16,7 @@ export const WorkoutDetailPage = () => {
   );
 
   if (!session) {
-    return <div className="app-panel p-4 text-sm text-slate-500">Sessione non trovata.</div>;
+    return <div className="app-panel p-4 text-sm text-ink/70">Sessione non trovata.</div>;
   }
 
   return (
@@ -37,7 +37,7 @@ export const WorkoutDetailPage = () => {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-base font-semibold">{bundle.exercise.canonicalName}</p>
-                <p className="mt-1 text-sm text-slate-500">{bundle.sets.length} serie</p>
+                <p className="mt-1 text-sm text-ink/70">{bundle.sets.length} serie</p>
               </div>
               <span className="pill">max {Math.max(...bundle.sets.map((entry) => entry.weight), 0)} kg</span>
             </div>
@@ -47,3 +47,4 @@ export const WorkoutDetailPage = () => {
     </div>
   );
 };
+

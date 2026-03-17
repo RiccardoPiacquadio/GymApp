@@ -35,7 +35,7 @@ export const CreateProfileForm = ({
     <div className="space-y-3">
       <form className="app-panel space-y-3 p-4" onSubmit={handleSubmit}>
         <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700" htmlFor="displayName">
+          <label className="mb-2 block text-sm font-medium text-ink/80" htmlFor="displayName">
             Nuovo profilo
           </label>
           <input
@@ -52,7 +52,7 @@ export const CreateProfileForm = ({
       </form>
 
       {duplicateProfileName ? (
-        <div className="app-panel space-y-3 border border-accent/30 bg-accent/5 p-4 text-sm text-slate-700">
+        <div className="app-panel space-y-3 border border-accent/30 bg-accent/5 p-4 text-sm text-ink/80">
           <p className="font-medium">Questo nome è già stato utilizzato: {duplicateProfileName}</p>
           <div className="grid grid-cols-2 gap-3">
             <button className="primary-button" type="button" onClick={() => void onUseExisting?.()}>
@@ -67,3 +67,4 @@ export const CreateProfileForm = ({
     </div>
   );
 };
+

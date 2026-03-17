@@ -4,6 +4,7 @@ export type ParsedVoiceSet = {
   canonicalExerciseId?: string;
   matchedAlias?: string;
   setNumber?: number;
+  setCount?: number;
   weight?: number;
   reps?: number;
   confidence: number;

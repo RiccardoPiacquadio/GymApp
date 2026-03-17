@@ -22,12 +22,13 @@ export const VoiceParsePreview = ({
     </div>
     <div className="space-y-1 text-sm text-white/90">
       <p>Testo: {parsed.rawText}</p>
-      <p>Esercizio: {exerciseName ?? "Non riconosciuto"}</p>
-      <p>Serie: {parsed.setNumber ?? "-"}</p>
+      <p>Esercizio: {exerciseName ?? "Contesto attivo o non riconosciuto"}</p>
+      <p>Numero serie dichiarate: {parsed.setCount ?? "-"}</p>
+      <p>Indice serie: {parsed.setNumber ?? "-"}</p>
       <p>
         Set: {parsed.weight ?? "-"} kg x {parsed.reps ?? "-"}
       </p>
-      {parsed.feedbackMessage ? <p className="font-medium text-orange-300">{parsed.feedbackMessage}</p> : null}
+      {parsed.feedbackMessage ? <p className="font-medium text-chrome">{parsed.feedbackMessage}</p> : null}
       {candidateNames && candidateNames.length > 0 ? (
         <p className="text-white">Possibili esercizi: {candidateNames.join(", ")}</p>
       ) : null}
@@ -42,3 +43,4 @@ export const VoiceParsePreview = ({
     </div>
   </div>
 );
+

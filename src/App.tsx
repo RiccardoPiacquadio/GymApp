@@ -17,7 +17,7 @@ const ProtectedApp = () => {
   const { activeProfileId, isReady } = useAppBoot();
 
   if (!isReady) {
-    return <div className="flex min-h-screen items-center justify-center text-slate-500">Caricamento...</div>;
+    return <div className="flex min-h-screen items-center justify-center text-ink/70">Caricamento...</div>;
   }
 
   if (!activeProfileId && location.pathname !== "/profiles") {
@@ -49,3 +49,5 @@ export default function App() {
     </AppProviders>
   );
 }
+
+
