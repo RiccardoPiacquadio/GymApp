@@ -297,6 +297,97 @@ const extractExerciseText = (text: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
+// ---------------------------------------------------------------------------
+// Multi-set parsing — "squat 70 per 8, 50 per 7, 90 per 5"
+// ---------------------------------------------------------------------------
+
+export type MultiSetEntry = { weight: number; reps: number };
+
+const extractMultiSetEntries = (text: string): MultiSetEntry[] | null => {
+  // 1) Split by explicit separators: comma, "poi", "e poi", "dopo", "e"
+  const segments = text
+    .split(/\s*(?:,|\.|\bpoi\b|\be poi\b|\bdopo\b)\s*/i)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (segments.length >= 2) {
+    const entries: MultiSetEntry[] = [];
+    let prevWeight: number | undefined;
+    let prevReps: number | undefined;
+
+    for (const seg of segments) {
+      const wr = extractWeightAndReps(seg);
+      if (wr?.weight !== undefined && wr?.reps !== undefined) {
+        entries.push({ weight: wr.weight, reps: wr.reps });
+        prevWeight = wr.weight;
+        prevReps = wr.reps;
+      } else if (wr?.weight !== undefined && prevReps !== undefined) {
+        entries.push({ weight: wr.weight, reps: prevReps });
+        prevWeight = wr.weight;
+      } else if (wr?.reps !== undefined && prevWeight !== undefined) {
+        entries.push({ weight: prevWeight, reps: wr.reps });
+        prevReps = wr.reps;
+      } else {
+        // Bare number — infer weight or reps from context
+        const bare = seg.match(/^(\d+)$/);
+        if (bare) {
+          const val = Number(bare[1]);
+          if (prevWeight !== undefined && val <= 30) {
+            entries.push({ weight: prevWeight, reps: val });
+            prevReps = val;
+          } else if (prevReps !== undefined) {
+            entries.push({ weight: val, reps: prevReps });
+            prevWeight = val;
+          }
+        }
+      }
+    }
+
+    if (entries.length >= 2) return entries;
+  }
+
+  // 2) Fallback: find all weight×reps patterns in full text
+  const allMatches = [...text.matchAll(/(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)/gi)];
+  if (allMatches.length >= 2) {
+    return allMatches.map((m) => ({
+      weight: Number(m[1].replace(",", ".")),
+      reps: Number(m[2])
+    }));
+  }
+
+  return null;
+};
+
+/**
+ * Parses a multi-set voice command.
+ * Returns exercise + array of weight/reps entries, or null if not a multi-set.
+ */
+export const parseMultiSetCommand = async (
+  rawText: string
+): Promise<{
+  entries: MultiSetEntry[];
+  canonicalExerciseId?: string;
+} | null> => {
+  const normalized = normalizeExerciseInput(rawText);
+  const speechNorm = normalizeSpeechArtifacts(normalized);
+  const withDigits = replaceWordNumbers(speechNorm);
+
+  const entries = extractMultiSetEntries(withDigits);
+  if (!entries || entries.length < 2) return null;
+
+  const exerciseText = extractExerciseText(withDigits);
+  const aliasRes = await resolveExerciseAlias(exerciseText);
+
+  return {
+    entries,
+    canonicalExerciseId: aliasRes.canonicalExerciseId
+  };
+};
+
+// ---------------------------------------------------------------------------
+// Single-set parsing (existing)
+// ---------------------------------------------------------------------------
+
 export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> => {
   const normalizedText = normalizeExerciseInput(rawText);
   const normalizedSpeechText = normalizeSpeechArtifacts(normalizedText);

@@ -33,6 +33,10 @@ export type WorkoutSession = {
   startedAt: string;
   endedAt?: string;
   status: WorkoutSessionStatus;
+  /** ISO timestamp when the current pause started (undefined when not paused). */
+  pausedAt?: string;
+  /** Accumulated pause duration in milliseconds across all pauses. */
+  totalPausedMs?: number;
   createdAt: string;
   updatedAt: string;
 };

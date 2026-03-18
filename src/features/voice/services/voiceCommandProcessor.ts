@@ -12,7 +12,7 @@ import {
   startWorkoutSession,
   updateSetEntry
 } from "../../sessions/services/sessionRepository";
-import { parseVoiceSet } from "./voiceParser";
+import { parseMultiSetCommand, parseVoiceSet } from "./voiceParser";
 import {
   clearVoiceConversationState,
   getVoiceConversationState,
@@ -487,6 +487,60 @@ export const processVoiceCommand = async (
       conversationState: updated,
       sessionAction: "resume_session"
     };
+  }
+
+  // ---- Multi-set parse (e.g. "squat 70 per 8, 50 per 7, 90 per 5") ----
+  const multiSet = await parseMultiSetCommand(rawText);
+  if (multiSet && multiSet.entries.length >= 2) {
+    let exerciseId = multiSet.canonicalExerciseId ?? currentConversationState.activeExerciseId;
+    if (!exerciseId) {
+      return {
+        success: false,
+        feedback: "Ho riconosciuto più serie ma manca l'esercizio. Dimmi prima quale esercizio.",
+        conversationState: currentConversationState
+      };
+    }
+
+    const exercise = await getExerciseById(exerciseId);
+    if (!exercise) {
+      return {
+        success: false,
+        feedback: "Esercizio non trovato.",
+        conversationState: currentConversationState
+      };
+    }
+
+    const activeSession = await ensureActiveSession(userId);
+    const sessionExercise = await addExerciseToSession(activeSession.id, exercise);
+
+    let lastSet: Awaited<ReturnType<typeof addSetEntry>> | undefined;
+    for (const entry of multiSet.entries) {
+      lastSet = await addSetEntry({
+        sessionExerciseId: sessionExercise.id,
+        weight: entry.weight,
+        reps: entry.reps,
+        inputMode: "voice"
+      });
+    }
+
+    const detail = multiSet.entries
+      .map((e) => `${e.weight}×${e.reps}`)
+      .join(", ");
+    const feedback = `${exercise.canonicalName}, ${multiSet.entries.length} serie: ${detail}. Salvate.`;
+
+    const updated = buildUpdatedConversationState({
+      sessionId: activeSession.id,
+      sessionExerciseId: sessionExercise.id,
+      exerciseId: exercise.id,
+      setEntryId: lastSet?.id,
+      lastWeight: lastSet?.weight,
+      lastReps: lastSet?.reps,
+      lastSetNumber: lastSet?.setNumber,
+      lastFeedback: feedback
+    });
+    await setVoiceConversationState(updated);
+
+    return { success: true, feedback, conversationState: updated };
   }
 
   // ---- Full parse ----

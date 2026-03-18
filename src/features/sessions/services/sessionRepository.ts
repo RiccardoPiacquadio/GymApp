@@ -40,11 +40,29 @@ export const startWorkoutSession = async (userId: string) => {
 };
 
 export const pauseWorkoutSession = async (sessionId: string) => {
-  await db.workoutSessions.update(sessionId, { status: "paused", updatedAt: toIsoNow() });
+  const now = toIsoNow();
+  await db.workoutSessions.update(sessionId, {
+    status: "paused",
+    pausedAt: now,
+    updatedAt: now
+  });
 };
 
 export const resumeWorkoutSession = async (sessionId: string) => {
-  await db.workoutSessions.update(sessionId, { status: "active", updatedAt: toIsoNow() });
+  const session = await db.workoutSessions.get(sessionId);
+  if (!session) return;
+
+  const now = toIsoNow();
+  const additionalPause = session.pausedAt
+    ? Date.now() - new Date(session.pausedAt).getTime()
+    : 0;
+
+  await db.workoutSessions.update(sessionId, {
+    status: "active",
+    pausedAt: undefined,
+    totalPausedMs: (session.totalPausedMs ?? 0) + additionalPause,
+    updatedAt: now
+  });
 };
 
 export const completeWorkoutSession = async (sessionId: string) => {

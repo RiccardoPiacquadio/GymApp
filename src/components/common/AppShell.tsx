@@ -1,12 +1,13 @@
-import type { PropsWithChildren } from "react";
+import { useMemo, type PropsWithChildren } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLiveQuery } from "dexie-react-hooks";
 import { getActiveSessionForUser } from "../../features/sessions/services/sessionRepository";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
+import { useSwipeNavigation } from "../../hooks/useSwipeNavigation";
 
 const navItems = [
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/workout/start", label: "Allenamento" },
+  { to: "/workout/start", label: "Allenamento", activeAlt: "/workout/active" },
   { to: "/history", label: "Storico" },
   { to: "/profiles", label: "Profili" }
 ];
@@ -19,6 +20,25 @@ export const AppShell = ({ children }: PropsWithChildren) => {
     [activeProfileId]
   );
 
+  // Build swipe pages dynamically — workout path depends on session state
+  const swipePages = useMemo(
+    () => [
+      "/dashboard",
+      activeSession ? "/workout/active" : "/workout/start",
+      "/history",
+      "/profiles"
+    ],
+    [activeSession]
+  );
+
+  const swipeDir = useSwipeNavigation(swipePages);
+
+  const slideClass = swipeDir === "left"
+    ? "animate-slide-in-left"
+    : swipeDir === "right"
+      ? "animate-slide-in-right"
+      : "";
+
   return (
     <div className="min-h-screen bg-app-glow">
       <div className="mx-auto flex min-h-screen max-w-md flex-col px-4 pb-28 pt-5">
@@ -29,17 +49,21 @@ export const AppShell = ({ children }: PropsWithChildren) => {
           </div>
           {activeSession ? <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">Sessione attiva</span> : null}
         </header>
-        <main className="flex-1">{children}</main>
+        <main className={`flex-1 ${slideClass}`}>{children}</main>
       </div>
       {location.pathname !== "/profiles" ? (
         <nav className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-[#050505]/96 px-4 py-3 backdrop-blur">
           <div className="mx-auto grid max-w-md grid-cols-4 gap-2">
             {navItems.map((item) => {
-              const isActive = location.pathname.startsWith(item.to);
+              const isActive =
+                location.pathname.startsWith(item.to) ||
+                ("activeAlt" in item && item.activeAlt && location.pathname.startsWith(item.activeAlt));
+              const linkTo =
+                "activeAlt" in item && item.activeAlt && activeSession ? item.activeAlt : item.to;
               return (
                 <Link
                   key={item.to}
-                  to={item.to}
+                  to={linkTo}
                   className={`rounded-2xl px-3 py-3 text-center text-xs font-semibold transition ${
                     isActive ? "bg-accent text-white" : "bg-white text-ink"
                   }`}

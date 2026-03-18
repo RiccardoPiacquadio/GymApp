@@ -8,9 +8,11 @@ import {
   getActiveSessionForUser,
   getSessionExercises,
   getSessionSummary,
+  pauseWorkoutSession,
   resumeWorkoutSession
 } from "../../features/sessions/services/sessionRepository";
 import { SessionSummaryCard } from "../../features/sessions/components/SessionSummaryCard";
+import { SessionTimer } from "../../features/sessions/components/SessionTimer";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 import { VoiceCaptureButton } from "../../features/voice/components/VoiceCaptureButton";
 import { VoiceParsePreview } from "../../features/voice/components/VoiceParsePreview";
@@ -183,6 +185,12 @@ export const ActiveWorkoutPage = () => {
     navigate("/history");
   };
 
+  const handlePause = async () => {
+    if (!activeSession) return;
+    await pauseWorkoutSession(activeSession.id);
+    setVoiceFeedback("Sessione in pausa.");
+  };
+
   const handleResume = async () => {
     if (!activeSession) return;
     await resumeWorkoutSession(activeSession.id);
@@ -275,26 +283,15 @@ export const ActiveWorkoutPage = () => {
       <SectionTitle
         title={isPaused ? "Sessione in pausa" : "Sessione attiva"}
         subtitle="Voice-first: puoi dettare comandi naturali come squat 100 per 8, ancora 8 rep, no 7 colpi, cancella ultima, adesso lat machine."
-        action={
-          <button className="secondary-button px-3 py-2 text-xs" type="button" onClick={() => void handleComplete()}>
-            Chiudi
-          </button>
-        }
       />
 
-      {/* Paused banner */}
-      {isPaused ? (
-        <div className="dark-panel flex items-center justify-between gap-4 p-4">
-          <p className="text-sm font-semibold text-white">Sessione in pausa</p>
-          <button
-            className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white"
-            type="button"
-            onClick={() => void handleResume()}
-          >
-            Riprendi
-          </button>
-        </div>
-      ) : null}
+      {/* Session timer with pause/resume/close controls */}
+      <SessionTimer
+        session={activeSession}
+        onPause={() => void handlePause()}
+        onResume={() => void handleResume()}
+        onClose={() => void handleComplete()}
+      />
 
       <SessionSummaryCard {...sessionSummary} />
 

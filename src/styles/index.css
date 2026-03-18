@@ -70,3 +70,34 @@ body {
     @apply rounded-[24px] border border-[#2f2f2f] bg-[linear-gradient(145deg,#161616_0%,#050505_100%)] text-white shadow-panel;
   }
 }
+
+/* Swipe navigation slide animations */
+.animate-slide-in-left {
+  animation: slideInLeft 0.28s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.28s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(25%);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(-25%);
+    opacity: 0.4;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
