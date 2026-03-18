@@ -61,7 +61,7 @@ export const ProfileSelectPage = () => {
     const result = await updateProfileDisplayName(profileId, editingName);
 
     if (result.status === "duplicate") {
-      setProfileAdminMessage(`Nome già usato dal profilo ${result.profile.displayName}.`);
+      setProfileAdminMessage(`Nome giÃ  usato dal profilo ${result.profile.displayName}.`);
       return;
     }
 
@@ -100,7 +100,7 @@ export const ProfileSelectPage = () => {
         />
         {canManageProfiles ? (
           <div className="app-panel mb-3 p-4 text-sm text-ink/80">
-            Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione è bloccata solo per il profilo attivo; sugli altri profili elimina anche tutto lo storico collegato.
+            Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione ï¿½ bloccata solo per il profilo attivo; sugli altri profili elimina anche tutto lo storico collegato.
           </div>
         ) : null}
         {profileAdminMessage ? <div className="app-panel mb-3 p-4 text-sm text-ink/80">{profileAdminMessage}</div> : null}

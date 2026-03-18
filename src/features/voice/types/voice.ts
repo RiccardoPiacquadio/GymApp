@@ -21,6 +21,11 @@ export type VoiceIntentType =
   | "repeat_last_set"
   | "repeat_with_reps"
   | "correct_last_set_reps"
+  | "correct_last_set_weight"
+  | "switch_exercise"
+  | "close_session_pending"
+  | "pause_session"
+  | "resume_session"
   | "delete_last_set"
   | "unknown";
 
@@ -35,6 +40,8 @@ export type VoiceConversationState = {
   lastFeedback?: string;
 };
 
+export type VoiceSessionAction = "close_session_pending" | "pause_session" | "resume_session";
+
 export type VoiceCommandResult = {
   success: boolean;
   feedback: string;
@@ -42,4 +49,5 @@ export type VoiceCommandResult = {
   parsedVoiceSet?: ParsedVoiceSet;
   candidateNames?: string[];
   conversationState?: VoiceConversationState;
+  sessionAction?: VoiceSessionAction;
 };

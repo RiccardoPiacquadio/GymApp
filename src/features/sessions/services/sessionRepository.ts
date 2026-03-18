@@ -13,7 +13,11 @@ import type {
 } from "../../../types";
 
 export const getActiveSessionForUser = (userId: string) =>
-  db.workoutSessions.where({ userId, status: "active" }).first();
+  db.workoutSessions
+    .where("userId")
+    .equals(userId)
+    .filter((s) => s.status === "active" || s.status === "paused")
+    .first();
 
 export const startWorkoutSession = async (userId: string) => {
   const existing = await getActiveSessionForUser(userId);
@@ -33,6 +37,14 @@ export const startWorkoutSession = async (userId: string) => {
 
   await db.workoutSessions.add(session);
   return session;
+};
+
+export const pauseWorkoutSession = async (sessionId: string) => {
+  await db.workoutSessions.update(sessionId, { status: "paused", updatedAt: toIsoNow() });
+};
+
+export const resumeWorkoutSession = async (sessionId: string) => {
+  await db.workoutSessions.update(sessionId, { status: "active", updatedAt: toIsoNow() });
 };
 
 export const completeWorkoutSession = async (sessionId: string) => {
@@ -76,6 +88,9 @@ export const addExerciseToSession = async (
 
 export const getSessionExerciseById = (sessionExerciseId: string) =>
   db.sessionExercises.get(sessionExerciseId);
+
+export const getSessionExerciseByExercise = (sessionId: string, exerciseId: string) =>
+  db.sessionExercises.where({ sessionId, canonicalExerciseId: exerciseId }).first();
 
 export const getSessionExercises = async (sessionId: string): Promise<SessionExerciseBundle[]> => {
   const sessionExercises = await db.sessionExercises

@@ -6,6 +6,9 @@ import {
   getActiveSessionForUser,
   getLastSessionExercise,
   getLastSetForSessionExercise,
+  getSessionExerciseByExercise,
+  pauseWorkoutSession,
+  resumeWorkoutSession,
   startWorkoutSession,
   updateSetEntry
 } from "../../sessions/services/sessionRepository";
@@ -15,6 +18,7 @@ import {
   getVoiceConversationState,
   setVoiceConversationState
 } from "./voiceConversationStore";
+import type { ExerciseCanonical } from "../../../types";
 import type { ParsedVoiceSet, VoiceCommandResult, VoiceConversationState } from "../types/voice";
 
 const normalizeVoiceText = (value: string) =>
@@ -26,36 +30,105 @@ const normalizeVoiceText = (value: string) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const getQuickIntent = (normalizedText: string) => {
-  const sameSetPattern = /^(?:uguale|stessa|stesso|ancora|di nuovo)$/i;
-  if (sameSetPattern.test(normalizedText)) {
-    return { type: "repeat_last_set" as const };
+// ---------------------------------------------------------------------------
+// Quick intent detection — runs on normalizedText (apostrophes already → spaces)
+// ---------------------------------------------------------------------------
+
+type QuickIntent =
+  | { type: "repeat_last_set" }
+  | { type: "repeat_with_reps"; reps: number }
+  | { type: "correct_last_set_reps"; reps: number }
+  | { type: "correct_last_set_weight"; weight: number }
+  | { type: "switch_exercise"; exerciseQuery: string }
+  | { type: "close_session_pending" }
+  | { type: "pause_session" }
+  | { type: "resume_session" }
+  | { type: "delete_last_set" };
+
+const getQuickIntent = (normalizedText: string): QuickIntent | null => {
+  // Same set (repeat identical)
+  if (/^(?:uguale|stessa|stesso|ancora|di nuovo)$/.test(normalizedText)) {
+    return { type: "repeat_last_set" };
   }
 
-  const repeatWithReps = normalizedText.match(/^(?:ancora\s+|di nuovo\s+|fatte\s+|metti\s+)?(\d+)(?:\s+(?:rep|reps|rip|ripetizioni|colpo|colpi))?$/i);
+  // Repeat with different reps (bare number or "ancora N")
+  const repeatWithReps = normalizedText.match(
+    /^(?:ancora\s+|di nuovo\s+|fatte\s+|metti\s+)?(\d+)(?:\s+(?:rep|reps|rip|ripetizioni|colpo|colpi))?$/
+  );
   if (repeatWithReps) {
-    return {
-      type: "repeat_with_reps" as const,
-      reps: Number(repeatWithReps[1])
-    };
+    return { type: "repeat_with_reps", reps: Number(repeatWithReps[1]) };
   }
 
-  const correctLastReps = normalizedText.match(/^(?:no|erano|sono|correggi(?:\s+l'?ultima)?\s+a)\s*(\d+)(?:\s+(?:rep|reps|rip|ripetizioni|colpo|colpi))?$/i);
-  if (correctLastReps) {
-    return {
-      type: "correct_last_set_reps" as const,
-      reps: Number(correctLastReps[1])
-    };
+  // Correction — disambiguate weight vs reps:
+  //   explicit "kg/chilo" suffix or value > 30 → weight correction
+  //   explicit "rep/rip" suffix or value ≤ 30 → reps correction
+  // Note: after normalizeVoiceText, "l'ultima" → "l ultima"
+  const correctionMatch = normalizedText.match(
+    /^(?:no|erano|sono|correggi(?:\s+(?:l\s+)?ultima)?\s+a)\s*(\d+(?:[.,]\d+)?)(?:\s+(kg|chilogrammi|chili|kili|rep|reps|rip|ripetizioni|colpo|colpi))?$/
+  );
+  if (correctionMatch) {
+    const value = Number(correctionMatch[1].replace(",", "."));
+    const unit = (correctionMatch[2] ?? "").toLowerCase();
+    const isWeightUnit = /^(?:kg|chilo)/.test(unit);
+    const isRepUnit = /^(?:rep|rip|colpo|colpi)/.test(unit);
+    if (isWeightUnit || (!isRepUnit && value > 30)) {
+      return { type: "correct_last_set_weight", weight: value };
+    }
+    return { type: "correct_last_set_reps", reps: value };
   }
 
-  if (/^(?:cancella l'?ultima(?: serie)?|rimuovi l'?ultima(?: serie)?|annulla)$/i.test(normalizedText)) {
-    return { type: "delete_last_set" as const };
+  // Delete last set
+  // After normalization: "l'ultima" → "l ultima"
+  if (
+    /^(?:cancella\s+(?:l\s+)?ultima(?:\s+serie)?|rimuovi\s+(?:l\s+)?ultima(?:\s+serie)?|annulla)$/.test(
+      normalizedText
+    )
+  ) {
+    return { type: "delete_last_set" };
+  }
+
+  // Exercise switch with explicit prefix keyword
+  const switchMatch = normalizedText.match(
+    /^(?:adesso(?:\s+faccio)?|ora(?:\s+faccio)?|faccio|passa\s+a|passiamo\s+a|cambia(?:\s+a)?|cambio(?:\s+a)?|passo\s+a)\s+(.+)$/
+  );
+  if (switchMatch) {
+    return { type: "switch_exercise", exerciseQuery: switchMatch[1].trim() };
+  }
+
+  // Session: close
+  if (
+    /^(?:chiudi(?:\s+allenamento)?|termina(?:\s+allenamento)?|fine(?:\s+allenamento)?|finisco|ho\s+finito|chiudo)$/.test(
+      normalizedText
+    )
+  ) {
+    return { type: "close_session_pending" };
+  }
+
+  // Session: pause
+  if (
+    /^(?:pausa(?:\s+allenamento)?|metti\s+in\s+pausa|mi\s+fermo)$/.test(normalizedText)
+  ) {
+    return { type: "pause_session" };
+  }
+
+  // Session: resume
+  // "l'allenamento" → "l allenamento" after normalization
+  if (
+    /^(?:riprendi(?:\s+(?:l\s+)?allenamento)?|riprendo(?:\s+(?:l\s+)?allenamento)?|fine\s+pausa|sono\s+tornato|sono\s+di\s+nuovo\s+qui)$/.test(
+      normalizedText
+    )
+  ) {
+    return { type: "resume_session" };
   }
 
   return null;
 };
 
-const buildUpdatedConversationState = async (params: {
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const buildUpdatedConversationState = (params: {
   sessionId: string;
   sessionExerciseId: string;
   exerciseId: string;
@@ -64,7 +137,7 @@ const buildUpdatedConversationState = async (params: {
   lastReps?: number;
   lastSetNumber?: number;
   lastFeedback: string;
-}): Promise<VoiceConversationState> => ({
+}): VoiceConversationState => ({
   activeSessionId: params.sessionId,
   activeExerciseId: params.exerciseId,
   activeSessionExerciseId: params.sessionExerciseId,
@@ -103,7 +176,7 @@ const saveSetBatch = async (params: {
       ? `${params.exerciseName}, ${params.count} serie da ${params.weight} kg x ${params.reps}, salvate.`
       : `${params.exerciseName}, ${params.weight} kg x ${params.reps}, salvato.`;
 
-  const updatedConversationState = await buildUpdatedConversationState({
+  const updatedConversationState = buildUpdatedConversationState({
     sessionId: params.sessionId,
     sessionExerciseId: params.sessionExerciseId,
     exerciseId: params.exerciseId,
@@ -115,11 +188,54 @@ const saveSetBatch = async (params: {
   });
   await setVoiceConversationState(updatedConversationState);
 
-  return {
-    feedback,
-    conversationState: updatedConversationState
-  };
+  return { feedback, conversationState: updatedConversationState };
 };
+
+/**
+ * Updates voice context to a different exercise (lazy: does NOT create sessionExercise).
+ * If the exercise already has a sessionExercise in the current session, loads last set data.
+ */
+const applySwitchExercise = async (
+  exercise: ExerciseCanonical,
+  currentState: VoiceConversationState
+): Promise<VoiceCommandResult> => {
+  let activeSessionExerciseId: string | undefined;
+  let lastWeight: number | undefined;
+  let lastReps: number | undefined;
+  let lastSetNumber: number | undefined;
+  let lastSetEntryId: string | undefined;
+
+  if (currentState.activeSessionId) {
+    const existing = await getSessionExerciseByExercise(currentState.activeSessionId, exercise.id);
+    if (existing) {
+      activeSessionExerciseId = existing.id;
+      const lastSet = await getLastSetForSessionExercise(existing.id);
+      lastWeight = lastSet?.weight;
+      lastReps = lastSet?.reps;
+      lastSetNumber = lastSet?.setNumber;
+      lastSetEntryId = lastSet?.id;
+    }
+  }
+
+  const feedback = `Esercizio attivo: ${exercise.canonicalName}.`;
+  const updated: VoiceConversationState = {
+    ...currentState,
+    activeExerciseId: exercise.id,
+    activeSessionExerciseId,
+    lastSetEntryId,
+    lastWeight,
+    lastReps,
+    lastSetNumber,
+    lastFeedback: feedback
+  };
+  await setVoiceConversationState(updated);
+
+  return { success: true, feedback, conversationState: updated };
+};
+
+// ---------------------------------------------------------------------------
+// Main command processor
+// ---------------------------------------------------------------------------
 
 export const processVoiceCommand = async (
   rawText: string,
@@ -129,6 +245,7 @@ export const processVoiceCommand = async (
   const normalizedText = normalizeVoiceText(rawText);
   const quickIntent = getQuickIntent(normalizedText);
 
+  // ---- repeat_last_set ----
   if (quickIntent?.type === "repeat_last_set") {
     const targetSessionExerciseId = currentConversationState.activeSessionExerciseId;
     if (!targetSessionExerciseId || !currentConversationState.lastWeight || !currentConversationState.lastReps) {
@@ -166,6 +283,7 @@ export const processVoiceCommand = async (
     };
   }
 
+  // ---- repeat_with_reps ----
   if (quickIntent?.type === "repeat_with_reps") {
     const targetSessionExerciseId = currentConversationState.activeSessionExerciseId;
     if (!targetSessionExerciseId || !currentConversationState.lastWeight || !currentConversationState.activeExerciseId) {
@@ -200,6 +318,7 @@ export const processVoiceCommand = async (
     };
   }
 
+  // ---- correct_last_set_reps ----
   if (quickIntent?.type === "correct_last_set_reps") {
     if (!currentConversationState.lastSetEntryId || !currentConversationState.lastWeight) {
       return {
@@ -214,20 +333,42 @@ export const processVoiceCommand = async (
       reps: quickIntent.reps
     });
 
-    const updatedConversationState: VoiceConversationState = {
+    const updated: VoiceConversationState = {
       ...currentConversationState,
       lastReps: quickIntent.reps,
       lastFeedback: `Ultima serie corretta a ${currentConversationState.lastWeight} kg x ${quickIntent.reps}.`
     };
-    await setVoiceConversationState(updatedConversationState);
+    await setVoiceConversationState(updated);
 
-    return {
-      success: true,
-      feedback: updatedConversationState.lastFeedback!,
-      conversationState: updatedConversationState
-    };
+    return { success: true, feedback: updated.lastFeedback!, conversationState: updated };
   }
 
+  // ---- correct_last_set_weight ----
+  if (quickIntent?.type === "correct_last_set_weight") {
+    if (!currentConversationState.lastSetEntryId || !currentConversationState.lastReps) {
+      return {
+        success: false,
+        feedback: "Non ho un ultimo set da correggere.",
+        conversationState: currentConversationState
+      };
+    }
+
+    await updateSetEntry(currentConversationState.lastSetEntryId, {
+      weight: quickIntent.weight,
+      reps: currentConversationState.lastReps
+    });
+
+    const updated: VoiceConversationState = {
+      ...currentConversationState,
+      lastWeight: quickIntent.weight,
+      lastFeedback: `Ultima serie corretta a ${quickIntent.weight} kg x ${currentConversationState.lastReps}.`
+    };
+    await setVoiceConversationState(updated);
+
+    return { success: true, feedback: updated.lastFeedback!, conversationState: updated };
+  }
+
+  // ---- delete_last_set ----
   if (quickIntent?.type === "delete_last_set") {
     if (!currentConversationState.activeSessionExerciseId) {
       return {
@@ -247,7 +388,7 @@ export const processVoiceCommand = async (
     }
 
     const newLastSet = await getLastSetForSessionExercise(currentConversationState.activeSessionExerciseId);
-    const updatedConversationState: VoiceConversationState = {
+    const updated: VoiceConversationState = {
       ...currentConversationState,
       lastSetEntryId: newLastSet?.id,
       lastWeight: newLastSet?.weight,
@@ -255,22 +396,121 @@ export const processVoiceCommand = async (
       lastSetNumber: newLastSet?.setNumber,
       lastFeedback: "Ultima serie eliminata."
     };
-    await setVoiceConversationState(updatedConversationState);
+    await setVoiceConversationState(updated);
 
+    return { success: true, feedback: updated.lastFeedback!, conversationState: updated };
+  }
+
+  // ---- switch_exercise (prefixed command) ----
+  if (quickIntent?.type === "switch_exercise") {
+    const parsed = await parseVoiceSet(quickIntent.exerciseQuery);
+    if (!parsed.canonicalExerciseId) {
+      return {
+        success: false,
+        feedback: "Esercizio non riconosciuto.",
+        conversationState: currentConversationState
+      };
+    }
+    if (parsed.candidateExerciseIds && parsed.candidateExerciseIds.length > 1 && !parsed.canonicalExerciseId) {
+      return {
+        success: false,
+        feedback: "Nome ambiguo: specifica meglio l'esercizio.",
+        requiresConfirmation: true,
+        conversationState: currentConversationState
+      };
+    }
+    const exercise = await getExerciseById(parsed.canonicalExerciseId);
+    if (!exercise) {
+      return { success: false, feedback: "Esercizio non trovato.", conversationState: currentConversationState };
+    }
+    return applySwitchExercise(exercise, currentConversationState);
+  }
+
+  // ---- close_session_pending ----
+  if (quickIntent?.type === "close_session_pending") {
+    const updated: VoiceConversationState = {
+      ...currentConversationState,
+      lastFeedback: "Stai per chiudere la sessione. Confermi?"
+    };
+    await setVoiceConversationState(updated);
     return {
-      success: true,
-      feedback: updatedConversationState.lastFeedback!,
-      conversationState: updatedConversationState
+      success: false,
+      feedback: "Stai per chiudere la sessione. Confermi?",
+      conversationState: updated,
+      sessionAction: "close_session_pending"
     };
   }
 
+  // ---- pause_session ----
+  if (quickIntent?.type === "pause_session") {
+    const activeSession = await getActiveSessionForUser(userId);
+    if (!activeSession || activeSession.status !== "active") {
+      return {
+        success: false,
+        feedback: "Nessuna sessione attiva da mettere in pausa.",
+        conversationState: currentConversationState
+      };
+    }
+    await pauseWorkoutSession(activeSession.id);
+    const updated: VoiceConversationState = {
+      ...currentConversationState,
+      lastFeedback: "Sessione in pausa."
+    };
+    await setVoiceConversationState(updated);
+    return {
+      success: true,
+      feedback: "Sessione in pausa.",
+      conversationState: updated,
+      sessionAction: "pause_session"
+    };
+  }
+
+  // ---- resume_session ----
+  if (quickIntent?.type === "resume_session") {
+    const session = await getActiveSessionForUser(userId);
+    if (!session || session.status !== "paused") {
+      return {
+        success: false,
+        feedback: "Nessuna sessione in pausa da riprendere.",
+        conversationState: currentConversationState
+      };
+    }
+    await resumeWorkoutSession(session.id);
+    const updated: VoiceConversationState = {
+      ...currentConversationState,
+      lastFeedback: "Sessione ripresa."
+    };
+    await setVoiceConversationState(updated);
+    return {
+      success: true,
+      feedback: "Sessione ripresa.",
+      conversationState: updated,
+      sessionAction: "resume_session"
+    };
+  }
+
+  // ---- Full parse ----
   const parsedVoiceSet: ParsedVoiceSet = await parseVoiceSet(rawText);
   const candidateNames = parsedVoiceSet.candidateExerciseIds
-    ? (await Promise.all(parsedVoiceSet.candidateExerciseIds.map((exerciseId) => getExerciseById(exerciseId))))
+    ? (await Promise.all(parsedVoiceSet.candidateExerciseIds.map((id) => getExerciseById(id))))
         .filter(Boolean)
-        .map((exercise) => exercise!.canonicalName)
+        .map((ex) => ex!.canonicalName)
     : [];
 
+  // Exercise-only (no numbers, no set count) → switch active exercise
+  if (
+    parsedVoiceSet.canonicalExerciseId &&
+    !parsedVoiceSet.weight &&
+    !parsedVoiceSet.reps &&
+    !parsedVoiceSet.setCount
+  ) {
+    const exercise = await getExerciseById(parsedVoiceSet.canonicalExerciseId);
+    if (exercise) {
+      return applySwitchExercise(exercise, currentConversationState);
+    }
+  }
+
+  // setCount only, no numbers → repeat last set N times
   if (
     parsedVoiceSet.setCount &&
     !parsedVoiceSet.weight &&
@@ -283,11 +523,7 @@ export const processVoiceCommand = async (
     const activeSession = await ensureActiveSession(userId);
     const exercise = await getExerciseById(currentConversationState.activeExerciseId);
     if (!exercise) {
-      return {
-        success: false,
-        feedback: "Esercizio attivo non trovato.",
-        conversationState: currentConversationState
-      };
+      return { success: false, feedback: "Esercizio attivo non trovato.", conversationState: currentConversationState };
     }
 
     return {
@@ -304,6 +540,7 @@ export const processVoiceCommand = async (
     };
   }
 
+  // weight+reps without exercise → use active exercise context
   if (
     parsedVoiceSet.weight !== undefined &&
     parsedVoiceSet.reps !== undefined &&
@@ -314,11 +551,7 @@ export const processVoiceCommand = async (
     const activeSession = await ensureActiveSession(userId);
     const exercise = await getExerciseById(currentConversationState.activeExerciseId);
     if (!exercise) {
-      return {
-        success: false,
-        feedback: "Esercizio attivo non trovato.",
-        conversationState: currentConversationState
-      };
+      return { success: false, feedback: "Esercizio attivo non trovato.", conversationState: currentConversationState };
     }
 
     return {
@@ -335,6 +568,7 @@ export const processVoiceCommand = async (
     };
   }
 
+  // Incomplete/ambiguous parse → ask for confirmation
   if (!parsedVoiceSet.isValid || !parsedVoiceSet.canonicalExerciseId || parsedVoiceSet.weight === undefined || parsedVoiceSet.reps === undefined) {
     return {
       success: false,
@@ -346,32 +580,31 @@ export const processVoiceCommand = async (
     };
   }
 
+  // Full valid parse → log set
   const activeSession = await ensureActiveSession(userId);
   const exercise = await getExerciseById(parsedVoiceSet.canonicalExerciseId);
   if (!exercise) {
-    return {
-      success: false,
-      feedback: "Esercizio non trovato.",
-      conversationState: currentConversationState
-    };
+    return { success: false, feedback: "Esercizio non trovato.", conversationState: currentConversationState };
   }
 
   const sessionExercise = await addExerciseToSession(activeSession.id, exercise);
-  const batchResult = await saveSetBatch({
-    sessionId: activeSession.id,
-    sessionExerciseId: sessionExercise.id,
-    exerciseId: exercise.id,
-    exerciseName: exercise.canonicalName,
-    weight: parsedVoiceSet.weight,
-    reps: parsedVoiceSet.reps,
-    count: parsedVoiceSet.setCount ?? 1
-  });
-
   return {
     success: true,
-    ...batchResult
+    ...(await saveSetBatch({
+      sessionId: activeSession.id,
+      sessionExerciseId: sessionExercise.id,
+      exerciseId: exercise.id,
+      exerciseName: exercise.canonicalName,
+      weight: parsedVoiceSet.weight,
+      reps: parsedVoiceSet.reps,
+      count: parsedVoiceSet.setCount ?? 1
+    }))
   };
 };
+
+// ---------------------------------------------------------------------------
+// Hydration — rebuilds voice context from current session state
+// ---------------------------------------------------------------------------
 
 export const hydrateConversationStateForSession = async (sessionId: string) => {
   const lastSessionExercise = await getLastSessionExercise(sessionId);
@@ -394,4 +627,3 @@ export const hydrateConversationStateForSession = async (sessionId: string) => {
   await setVoiceConversationState(updatedConversationState);
   return updatedConversationState;
 };
-

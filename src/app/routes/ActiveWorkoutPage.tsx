@@ -7,21 +7,22 @@ import {
   completeWorkoutSession,
   getActiveSessionForUser,
   getSessionExercises,
-  getSessionSummary
+  getSessionSummary,
+  resumeWorkoutSession
 } from "../../features/sessions/services/sessionRepository";
 import { SessionSummaryCard } from "../../features/sessions/components/SessionSummaryCard";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 import { VoiceCaptureButton } from "../../features/voice/components/VoiceCaptureButton";
 import { VoiceParsePreview } from "../../features/voice/components/VoiceParsePreview";
-import { processVoiceCommand } from "../../features/voice/services/voiceCommandProcessor";
+import {
+  hydrateConversationStateForSession,
+  processVoiceCommand
+} from "../../features/voice/services/voiceCommandProcessor";
 import {
   captureSpeechOnce,
   getSpeechSupportState
 } from "../../features/voice/services/speechCapture";
-import {
-  getVoiceConversationState,
-  setVoiceConversationState
-} from "../../features/voice/services/voiceConversationStore";
+import { setVoiceConversationState } from "../../features/voice/services/voiceConversationStore";
 import type {
   ParsedVoiceSet,
   SpeechCaptureState,
@@ -29,6 +30,9 @@ import type {
 } from "../../features/voice/types/voice";
 
 type ListeningPhase = "idle" | "listening" | "hearing" | "processing";
+
+const CONFIRMATION_RE = /^(?:s[iì]|confermo|ok|chiudi|esatto|certo|vai)$/;
+const CANCELLATION_RE = /^(?:no|annulla|aspetta|cancel)$/;
 
 export const ActiveWorkoutPage = () => {
   const navigate = useNavigate();
@@ -58,10 +62,13 @@ export const ActiveWorkoutPage = () => {
   const [activeExerciseName, setActiveExerciseName] = useState<string>();
   const [liveTranscript, setLiveTranscript] = useState("");
   const [listeningPhase, setListeningPhase] = useState<ListeningPhase>("idle");
+  const [pendingSessionClose, setPendingSessionClose] = useState(false);
 
+  // Hydrate voice context from actual session state (not just stored state)
   useEffect(() => {
     const loadConversationState = async () => {
-      const state = await getVoiceConversationState();
+      if (!activeSession) return;
+      const state = await hydrateConversationStateForSession(activeSession.id);
       setConversationStateLocal(state);
       if (state.activeExerciseId) {
         const exercise = await getExerciseById(state.activeExerciseId);
@@ -76,18 +83,20 @@ export const ActiveWorkoutPage = () => {
   }, [activeSession?.id]);
 
   const handleComplete = async () => {
-    if (!activeSession) {
-      return;
-    }
+    if (!activeSession) return;
     await completeWorkoutSession(activeSession.id);
     await setVoiceConversationState({ lastFeedback: "Sessione chiusa." });
     navigate("/history");
   };
 
+  const handleResume = async () => {
+    if (!activeSession) return;
+    await resumeWorkoutSession(activeSession.id);
+    setVoiceFeedback("Sessione ripresa.");
+  };
+
   const handleVoiceCapture = async () => {
-    if (!activeProfileId) {
-      return;
-    }
+    if (!activeProfileId) return;
 
     try {
       setSpeechState("listening");
@@ -101,8 +110,36 @@ export const ActiveWorkoutPage = () => {
         onStateChange: (state) => setListeningPhase(state)
       });
 
+      // Intercept voice when awaiting close confirmation
+      if (pendingSessionClose) {
+        const normalized = transcript
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^\p{L}\p{N}\s]/gu, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+
+        if (CONFIRMATION_RE.test(normalized)) {
+          await handleComplete();
+          setPendingSessionClose(false);
+          return;
+        }
+        if (CANCELLATION_RE.test(normalized)) {
+          setPendingSessionClose(false);
+          setVoiceFeedback("Chiusura annullata.");
+          return;
+        }
+        // Unrecognized while pending → reset pending and process normally
+        setPendingSessionClose(false);
+      }
+
       const result = await processVoiceCommand(transcript, activeProfileId);
       setVoiceFeedback(result.feedback);
+
+      if (result.sessionAction === "close_session_pending") {
+        setPendingSessionClose(true);
+      }
 
       if (result.conversationState) {
         setConversationStateLocal(result.conversationState);
@@ -130,9 +167,11 @@ export const ActiveWorkoutPage = () => {
       }
     } catch (error) {
       setSpeechState("error");
-      setVoiceFeedback(error instanceof Error && error.message === "Nessun testo riconosciuto"
-        ? "Non ho sentito niente di utile. Riprova o correggi a mano."
-        : "Errore durante il riconoscimento vocale.");
+      setVoiceFeedback(
+        error instanceof Error && error.message === "Nessun testo riconosciuto"
+          ? "Non ho sentito niente di utile. Riprova o correggi a mano."
+          : "Errore durante il riconoscimento vocale."
+      );
     } finally {
       setSpeechState(getSpeechSupportState());
       setListeningPhase("idle");
@@ -150,11 +189,13 @@ export const ActiveWorkoutPage = () => {
     );
   }
 
+  const isPaused = activeSession.status === "paused";
+
   return (
     <div className="space-y-5">
       <SectionTitle
-        title="Sessione attiva"
-        subtitle="Voice-first: puoi dettare comandi naturali come squat 100 per 8, ancora 8 rep, no 7 colpi, ho fatto anche 4 serie, cancella ultima."
+        title={isPaused ? "Sessione in pausa" : "Sessione attiva"}
+        subtitle="Voice-first: puoi dettare comandi naturali come squat 100 per 8, ancora 8 rep, no 7 colpi, cancella ultima, adesso lat machine."
         action={
           <button className="secondary-button px-3 py-2 text-xs" type="button" onClick={() => void handleComplete()}>
             Chiudi
@@ -162,8 +203,23 @@ export const ActiveWorkoutPage = () => {
         }
       />
 
+      {/* Paused banner */}
+      {isPaused ? (
+        <div className="dark-panel flex items-center justify-between gap-4 p-4">
+          <p className="text-sm font-semibold text-white">Sessione in pausa</p>
+          <button
+            className="rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white"
+            type="button"
+            onClick={() => void handleResume()}
+          >
+            Riprendi
+          </button>
+        </div>
+      ) : null}
+
       <SessionSummaryCard {...sessionSummary} />
 
+      {/* Voice context panel */}
       <div className="dark-panel space-y-3 p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -174,10 +230,38 @@ export const ActiveWorkoutPage = () => {
             </p>
           </div>
           {conversationState?.lastSetNumber ? (
-            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">Serie {conversationState.lastSetNumber}</span>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">
+              Serie {conversationState.lastSetNumber}
+            </span>
           ) : null}
         </div>
-        {voiceFeedback ? <p className="text-sm text-white/90">{voiceFeedback}</p> : null}
+        {voiceFeedback ? (
+          <p className={`text-sm ${pendingSessionClose ? "font-semibold text-accent" : "text-white/90"}`}>
+            {voiceFeedback}
+          </p>
+        ) : null}
+        {/* Pending close confirmation buttons */}
+        {pendingSessionClose ? (
+          <div className="flex gap-3 pt-1">
+            <button
+              className="flex-1 rounded-xl bg-danger px-3 py-2 text-xs font-semibold text-white"
+              type="button"
+              onClick={() => void handleComplete().then(() => setPendingSessionClose(false))}
+            >
+              Sì, chiudi
+            </button>
+            <button
+              className="flex-1 rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold text-white"
+              type="button"
+              onClick={() => {
+                setPendingSessionClose(false);
+                setVoiceFeedback("Chiusura annullata.");
+              }}
+            >
+              Annulla
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -191,18 +275,24 @@ export const ActiveWorkoutPage = () => {
         <div className={`dark-panel space-y-3 p-4 ${listeningPhase === "hearing" ? "ring-2 ring-accent" : ""}`}>
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className={`h-3 w-3 rounded-full ${listeningPhase === "hearing" ? "bg-accent animate-pulse" : "bg-white/70 animate-pulse"}`} />
+              <span
+                className={`h-3 w-3 rounded-full ${listeningPhase === "hearing" ? "bg-accent animate-pulse" : "bg-white/70 animate-pulse"}`}
+              />
               <p className="text-sm font-semibold text-white">
                 {listeningPhase === "processing"
                   ? "Sto chiudendo l'ascolto..."
                   : listeningPhase === "hearing"
                     ? "Ti sto sentendo"
-                    : "In ascolto"}
+                    : pendingSessionClose
+                      ? "Dimmi: sì per confermare, no per annullare"
+                      : "In ascolto"}
               </p>
             </div>
             <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">stop dopo 4s di silenzio</span>
           </div>
-          <p className={`min-h-[3rem] rounded-2xl border px-3 py-3 text-sm ${liveTranscript ? "border-accent/40 bg-[#111111] text-white" : "border-white/15 bg-[#0b0b0b] text-chrome"}`}>
+          <p
+            className={`min-h-[3rem] rounded-2xl border px-3 py-3 text-sm ${liveTranscript ? "border-accent/40 bg-[#111111] text-white" : "border-white/15 bg-[#0b0b0b] text-chrome"}`}
+          >
             {liveTranscript || "Parla pure. Appena sente parole, qui sotto vedrai il testo che sta arrivando."}
           </p>
         </div>
@@ -232,7 +322,11 @@ export const ActiveWorkoutPage = () => {
           {sessionBundles.map((bundle) => {
             const volume = bundle.sets.reduce((total, entry) => total + entry.weight * entry.reps, 0);
             return (
-              <Link key={bundle.sessionExercise.id} to={`/workout/active/exercises/${bundle.sessionExercise.id}`} className="app-panel block p-4">
+              <Link
+                key={bundle.sessionExercise.id}
+                to={`/workout/active/exercises/${bundle.sessionExercise.id}`}
+                className="app-panel block p-4"
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-base font-semibold">{bundle.exercise.canonicalName}</p>
@@ -243,7 +337,9 @@ export const ActiveWorkoutPage = () => {
               </Link>
             );
           })}
-          {sessionBundles.length === 0 ? <div className="app-panel p-4 text-sm text-ink/70">Aggiungi il primo esercizio della sessione.</div> : null}
+          {sessionBundles.length === 0 ? (
+            <div className="app-panel p-4 text-sm text-ink/70">Aggiungi il primo esercizio della sessione.</div>
+          ) : null}
         </div>
       </section>
     </div>

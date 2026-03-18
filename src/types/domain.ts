@@ -25,7 +25,7 @@ export type ExerciseAlias = {
   createdAt: string;
 };
 
-export type WorkoutSessionStatus = "active" | "completed";
+export type WorkoutSessionStatus = "active" | "paused" | "completed";
 
 export type WorkoutSession = {
   id: string;
