@@ -1,23 +1,19 @@
 /**
  * Hands-free mode for voice-first gym usage.
  *
- * Three capabilities, all managed as a single lifecycle:
+ * Two capabilities, managed as a single lifecycle:
  *
- * 1. **Wake Lock** — keeps the screen on during the active workout session.
- * 2. **MediaSession** — silent audio loop so AirPods play/pause triggers voice capture.
- * 3. **Wake Word Listener** — continuous SpeechRecognition that detects a keyword
+ * 1. **MediaSession** — silent audio loop so AirPods double/triple squeeze
+ *    (nexttrack / previoustrack) triggers voice capture. Play/pause is left
+ *    free for music control.
+ * 2. **Wake Word Listener** — continuous SpeechRecognition that detects a keyword
  *    (default "gym") and routes the subsequent command to a callback, all within
  *    the same recognition session (avoids iOS user-gesture requirement for new instances).
  */
 
 // ---------------------------------------------------------------------------
-// Browser type shims (WakeLock + SpeechRecognition)
+// Browser type shims (SpeechRecognition)
 // ---------------------------------------------------------------------------
-
-interface WakeLockSentinelCompat extends EventTarget {
-  released: boolean;
-  release(): Promise<void>;
-}
 
 type WakeRecognitionResult = ArrayLike<{ transcript: string }> & { isFinal?: boolean };
 
@@ -47,7 +43,7 @@ type WakeRecognition = {
 export type HandsFreeStatus = "off" | "listening" | "wake_detected" | "error";
 
 export type HandsFreeController = {
-  /** Stop everything: wake lock, media session, wake word listener. */
+  /** Stop everything: media session, wake word listener. */
   stop: () => void;
   /** Temporarily pause the continuous recognition (e.g. for manual capture). */
   pauseListening: () => void;
@@ -66,37 +62,7 @@ export type HandsFreeOptions = {
 };
 
 // ---------------------------------------------------------------------------
-// Wake Lock
-// ---------------------------------------------------------------------------
-
-let wakeLockSentinel: WakeLockSentinelCompat | null = null;
-
-const requestWakeLock = async () => {
-  const nav = navigator as Navigator & { wakeLock?: { request(t: string): Promise<WakeLockSentinelCompat> } };
-  if (!nav.wakeLock) return;
-  try {
-    wakeLockSentinel = await nav.wakeLock.request("screen");
-    wakeLockSentinel.addEventListener("release", () => {
-      wakeLockSentinel = null;
-    });
-  } catch {
-    /* permission denied or not supported – non-critical */
-  }
-};
-
-const releaseWakeLock = async () => {
-  await wakeLockSentinel?.release();
-  wakeLockSentinel = null;
-};
-
-const onVisibilityChange = () => {
-  if (document.visibilityState === "visible" && !wakeLockSentinel) {
-    void requestWakeLock();
-  }
-};
-
-// ---------------------------------------------------------------------------
-// Silent audio + MediaSession (AirPods play/pause → trigger capture)
+// Silent audio + MediaSession (AirPods double/triple squeeze → trigger capture)
 // ---------------------------------------------------------------------------
 
 let silentAudio: HTMLAudioElement | null = null;
@@ -142,8 +108,10 @@ const startMediaSession = (onMediaButton: () => void) => {
       title: "GymApp",
       artist: "Sessione attiva"
     });
-    navigator.mediaSession.setActionHandler("play", onMediaButton);
-    navigator.mediaSession.setActionHandler("pause", onMediaButton);
+    // Double squeeze (AirPods Pro) = nexttrack, triple = previoustrack.
+    // play/pause left free for music.
+    navigator.mediaSession.setActionHandler("nexttrack", onMediaButton);
+    navigator.mediaSession.setActionHandler("previoustrack", onMediaButton);
   }
 };
 
@@ -154,8 +122,8 @@ const stopMediaSession = () => {
     silentAudio = null;
   }
   if ("mediaSession" in navigator) {
-    navigator.mediaSession.setActionHandler("play", null);
-    navigator.mediaSession.setActionHandler("pause", null);
+    navigator.mediaSession.setActionHandler("nexttrack", null);
+    navigator.mediaSession.setActionHandler("previoustrack", null);
   }
 };
 
@@ -194,7 +162,7 @@ const getRecognitionCtor = () =>
 
 const CAPTURE_TIMEOUT_MS = 8_000;
 
-export const startHandsFreeMode = async (options: HandsFreeOptions): Promise<HandsFreeController> => {
+export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeController => {
   const { wakePhrase, lang = "it-IT", onCommand, onStatusChange, onWakeDetected } = options;
   const normalizedWake = wakePhrase.toLowerCase().trim();
 
@@ -204,10 +172,6 @@ export const startHandsFreeMode = async (options: HandsFreeOptions): Promise<Han
   let recognition: WakeRecognition | null = null;
   let recognitionRunning = false;
   let captureTimeout: ReturnType<typeof setTimeout> | undefined;
-
-  // -- wake lock --
-  await requestWakeLock();
-  document.addEventListener("visibilitychange", onVisibilityChange);
 
   // -- helpers --
   const clearCaptureTimeout = () => {
@@ -349,8 +313,6 @@ export const startHandsFreeMode = async (options: HandsFreeOptions): Promise<Han
       }
       recognitionRunning = false;
       stopMediaSession();
-      void releaseWakeLock();
-      document.removeEventListener("visibilitychange", onVisibilityChange);
       onStatusChange?.("off");
     },
     pauseListening: () => {

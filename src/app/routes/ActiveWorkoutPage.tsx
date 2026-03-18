@@ -234,26 +234,22 @@ export const ActiveWorkoutPage = () => {
   // Hands-free toggle
   // -----------------------------------------------------------------------
 
-  const toggleHandsFree = async () => {
+  const toggleHandsFree = () => {
     if (handsFreeEnabled) {
       handsFreeRef.current?.stop();
       handsFreeRef.current = null;
       setHandsFreeEnabled(false);
       setHandsFreeStatus("off");
     } else {
-      try {
-        const controller = await startHandsFreeMode({
-          wakePhrase: "gym",
-          lang: "it-IT",
-          onCommand: (t) => processTranscriptRef.current(t),
-          onStatusChange: setHandsFreeStatus,
-          onWakeDetected: () => setVoiceFeedback("GYM rilevato — dimmi il comando.")
-        });
-        handsFreeRef.current = controller;
-        setHandsFreeEnabled(true);
-      } catch {
-        setVoiceFeedback("Impossibile attivare il vivavoce.");
-      }
+      const controller = startHandsFreeMode({
+        wakePhrase: "gym",
+        lang: "it-IT",
+        onCommand: (t) => processTranscriptRef.current(t),
+        onStatusChange: setHandsFreeStatus,
+        onWakeDetected: () => setVoiceFeedback("GYM rilevato — dimmi il comando.")
+      });
+      handsFreeRef.current = controller;
+      setHandsFreeEnabled(true);
     }
   };
 
@@ -365,7 +361,7 @@ export const ActiveWorkoutPage = () => {
             ? "bg-accent text-white"
             : "bg-ink/5 text-ink/70"
         }`}
-        onClick={() => void toggleHandsFree()}
+        onClick={toggleHandsFree}
       >
         {handsFreeEnabled ? (
           <span className="flex items-center justify-center gap-2">
@@ -374,7 +370,7 @@ export const ActiveWorkoutPage = () => {
             {handsFreeStatus === "wake_detected" ? " — parla ora" : ""}
           </span>
         ) : (
-          "Vivavoce OFF — attiva per usare senza mani"
+          "Vivavoce OFF — attiva per AirPods e parola chiave"
         )}
       </button>
 
