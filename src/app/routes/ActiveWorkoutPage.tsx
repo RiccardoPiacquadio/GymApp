@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
@@ -23,6 +23,11 @@ import {
   getSpeechSupportState
 } from "../../features/voice/services/speechCapture";
 import { setVoiceConversationState } from "../../features/voice/services/voiceConversationStore";
+import {
+  startHandsFreeMode,
+  type HandsFreeController,
+  type HandsFreeStatus
+} from "../../features/voice/services/handsFreeService";
 import type {
   ParsedVoiceSet,
   SpeechCaptureState,
@@ -33,6 +38,15 @@ type ListeningPhase = "idle" | "listening" | "hearing" | "processing";
 
 const CONFIRMATION_RE = /^(?:s[iì]|confermo|ok|chiudi|esatto|certo|vai)$/;
 const CANCELLATION_RE = /^(?:no|annulla|aspetta|cancel)$/;
+
+const normalizeForConfirmation = (text: string) =>
+  text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
 export const ActiveWorkoutPage = () => {
   const navigate = useNavigate();
@@ -53,6 +67,7 @@ export const ActiveWorkoutPage = () => {
     { totalExercises: 0, totalSets: 0, totalVolume: 0 }
   );
 
+  // -- speech / voice state --
   const [speechState, setSpeechState] = useState<SpeechCaptureState>(getSpeechSupportState());
   const [parsedVoiceSet, setParsedVoiceSet] = useState<ParsedVoiceSet | null>(null);
   const [voiceExerciseName, setVoiceExerciseName] = useState<string>();
@@ -64,7 +79,12 @@ export const ActiveWorkoutPage = () => {
   const [listeningPhase, setListeningPhase] = useState<ListeningPhase>("idle");
   const [pendingSessionClose, setPendingSessionClose] = useState(false);
 
-  // Hydrate voice context from actual session state (not just stored state)
+  // -- hands-free state --
+  const [handsFreeEnabled, setHandsFreeEnabled] = useState(false);
+  const [handsFreeStatus, setHandsFreeStatus] = useState<HandsFreeStatus>("off");
+  const handsFreeRef = useRef<HandsFreeController | null>(null);
+
+  // Hydrate voice context from actual session state
   useEffect(() => {
     const loadConversationState = async () => {
       if (!activeSession) return;
@@ -78,12 +98,86 @@ export const ActiveWorkoutPage = () => {
       }
       setVoiceFeedback(state.lastFeedback);
     };
-
     void loadConversationState();
   }, [activeSession?.id]);
 
+  // Cleanup hands-free on unmount
+  useEffect(() => {
+    return () => {
+      handsFreeRef.current?.stop();
+    };
+  }, []);
+
+  // -----------------------------------------------------------------------
+  // Core: process a transcript and update all UI state
+  // -----------------------------------------------------------------------
+
+  const processTranscript = async (transcript: string) => {
+    if (!activeProfileId) return;
+
+    // Handle pending session close
+    if (pendingSessionClose) {
+      const normalized = normalizeForConfirmation(transcript);
+      if (CONFIRMATION_RE.test(normalized)) {
+        await handleComplete();
+        setPendingSessionClose(false);
+        return;
+      }
+      if (CANCELLATION_RE.test(normalized)) {
+        setPendingSessionClose(false);
+        setVoiceFeedback("Chiusura annullata.");
+        return;
+      }
+      setPendingSessionClose(false);
+    }
+
+    const result = await processVoiceCommand(transcript, activeProfileId);
+    setVoiceFeedback(result.feedback);
+
+    if (result.sessionAction === "close_session_pending") {
+      setPendingSessionClose(true);
+    }
+
+    if (result.conversationState) {
+      setConversationStateLocal(result.conversationState);
+      if (result.conversationState.activeExerciseId) {
+        const exercise = await getExerciseById(result.conversationState.activeExerciseId);
+        setActiveExerciseName(exercise?.canonicalName);
+      } else {
+        setActiveExerciseName(undefined);
+      }
+    }
+
+    if (result.parsedVoiceSet) {
+      setParsedVoiceSet(result.parsedVoiceSet);
+      if (result.parsedVoiceSet.canonicalExerciseId) {
+        const exercise = await getExerciseById(result.parsedVoiceSet.canonicalExerciseId);
+        setVoiceExerciseName(exercise?.canonicalName);
+      } else {
+        setVoiceExerciseName(undefined);
+      }
+      setVoiceCandidateNames(result.candidateNames ?? []);
+    } else {
+      setParsedVoiceSet(null);
+      setVoiceExerciseName(undefined);
+      setVoiceCandidateNames([]);
+    }
+  };
+
+  // Stable ref so the hands-free callback never uses a stale closure
+  const processTranscriptRef = useRef(processTranscript);
+  processTranscriptRef.current = processTranscript;
+
+  // -----------------------------------------------------------------------
+  // Session actions
+  // -----------------------------------------------------------------------
+
   const handleComplete = async () => {
     if (!activeSession) return;
+    handsFreeRef.current?.stop();
+    handsFreeRef.current = null;
+    setHandsFreeEnabled(false);
+    setHandsFreeStatus("off");
     await completeWorkoutSession(activeSession.id);
     await setVoiceConversationState({ lastFeedback: "Sessione chiusa." });
     navigate("/history");
@@ -95,8 +189,15 @@ export const ActiveWorkoutPage = () => {
     setVoiceFeedback("Sessione ripresa.");
   };
 
+  // -----------------------------------------------------------------------
+  // Manual voice capture (button tap)
+  // -----------------------------------------------------------------------
+
   const handleVoiceCapture = async () => {
     if (!activeProfileId) return;
+
+    // Pause wake word listener so it doesn't compete for the mic
+    handsFreeRef.current?.pauseListening();
 
     try {
       setSpeechState("listening");
@@ -110,61 +211,7 @@ export const ActiveWorkoutPage = () => {
         onStateChange: (state) => setListeningPhase(state)
       });
 
-      // Intercept voice when awaiting close confirmation
-      if (pendingSessionClose) {
-        const normalized = transcript
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .replace(/[^\p{L}\p{N}\s]/gu, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-
-        if (CONFIRMATION_RE.test(normalized)) {
-          await handleComplete();
-          setPendingSessionClose(false);
-          return;
-        }
-        if (CANCELLATION_RE.test(normalized)) {
-          setPendingSessionClose(false);
-          setVoiceFeedback("Chiusura annullata.");
-          return;
-        }
-        // Unrecognized while pending → reset pending and process normally
-        setPendingSessionClose(false);
-      }
-
-      const result = await processVoiceCommand(transcript, activeProfileId);
-      setVoiceFeedback(result.feedback);
-
-      if (result.sessionAction === "close_session_pending") {
-        setPendingSessionClose(true);
-      }
-
-      if (result.conversationState) {
-        setConversationStateLocal(result.conversationState);
-        if (result.conversationState.activeExerciseId) {
-          const exercise = await getExerciseById(result.conversationState.activeExerciseId);
-          setActiveExerciseName(exercise?.canonicalName);
-        } else {
-          setActiveExerciseName(undefined);
-        }
-      }
-
-      if (result.parsedVoiceSet) {
-        setParsedVoiceSet(result.parsedVoiceSet);
-        if (result.parsedVoiceSet.canonicalExerciseId) {
-          const exercise = await getExerciseById(result.parsedVoiceSet.canonicalExerciseId);
-          setVoiceExerciseName(exercise?.canonicalName);
-        } else {
-          setVoiceExerciseName(undefined);
-        }
-        setVoiceCandidateNames(result.candidateNames ?? []);
-      } else {
-        setParsedVoiceSet(null);
-        setVoiceExerciseName(undefined);
-        setVoiceCandidateNames([]);
-      }
+      await processTranscript(transcript);
     } catch (error) {
       setSpeechState("error");
       setVoiceFeedback(
@@ -175,8 +222,44 @@ export const ActiveWorkoutPage = () => {
     } finally {
       setSpeechState(getSpeechSupportState());
       setListeningPhase("idle");
+
+      // Resume wake word listener if still enabled
+      if (handsFreeEnabled) {
+        handsFreeRef.current?.resumeListening();
+      }
     }
   };
+
+  // -----------------------------------------------------------------------
+  // Hands-free toggle
+  // -----------------------------------------------------------------------
+
+  const toggleHandsFree = async () => {
+    if (handsFreeEnabled) {
+      handsFreeRef.current?.stop();
+      handsFreeRef.current = null;
+      setHandsFreeEnabled(false);
+      setHandsFreeStatus("off");
+    } else {
+      try {
+        const controller = await startHandsFreeMode({
+          wakePhrase: "gym",
+          lang: "it-IT",
+          onCommand: (t) => processTranscriptRef.current(t),
+          onStatusChange: setHandsFreeStatus,
+          onWakeDetected: () => setVoiceFeedback("GYM rilevato — dimmi il comando.")
+        });
+        handsFreeRef.current = controller;
+        setHandsFreeEnabled(true);
+      } catch {
+        setVoiceFeedback("Impossibile attivare il vivavoce.");
+      }
+    }
+  };
+
+  // -----------------------------------------------------------------------
+  // Render
+  // -----------------------------------------------------------------------
 
   if (!activeSession) {
     return (
@@ -224,7 +307,9 @@ export const ActiveWorkoutPage = () => {
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.18em] text-chrome">Contesto vocale</p>
-            <p className="mt-1 text-lg font-semibold text-white">{activeExerciseName ?? "Nessun esercizio attivo"}</p>
+            <p className="mt-1 text-lg font-semibold text-white">
+              {activeExerciseName ?? "Nessun esercizio attivo"}
+            </p>
             <p className="mt-1 text-sm text-white/75">
               Ultimo set: {conversationState?.lastWeight ?? "-"} kg x {conversationState?.lastReps ?? "-"}
             </p>
@@ -240,7 +325,7 @@ export const ActiveWorkoutPage = () => {
             {voiceFeedback}
           </p>
         ) : null}
-        {/* Pending close confirmation buttons */}
+        {/* Pending close confirmation */}
         {pendingSessionClose ? (
           <div className="flex gap-3 pt-1">
             <button
@@ -264,6 +349,7 @@ export const ActiveWorkoutPage = () => {
         ) : null}
       </div>
 
+      {/* Action buttons */}
       <div className="grid grid-cols-2 gap-3">
         <Link className="primary-button" to="/workout/active/exercises">
           Aggiungi esercizio
@@ -271,12 +357,36 @@ export const ActiveWorkoutPage = () => {
         <VoiceCaptureButton state={speechState} onStart={handleVoiceCapture} />
       </div>
 
+      {/* Hands-free toggle */}
+      <button
+        type="button"
+        className={`w-full rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
+          handsFreeEnabled
+            ? "bg-accent text-white"
+            : "bg-ink/5 text-ink/70"
+        }`}
+        onClick={() => void toggleHandsFree()}
+      >
+        {handsFreeEnabled ? (
+          <span className="flex items-center justify-center gap-2">
+            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-white" />
+            Vivavoce ON — dì &quot;GYM&quot;
+            {handsFreeStatus === "wake_detected" ? " — parla ora" : ""}
+          </span>
+        ) : (
+          "Vivavoce OFF — attiva per usare senza mani"
+        )}
+      </button>
+
+      {/* Live listening indicator (manual capture) */}
       {speechState === "listening" ? (
         <div className={`dark-panel space-y-3 p-4 ${listeningPhase === "hearing" ? "ring-2 ring-accent" : ""}`}>
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <span
-                className={`h-3 w-3 rounded-full ${listeningPhase === "hearing" ? "bg-accent animate-pulse" : "bg-white/70 animate-pulse"}`}
+                className={`h-3 w-3 rounded-full ${
+                  listeningPhase === "hearing" ? "bg-accent animate-pulse" : "bg-white/70 animate-pulse"
+                }`}
               />
               <p className="text-sm font-semibold text-white">
                 {listeningPhase === "processing"
@@ -288,10 +398,16 @@ export const ActiveWorkoutPage = () => {
                       : "In ascolto"}
               </p>
             </div>
-            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">stop dopo 4s di silenzio</span>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">
+              stop dopo 4s di silenzio
+            </span>
           </div>
           <p
-            className={`min-h-[3rem] rounded-2xl border px-3 py-3 text-sm ${liveTranscript ? "border-accent/40 bg-[#111111] text-white" : "border-white/15 bg-[#0b0b0b] text-chrome"}`}
+            className={`min-h-[3rem] rounded-2xl border px-3 py-3 text-sm ${
+              liveTranscript
+                ? "border-accent/40 bg-[#111111] text-white"
+                : "border-white/15 bg-[#0b0b0b] text-chrome"
+            }`}
           >
             {liveTranscript || "Parla pure. Appena sente parole, qui sotto vedrai il testo che sta arrivando."}
           </p>
@@ -316,6 +432,7 @@ export const ActiveWorkoutPage = () => {
         />
       ) : null}
 
+      {/* Exercise list */}
       <section>
         <SectionTitle title="Esercizi in sessione" subtitle="Tocca un esercizio per aggiungere o modificare le serie." />
         <div className="space-y-3">
