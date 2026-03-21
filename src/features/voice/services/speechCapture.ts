@@ -30,7 +30,7 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
     recognition.continuous = true;
     recognition.maxAlternatives = 1;
 
-    const silenceMs = config.silenceMs ?? 4000;
+    const silenceMs = config.silenceMs ?? 3000;
     let finalTranscript = "";
     let latestTranscript = "";
     let settled = false;

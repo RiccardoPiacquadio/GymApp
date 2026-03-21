@@ -280,7 +280,7 @@ export const useVoiceSession = (
 
       const transcript = await captureSpeechOnce({
         lang: "it-IT",
-        silenceMs: 4000,
+        silenceMs: 3000,
         onTranscriptChange: (value) => dispatch({ type: "LIVE_TRANSCRIPT", liveTranscript: value }),
         onStateChange: (phase) => dispatch({ type: "LISTENING_PHASE", listeningPhase: phase })
       });
