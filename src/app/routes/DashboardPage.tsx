@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../lib/dates";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { MuscleGroupCard } from "../../features/analytics/components/MuscleGroupCard";
+import { PlateCalculator } from "../../features/analytics/components/PlateCalculator";
+import { TrainingCalendar } from "../../features/analytics/components/TrainingCalendar";
 import { VolumeChart } from "../../features/analytics/components/VolumeChart";
 import { getSessionVolumeSeries } from "../../features/analytics/services/analyticsService";
 import {
@@ -93,7 +95,7 @@ export const DashboardPage = () => {
 
       {/* Recent sessions */}
       <section>
-        <SectionTitle title="Ultime sessioni" subtitle="Le sessioni completate piu' recenti." />
+        <SectionTitle title="Ultime sessioni" subtitle="Le sessioni completate piu' recenti." variant="dark" />
         <div className="space-y-2.5">
           {sessions.slice(0, 4).map((session) => (
             <Link key={session.id} to={`/history/${session.id}`} className="app-panel block p-4 transition-all duration-200 hover:shadow-lg active:scale-[0.98]">
@@ -116,11 +118,17 @@ export const DashboardPage = () => {
         </div>
       </section>
 
+      {/* Training calendar */}
+      {activeProfileId ? <TrainingCalendar userId={activeProfileId} /> : null}
+
       {/* Muscle group card */}
       {activeProfileId ? <MuscleGroupCard userId={activeProfileId} /> : null}
 
       {/* Volume chart */}
       {sessionVolumeSeries.length > 0 ? <VolumeChart data={sessionVolumeSeries} title="Volume sessione nel tempo" /> : null}
+
+      {/* Plate calculator */}
+      <PlateCalculator />
     </div>
   );
 };

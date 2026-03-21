@@ -8,6 +8,7 @@ import type {
   SessionExerciseBundle,
   SetEntry,
   SetEntryInputMode,
+  SetType,
   WorkoutSession,
   WorkoutSessionWithSummary
 } from "../../../types";
@@ -175,6 +176,9 @@ export const addSetEntry = async (params: {
   reps: number;
   weight: number;
   inputMode: SetEntryInputMode;
+  setType?: SetType;
+  rpe?: number;
+  note?: string;
 }) => {
   const now = toIsoNow();
   const currentSets = await db.setEntries
@@ -188,6 +192,9 @@ export const addSetEntry = async (params: {
     reps: params.reps,
     weight: params.weight,
     inputMode: params.inputMode,
+    setType: params.setType,
+    rpe: params.rpe,
+    note: params.note,
     createdAt: now,
     updatedAt: now
   };
@@ -198,7 +205,7 @@ export const addSetEntry = async (params: {
 
 export const updateSetEntry = async (
   setEntryId: string,
-  payload: Pick<SetEntry, "reps" | "weight">
+  payload: Pick<SetEntry, "reps" | "weight"> & { setType?: SetType; rpe?: number; note?: string }
 ) => {
   await db.setEntries.update(setEntryId, {
     ...payload,
