@@ -38,9 +38,19 @@ const UserIcon = () => (
   </svg>
 );
 
+const TemplateIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="2" width="14" height="16" rx="2" />
+    <line x1="7" y1="6" x2="13" y2="6" />
+    <line x1="7" y1="10" x2="13" y2="10" />
+    <line x1="7" y1="14" x2="10" y2="14" />
+  </svg>
+);
+
 const navItems = [
-  { to: "/dashboard", label: "Dashboard", icon: DashboardIcon },
-  { to: "/workout/active", label: "Allenamento", icon: DumbbellIcon },
+  { to: "/dashboard", label: "Home", icon: DashboardIcon },
+  { to: "/workout/active", label: "Workout", icon: DumbbellIcon },
+  { to: "/templates", label: "Template", icon: TemplateIcon },
   { to: "/history", label: "Storico", icon: HistoryIcon },
   { to: "/profiles", label: "Profili", icon: UserIcon }
 ];
@@ -54,7 +64,7 @@ export const AppShell = ({ children }: PropsWithChildren) => {
   );
 
   const swipePages = useMemo(
-    () => ["/dashboard", "/workout/active", "/history", "/profiles"],
+    () => ["/dashboard", "/workout/active", "/templates", "/history", "/profiles"],
     []
   );
 
@@ -80,7 +90,7 @@ export const AppShell = ({ children }: PropsWithChildren) => {
       </div>
       {location.pathname !== "/profiles" ? (
         <nav className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-[#050505]/96 px-4 py-3 backdrop-blur">
-          <div className="mx-auto grid max-w-md grid-cols-4 gap-2">
+          <div className="mx-auto grid max-w-md grid-cols-5 gap-1.5">
             {navItems.map((item) => {
               const isActive = location.pathname.startsWith(item.to);
               return (

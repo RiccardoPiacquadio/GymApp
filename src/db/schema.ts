@@ -7,7 +7,9 @@ import type {
   SessionExercise,
   SetEntry,
   UserProfile,
-  WorkoutSession
+  WorkoutSession,
+  WorkoutTemplate,
+  WorkoutTemplateExercise
 } from "../types";
 
 export class GymAppDatabase extends Dexie {
@@ -18,6 +20,8 @@ export class GymAppDatabase extends Dexie {
   sessionExercises!: Table<SessionExercise, string>;
   setEntries!: Table<SetEntry, string>;
   appSettings!: Table<AppSetting, string>;
+  workoutTemplates!: Table<WorkoutTemplate, string>;
+  workoutTemplateExercises!: Table<WorkoutTemplateExercise, string>;
 
   constructor() {
     super("gymapp-db");
@@ -50,6 +54,18 @@ export class GymAppDatabase extends Dexie {
             profile.normalizedDisplayName = normalizeText(profile.displayName ?? "");
           })
       );
+
+    this.version(3).stores({
+      userProfiles: "id, displayName, normalizedDisplayName, createdAt, updatedAt",
+      exerciseCanonicals: "id, slug, canonicalName, createdAt, updatedAt",
+      exerciseAliases: "id, canonicalExerciseId, normalizedAliasText, language, createdAt",
+      workoutSessions: "id, userId, startedAt, endedAt, status, createdAt, updatedAt",
+      sessionExercises: "id, sessionId, canonicalExerciseId, exerciseOrder, createdAt",
+      setEntries: "id, sessionExerciseId, setNumber, reps, weight, inputMode, createdAt, updatedAt",
+      appSettings: "key",
+      workoutTemplates: "id, userId, name",
+      workoutTemplateExercises: "id, templateId, canonicalExerciseId, exerciseOrder"
+    });
   }
 }
 

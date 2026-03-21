@@ -7,6 +7,7 @@ import type {
   SessionVolumePoint,
   TimeSeriesPoint
 } from "../types/analytics";
+import { getMuscleGroup, MUSCLE_GROUPS, type MuscleGroup } from "./muscleGroupMap";
 
 const getCompletedSessions = async (userId: string) =>
   db.workoutSessions.where({ userId, status: "completed" }).toArray();
@@ -101,6 +102,46 @@ export const getExercisePersonalRecord = async (
 ): Promise<number> => {
   const history = await getExerciseHistory(userId, canonicalExerciseId);
   return Math.max(...history.map((item) => item.topWeight), 0);
+};
+
+export type MuscleGroupCount = { group: MuscleGroup; count: number };
+
+export const getMuscleGroupFrequency = async (
+  userId: string,
+  days: number
+): Promise<MuscleGroupCount[]> => {
+  const threshold = daysAgoIso(days);
+  const sessions = (await getCompletedSessions(userId)).filter(
+    (s) => s.startedAt >= threshold
+  );
+  if (sessions.length === 0) {
+    return MUSCLE_GROUPS.map((group) => ({ group, count: 0 }));
+  }
+
+  const sessionIds = sessions.map((s) => s.id);
+  const sessionExercises = await db.sessionExercises
+    .where("sessionId")
+    .anyOf(sessionIds)
+    .toArray();
+
+  const canonicalIds = [...new Set(sessionExercises.map((e) => e.canonicalExerciseId))];
+  const canonicals = await db.exerciseCanonicals.bulkGet(canonicalIds);
+  const slugById = new Map(
+    canonicals.filter(Boolean).map((c) => [c!.id, c!.slug])
+  );
+
+  const counts = new Map<MuscleGroup, number>();
+  for (const group of MUSCLE_GROUPS) counts.set(group, 0);
+
+  for (const se of sessionExercises) {
+    const slug = slugById.get(se.canonicalExerciseId);
+    if (!slug) continue;
+    const group = getMuscleGroup(slug);
+    if (group === "Altro") continue;
+    counts.set(group, (counts.get(group) ?? 0) + 1);
+  }
+
+  return MUSCLE_GROUPS.map((group) => ({ group, count: counts.get(group) ?? 0 }));
 };
 
 export const getSessionVolumeSeries = async (userId: string): Promise<SessionVolumePoint[]> => {

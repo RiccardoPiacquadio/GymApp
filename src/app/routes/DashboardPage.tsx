@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../lib/dates";
 import { SectionTitle } from "../../components/common/SectionTitle";
+import { MuscleGroupCard } from "../../features/analytics/components/MuscleGroupCard";
 import { VolumeChart } from "../../features/analytics/components/VolumeChart";
 import { getSessionVolumeSeries } from "../../features/analytics/services/analyticsService";
 import {
@@ -106,6 +107,8 @@ export const DashboardPage = () => {
           {sessions.length === 0 ? <div className="app-panel p-4 text-sm text-ink/70">Nessuna sessione completata.</div> : null}
         </div>
       </section>
+
+      {activeProfileId ? <MuscleGroupCard userId={activeProfileId} /> : null}
 
       {sessionVolumeSeries.length > 0 ? <VolumeChart data={sessionVolumeSeries} title="Volume sessione nel tempo" /> : null}
     </div>
