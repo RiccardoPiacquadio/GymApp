@@ -37,6 +37,8 @@ const ordinalSetMap: Record<string, number> = {
 const italianDirectNumberMap: Record<string, number> = {
   zero: 0,
   uno: 1,
+  una: 1,
+  un: 1,
   due: 2,
   tre: 3,
   quattro: 4,
@@ -122,11 +124,23 @@ const englishTens: Array<{ full: string; value: number }> = [
 
 const normalizeSpeechArtifacts = (text: string) =>
   text
+    // Number word artifacts from speech recognition
     .replace(/\bper\s+cento\b/gi, " 100 ")
     .replace(/\bpercento\b/gi, " 100 ")
-    .replace(/\bchilogrammo\b/gi, " chilogrammi ")
-    .replace(/\bchilo\b/gi, " chili ")
+    // Weight unit normalization
+    .replace(/\bchilogrammi?\b/gi, " chili ")
+    .replace(/\bchilogrammo\b/gi, " chili ")
+    .replace(/\bkili?\b/gi, " chili ")
+    .replace(/\bkilo(?:grammi?)?\b/gi, " chili ")
+    // Reps unit normalization
     .replace(/\brap\b/gi, " rep ")
+    .replace(/\bripetizione\b/gi, " ripetizioni ")
+    .replace(/\breps\b/gi, " rep ")
+    // Filler words / speech artifacts
+    .replace(/\b(?:ehm|emm|mmm|hmm|ah|oh|uhm|tipo|cioè|praticamente|diciamo|insomma|ecco|niente|vabbè|ok)\b/gi, " ")
+    // "un" / "una" before exercise — often noise from speech
+    .replace(/\b(?:ho fatto|faccio|facciamo|metto|metti|aggiungi)\b/gi, " ")
+    // Normalize whitespace
     .replace(/\s+/g, " ")
     .trim();
 
@@ -200,27 +214,63 @@ const parseEnglishNumberWord = (word: string): number | null => {
   return null;
 };
 
-const replaceWordNumbers = (text: string) =>
-  text
-    .split(" ")
-    .map((token) => {
-      if (/^\d+(?:[.,]\d+)?$/.test(token)) {
-        return token;
-      }
+const replaceWordNumbers = (text: string) => {
+  const tokens = text.split(" ");
+  const result: string[] = [];
+  let i = 0;
 
-      const italianValue = parseItalianNumberWord(token);
-      if (italianValue !== null) {
-        return String(italianValue);
-      }
+  while (i < tokens.length) {
+    const token = tokens[i];
 
-      const englishValue = parseEnglishNumberWord(token);
-      if (englishValue !== null) {
-        return String(englishValue);
-      }
+    // Already a digit — pass through
+    if (/^\d+(?:[.,]\d+)?$/.test(token)) {
+      result.push(token);
+      i++;
+      continue;
+    }
 
-      return token;
-    })
-    .join(" ");
+    // Try two-word Italian compound: "cento cinque" → 105, "ottanta due" → 82
+    if (i + 1 < tokens.length) {
+      const combined = token + tokens[i + 1];
+      const compoundValue = parseItalianNumberWord(combined);
+      if (compoundValue !== null && compoundValue > 10) {
+        result.push(String(compoundValue));
+        i += 2;
+        continue;
+      }
+      // Also try "cento e cinque" → skip "e"
+      if (i + 2 < tokens.length && tokens[i + 1] === "e") {
+        const combinedWithE = token + tokens[i + 2];
+        const withEValue = parseItalianNumberWord(combinedWithE);
+        if (withEValue !== null && withEValue > 10) {
+          result.push(String(withEValue));
+          i += 3;
+          continue;
+        }
+      }
+    }
+
+    // Single word number
+    const italianValue = parseItalianNumberWord(token);
+    if (italianValue !== null) {
+      result.push(String(italianValue));
+      i++;
+      continue;
+    }
+
+    const englishValue = parseEnglishNumberWord(token);
+    if (englishValue !== null) {
+      result.push(String(englishValue));
+      i++;
+      continue;
+    }
+
+    result.push(token);
+    i++;
+  }
+
+  return result.join(" ");
+};
 
 const extractSetNumber = (text: string) => {
   const explicitNumeric = text.match(/\b(?:serie|set)\s*(\d+)\b/i);
@@ -253,9 +303,16 @@ const extractSetCount = (text: string) => {
 
 const extractWeightAndReps = (text: string) => {
   const combinedPatterns = [
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/i,
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/i,
-    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/i
+    // "80 chili per 8", "80 kg x 8", "80 chili per 8 ripetizioni"
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
+    // "80 chili 8 ripetizioni" (no connector)
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s+(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
+    // "80 chili ... 8 rip" (with up to 24 chars gap)
+    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
+    // "80 per 8", "80x8"
+    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
+    // "80 da 8 ripetizioni" (weight "da" reps)
+    /(\d+(?:[.,]\d+)?)\s*(?:da)\s*(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)/i
   ];
 
   for (const pattern of combinedPatterns) {
@@ -275,8 +332,8 @@ const extractWeightAndReps = (text: string) => {
     text.match(/\b(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\b/i);
 
   const repsMatch =
-    text.match(/\b(?:per|x|rep|reps|rap|rip|ripetizioni|colpo|colpi)\s*(\d+)\b/i) ??
-    text.match(/\b(\d+)\s*(?:rep|reps|rap|rip|ripetizioni|colpo|colpi)\b/i);
+    text.match(/\b(?:per|x|rep|reps|rap|rip|ripetizioni|colpo|colpi|volte)\s*(\d+)\b/i) ??
+    text.match(/\b(\d+)\s*(?:rep|reps|rap|rip|ripetizioni|colpo|colpi|volte)\b/i);
 
   if (!weightMatch && !repsMatch) {
     return null;
@@ -299,7 +356,7 @@ const extractExerciseText = (text: string) =>
     .replace(/(?:con\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
     .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?\b/gi, " ")
     .replace(/\b\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/gi, " ")
-    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|rap|colpo|colpi|anche|di nuovo|ancora|uguale|stessa|stesso)\b/gi, " ")
+    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|sto facendo|faccio|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|rap|colpo|colpi|volte|volta|anche|di nuovo|ancora|uguale|stessa|stesso|con|chili|kili|kg|chilogrammi|da|per|il|la|le|lo|gli|dei|delle|del|di|un|una|al)\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();

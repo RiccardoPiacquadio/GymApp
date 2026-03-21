@@ -71,7 +71,7 @@ export type IntentHandler = (ctx: CommandContext) => Promise<VoiceCommandResult 
 // ---------------------------------------------------------------------------
 
 export const getQuickIntent = (normalizedText: string): QuickIntent | null => {
-  if (/^(?:uguale|stessa|stesso|ancora|di nuovo)$/.test(normalizedText)) {
+  if (/^(?:uguale|stessa|stesso|ancora|di nuovo|stessa cosa|uguale uguale|come prima|ripeti|un altra)$/.test(normalizedText)) {
     return { type: "repeat_last_set" };
   }
 
@@ -83,7 +83,7 @@ export const getQuickIntent = (normalizedText: string): QuickIntent | null => {
   }
 
   const correctionMatch = normalizedText.match(
-    /^(?:no|erano|sono|correggi(?:\s+(?:l\s+)?ultima)?\s+a)\s*(\d+(?:[.,]\d+)?)(?:\s+(kg|chilogrammi|chili|kili|rep|reps|rip|ripetizioni|colpo|colpi))?$/
+    /^(?:no|erano|sono|anzi|correggi(?:\s+(?:l\s+)?ultima)?\s+a|(?:in realta|veramente)\s+(?:erano|sono)?)\s*(\d+(?:[.,]\d+)?)(?:\s+(kg|chilogrammi|chili|kili|kilo|rep|reps|rip|ripetizioni|colpo|colpi))?$/
   );
   if (correctionMatch) {
     const value = Number(correctionMatch[1].replace(",", "."));
@@ -105,7 +105,7 @@ export const getQuickIntent = (normalizedText: string): QuickIntent | null => {
   }
 
   const switchMatch = normalizedText.match(
-    /^(?:adesso(?:\s+faccio)?|ora(?:\s+faccio)?|faccio|passa\s+a|passiamo\s+a|cambia(?:\s+a)?|cambio(?:\s+a)?|passo\s+a)\s+(.+)$/
+    /^(?:adesso(?:\s+faccio)?|ora(?:\s+faccio)?|faccio|passa(?:re)?\s+a|passiamo\s+a|cambia(?:\s+(?:a|con))?|cambio(?:\s+(?:a|con))?|passo\s+a|vado\s+(?:a|con)|andiamo\s+(?:a|con)|sto\s+facendo|iniziamo(?:\s+con)?|inizio(?:\s+con)?)\s+(.+)$/
   );
   if (switchMatch) {
     return { type: "switch_exercise", exerciseQuery: switchMatch[1].trim() };
