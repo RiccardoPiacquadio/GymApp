@@ -6,6 +6,8 @@ import { DashboardPage } from "./app/routes/DashboardPage";
 import { ExerciseLogPage } from "./app/routes/ExerciseLogPage";
 import { ExerciseSearchPage } from "./app/routes/ExerciseSearchPage";
 import { ProfileSelectPage } from "./app/routes/ProfileSelectPage";
+import { TemplateEditPage } from "./app/routes/TemplateEditPage";
+import { TemplateListPage } from "./app/routes/TemplateListPage";
 import { AppShell } from "./components/common/AppShell";
 import { useAppBoot } from "./features/users/hooks/useAppBoot";
 
@@ -47,6 +49,9 @@ const ProtectedApp = () => {
           <Route path="/workout/active" element={<ActiveWorkoutPage />} />
           <Route path="/workout/active/exercises" element={<ExerciseSearchPage />} />
           <Route path="/workout/active/exercises/:sessionExerciseId" element={<ExerciseLogPage />} />
+          <Route path="/templates" element={<TemplateListPage />} />
+          <Route path="/templates/new" element={<TemplateEditPage />} />
+          <Route path="/templates/:templateId" element={<TemplateEditPage />} />
           <Route path="/history" element={<WorkoutHistoryPage />} />
           <Route path="/history/:sessionId" element={<WorkoutDetailPage />} />
           <Route path="/history/:sessionId/exercises" element={<ExerciseSearchPage />} />

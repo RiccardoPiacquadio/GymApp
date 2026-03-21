@@ -79,3 +79,24 @@ export type WorkoutSessionWithSummary = WorkoutSession & {
   totalSets: number;
   totalVolume: number;
 };
+
+export type WorkoutTemplate = {
+  id: string;
+  userId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WorkoutTemplateExercise = {
+  id: string;
+  templateId: string;
+  canonicalExerciseId: string;
+  exerciseOrder: number;
+  createdAt: string;
+};
+
+export type WorkoutTemplateBundle = {
+  template: WorkoutTemplate;
+  exercises: (WorkoutTemplateExercise & { exercise: ExerciseCanonical })[];
+};
