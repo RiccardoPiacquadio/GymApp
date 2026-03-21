@@ -324,4 +324,21 @@ export const getLatestExerciseSnapshot = async (userId: string, canonicalExercis
   };
 };
 
+export const deleteWorkoutSession = async (sessionId: string) => {
+  await db.transaction("rw", [db.workoutSessions, db.sessionExercises, db.setEntries], async () => {
+    const exercises = await db.sessionExercises.where("sessionId").equals(sessionId).toArray();
+    const exerciseIds = exercises.map((e) => e.id);
+    await db.setEntries.where("sessionExerciseId").anyOf(exerciseIds).delete();
+    await db.sessionExercises.where("sessionId").equals(sessionId).delete();
+    await db.workoutSessions.delete(sessionId);
+  });
+};
+
+export const deleteSessionExercise = async (sessionExerciseId: string) => {
+  await db.transaction("rw", [db.sessionExercises, db.setEntries], async () => {
+    await db.setEntries.where("sessionExerciseId").equals(sessionExerciseId).delete();
+    await db.sessionExercises.delete(sessionExerciseId);
+  });
+};
+
 export const getWorkoutSessionById = (sessionId: string) => db.workoutSessions.get(sessionId);
