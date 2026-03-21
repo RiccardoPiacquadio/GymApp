@@ -47,6 +47,11 @@ export const FB_SPEECH_NOT_SUPPORTED = "Speech recognition non supportato";
 export const FB_SPEECH_ERROR = "Errore riconoscimento vocale";
 export const FB_NO_TEXT_RECOGNIZED = "Nessun testo riconosciuto";
 
+// -- Template voice commands --
+export const fbTemplateExercisesAdded = (count: number, names: string[]) =>
+  `${count} esercizi aggiunti: ${names.join(", ")}.`;
+export const FB_TEMPLATE_NO_EXERCISES = "Non ho riconosciuto nessun esercizio. Riprova.";
+
 // -- voiceParser --
 export const FB_AMBIGUOUS_NAME = "Nome ambiguo: scegli l'esercizio corretto prima di salvare.";
 export const FB_WEIGHT_REPS_ONLY = "Peso e ripetizioni riconosciuti: uso il contesto dell'esercizio attivo se disponibile.";

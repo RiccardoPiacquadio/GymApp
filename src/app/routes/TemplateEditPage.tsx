@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { ExerciseList } from "../../features/exercises/components/ExerciseList";
 import { ExerciseSearchInput } from "../../features/exercises/components/ExerciseSearchInput";
-import { getAllAliases, searchExercises } from "../../features/exercises/services/exerciseRepository";
+import { getAllAliases, getExerciseById, searchExercises } from "../../features/exercises/services/exerciseRepository";
 import {
   addExerciseToTemplate,
   createTemplate,
@@ -15,7 +15,17 @@ import {
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 import { useConfirm } from "../../hooks/useConfirm";
 import { useDebounce } from "../../hooks/useDebounce";
+import { captureSpeechOnce, getSpeechSupportState } from "../../features/voice/services/speechCapture";
+import { parseMultipleExercises } from "../../features/voice/services/voiceParser";
+import {
+  FB_NO_TEXT_RECOGNIZED,
+  FB_NOTHING_HEARD,
+  FB_RECOGNITION_ERROR,
+  FB_TEMPLATE_NO_EXERCISES,
+  fbTemplateExercisesAdded
+} from "../../features/voice/services/voiceFeedback";
 import type { ExerciseCanonical } from "../../types";
+import type { SpeechCaptureState } from "../../features/voice/types/voice";
 
 export const TemplateEditPage = () => {
   const { templateId } = useParams();
@@ -30,6 +40,11 @@ export const TemplateEditPage = () => {
 
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 200);
+
+  // Voice state
+  const [speechState, setSpeechState] = useState<SpeechCaptureState>(getSpeechSupportState());
+  const [voiceFeedback, setVoiceFeedback] = useState<string | undefined>();
+  const [liveTranscript, setLiveTranscript] = useState("");
 
   const bundle = useLiveQuery(
     () => (effectiveId ? getTemplateById(effectiveId) : null),
@@ -78,6 +93,53 @@ export const TemplateEditPage = () => {
     });
     if (ok) await removeExerciseFromTemplate(templateExerciseId);
   }, [confirm]);
+
+  const handleVoiceAdd = useCallback(async () => {
+    if (!effectiveId) return;
+
+    try {
+      setSpeechState("listening");
+      setLiveTranscript("");
+      setVoiceFeedback(undefined);
+
+      const transcript = await captureSpeechOnce({
+        lang: "it-IT",
+        silenceMs: 5000,
+        onTranscriptChange: setLiveTranscript,
+        onStateChange: () => {}
+      });
+
+      const resolved = await parseMultipleExercises(transcript);
+      if (resolved.length === 0) {
+        setVoiceFeedback(FB_TEMPLATE_NO_EXERCISES);
+        return;
+      }
+
+      const addedNames: string[] = [];
+      for (const r of resolved) {
+        const exercise = await getExerciseById(r.canonicalExerciseId);
+        if (exercise) {
+          await addExerciseToTemplate(effectiveId, exercise);
+          addedNames.push(exercise.canonicalName);
+        }
+      }
+
+      setVoiceFeedback(
+        addedNames.length > 0
+          ? fbTemplateExercisesAdded(addedNames.length, addedNames)
+          : FB_TEMPLATE_NO_EXERCISES
+      );
+    } catch (error) {
+      setVoiceFeedback(
+        error instanceof Error && error.message === FB_NO_TEXT_RECOGNIZED
+          ? FB_NOTHING_HEARD
+          : FB_RECOGNITION_ERROR
+      );
+    } finally {
+      setSpeechState(getSpeechSupportState());
+      setLiveTranscript("");
+    }
+  }, [effectiveId]);
 
   // Template not yet created — show name form
   if (isNew && !createdId) {
@@ -148,6 +210,32 @@ export const TemplateEditPage = () => {
         >
           Rinomina
         </button>
+      </div>
+
+      {/* Voice add */}
+      <div className="app-panel space-y-3 p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-ink/50">Aggiungi con la voce</p>
+        <p className="text-xs text-ink/60">
+          Dì più esercizi in sequenza, es. &quot;panca piana, trazioni, alzate laterali, curl manubri&quot;
+        </p>
+        <button
+          type="button"
+          className="secondary-button w-full"
+          disabled={speechState === "unsupported" || speechState === "listening"}
+          onClick={() => void handleVoiceAdd()}
+        >
+          {speechState === "unsupported"
+            ? "Voce non supportata"
+            : speechState === "listening"
+              ? "Ascolto..."
+              : "Aggiungi via voce"}
+        </button>
+        {liveTranscript ? (
+          <p className="text-xs italic text-ink/50">&quot;{liveTranscript}&quot;</p>
+        ) : null}
+        {voiceFeedback ? (
+          <p className="text-xs font-medium text-accent">{voiceFeedback}</p>
+        ) : null}
       </div>
 
       {/* Current exercises */}

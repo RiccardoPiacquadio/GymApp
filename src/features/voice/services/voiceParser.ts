@@ -306,11 +306,74 @@ const extractExerciseText = (text: string) =>
 
 // ---------------------------------------------------------------------------
 // Multi-set parsing — "squat 70 per 8, 50 per 7, 90 per 5"
+// Also supports: "panca 4 serie da 100, 80, 90, 70 chili e 7, 8, 9, 5 ripetizioni"
 // ---------------------------------------------------------------------------
 
 export type MultiSetEntry = { weight: number; reps: number };
 
+/**
+ * Extracts a list of numbers from text like "100, 80, 90, 70" or "100 80 90 70"
+ */
+const extractNumberList = (text: string): number[] => {
+  const matches = [...text.matchAll(/\d+(?:[.,]\d+)?/g)];
+  return matches.map((m) => toNumber(m[0]));
+};
+
+/**
+ * Pattern: "N serie da W1, W2, ..., Wn chili e R1, R2, ..., Rn ripetizioni"
+ * Also: "una da W1, una da W2, ... e ho fatto R1, R2, ..., Rn ripetizioni"
+ * Also: "W1, W2, W3 chili con/e R1, R2, R3 ripetizioni"
+ */
+const extractSeparateWeightsAndReps = (text: string): MultiSetEntry[] | null => {
+  // Match: weights block (before "chili/kg") + reps block (after "e"/"con" before "rip/rep")
+  const separatePattern =
+    /(?:(?:serie|set)\s+(?:da\s+)?)?(.+?)\s*(?:kg|chili|kili|chilogrammi)\s*(?:e|con|,)\s*(.+?)\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)\b/i;
+
+  const match = text.match(separatePattern);
+  if (!match) return null;
+
+  const weights = extractNumberList(match[1]);
+  const reps = extractNumberList(match[2]);
+
+  if (weights.length < 2 || reps.length < 2) return null;
+
+  // If counts differ, try to align: use the shorter list length
+  const count = Math.min(weights.length, reps.length);
+  if (count < 2) return null;
+
+  return Array.from({ length: count }, (_, i) => ({
+    weight: weights[i],
+    reps: reps[i]
+  }));
+};
+
+/**
+ * Pattern: "una da W1 chili R1 rip, una da W2 chili R2 rip, ..."
+ * Or: "una da W1 R1, una da W2 R2"
+ */
+const extractRepeatedUnaDa = (text: string): MultiSetEntry[] | null => {
+  const segments = text.split(/\s*(?:,|\bpoi\b|\be poi\b|\bdopo\b|\be\b)\s*/i);
+  const entries: MultiSetEntry[] = [];
+
+  for (const seg of segments) {
+    const m = seg.match(/(?:una?\s+da\s+)(\d+(?:[.,]\d+)?)\s*(?:kg|chili|kili|chilogrammi)?\s*(?:x|per)?\s*(\d+)\s*(?:rip|rep|reps|ripetizioni|colpo|colpi)?/i);
+    if (m) {
+      entries.push({ weight: toNumber(m[1]), reps: Number(m[2]) });
+    }
+  }
+
+  return entries.length >= 2 ? entries : null;
+};
+
 const extractMultiSetEntries = (text: string): MultiSetEntry[] | null => {
+  // 0) Try separate weights/reps lists first (most complex pattern)
+  const separateResult = extractSeparateWeightsAndReps(text);
+  if (separateResult) return separateResult;
+
+  // 0b) Try "una da" pattern
+  const unaDaResult = extractRepeatedUnaDa(text);
+  if (unaDaResult) return unaDaResult;
+
   // 1) Split by explicit separators: comma, "poi", "e poi", "dopo", "e"
   const segments = text
     .split(/\s*(?:,|\.|\bpoi\b|\be poi\b|\bdopo\b)\s*/i)
@@ -444,4 +507,66 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
     feedbackMessage,
     candidateExerciseIds: aliasResolution.candidateExerciseIds
   };
+};
+
+// ---------------------------------------------------------------------------
+// Multi-exercise parsing — "trazioni, panca piana, military press, alzate laterali"
+// Used for voice-based template creation
+// ---------------------------------------------------------------------------
+
+export type ResolvedExercise = {
+  canonicalExerciseId: string;
+  matchedAlias: string;
+  confidence: number;
+};
+
+/**
+ * Parses a voice command that mentions multiple exercise names.
+ * Splits on commas, "e", "poi", "dopo", then resolves each segment.
+ * Returns only the segments that matched an exercise with reasonable confidence.
+ */
+export const parseMultipleExercises = async (rawText: string): Promise<ResolvedExercise[]> => {
+  const normalized = normalizeExerciseInput(rawText);
+  const speechNorm = normalizeSpeechArtifacts(normalized);
+  const withDigits = replaceWordNumbers(speechNorm);
+
+  // Strip number-heavy content (weights, reps) — keep only exercise names
+  const cleaned = withDigits
+    .replace(/\d+(?:[.,]\d+)?\s*(?:kg|chili|kili|chilogrammi|x|per|rep|reps|rip|ripetizioni|colpo|colpi|serie|set)\b/gi, " ")
+    .replace(/\b(?:serie|set)\s*\d+/gi, " ")
+    .replace(/\d+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Split on separators
+  const segments = cleaned
+    .split(/\s*(?:,|\bpoi\b|\be poi\b|\bdopo\b|\be\b)\s*/i)
+    .map((s) => s.trim())
+    .filter((s) => s.length >= 2);
+
+  // If no separators found, try the whole text as a single exercise
+  if (segments.length === 0) {
+    const res = await resolveExerciseAlias(cleaned);
+    if (res.canonicalExerciseId && res.confidence >= 0.5) {
+      return [{ canonicalExerciseId: res.canonicalExerciseId, matchedAlias: res.matchedAlias ?? cleaned, confidence: res.confidence }];
+    }
+    return [];
+  }
+
+  const results: ResolvedExercise[] = [];
+  const seen = new Set<string>();
+
+  for (const segment of segments) {
+    const res = await resolveExerciseAlias(segment);
+    if (res.canonicalExerciseId && res.confidence >= 0.5 && !seen.has(res.canonicalExerciseId)) {
+      results.push({
+        canonicalExerciseId: res.canonicalExerciseId,
+        matchedAlias: res.matchedAlias ?? segment,
+        confidence: res.confidence
+      });
+      seen.add(res.canonicalExerciseId);
+    }
+  }
+
+  return results;
 };
