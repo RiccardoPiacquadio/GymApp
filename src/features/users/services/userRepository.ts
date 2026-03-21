@@ -5,7 +5,7 @@ import { createId } from "../../../lib/ids";
 import type { UserProfile } from "../../../types";
 
 const LAST_PROFILE_KEY = "lastActiveProfileId";
-export const PROFILE_MANAGER_NORMALIZED_NAME = normalizeText("Riccardo Piacquadio");
+const MANAGER_PROFILE_KEY = "managerProfileId";
 
 export type CreateProfileResult =
   | {
@@ -43,9 +43,19 @@ export type DeleteProfileResult =
 
 export const normalizeProfileName = (displayName: string) => normalizeText(displayName);
 
-export const isProfileManager = (
-  profile?: Pick<UserProfile, "normalizedDisplayName"> | null
-) => profile?.normalizedDisplayName === PROFILE_MANAGER_NORMALIZED_NAME;
+export const getManagerProfileId = async () =>
+  (await db.appSettings.get(MANAGER_PROFILE_KEY))?.value;
+
+export const setManagerProfile = (profileId: string) =>
+  db.appSettings.put({ key: MANAGER_PROFILE_KEY, value: profileId });
+
+export const isProfileManager = async (
+  profile?: Pick<UserProfile, "id"> | null
+): Promise<boolean> => {
+  if (!profile) return false;
+  const managerId = await getManagerProfileId();
+  return managerId === profile.id;
+};
 
 export const findProfileByNormalizedName = async (displayName: string) =>
   db.userProfiles.where("normalizedDisplayName").equals(normalizeProfileName(displayName)).first();
@@ -73,6 +83,12 @@ export const createProfile = async (displayName: string): Promise<CreateProfileR
 
   await db.userProfiles.add(profile);
   await db.appSettings.put({ key: LAST_PROFILE_KEY, value: profile.id });
+
+  // First profile created becomes the manager
+  const existingManager = await getManagerProfileId();
+  if (!existingManager) {
+    await setManagerProfile(profile.id);
+  }
 
   return {
     status: "created",
@@ -134,21 +150,23 @@ export const deleteProfile = async (profileId: string): Promise<DeleteProfileRes
     db.setEntries,
     async () => {
       const linkedSessions = await db.workoutSessions.where("userId").equals(profileId).toArray();
-      const linkedSessionIds = new Set(linkedSessions.map((session) => session.id));
-      const linkedSessionExercises = (await db.sessionExercises.toArray()).filter((sessionExercise) =>
-        linkedSessionIds.has(sessionExercise.sessionId)
-      );
-      const linkedSessionExerciseIds = new Set(linkedSessionExercises.map((sessionExercise) => sessionExercise.id));
-      const linkedSetEntries = (await db.setEntries.toArray()).filter((setEntry) =>
-        linkedSessionExerciseIds.has(setEntry.sessionExerciseId)
-      );
+      const linkedSessionIds = linkedSessions.map((session) => session.id);
+      const linkedSessionExercises = await db.sessionExercises
+        .where("sessionId")
+        .anyOf(linkedSessionIds)
+        .toArray();
+      const linkedExerciseIds = linkedSessionExercises.map((item) => item.id);
+      const linkedSetEntries = await db.setEntries
+        .where("sessionExerciseId")
+        .anyOf(linkedExerciseIds)
+        .toArray();
 
       if (linkedSetEntries.length > 0) {
         await db.setEntries.bulkDelete(linkedSetEntries.map((setEntry) => setEntry.id));
       }
 
       if (linkedSessionExercises.length > 0) {
-        await db.sessionExercises.bulkDelete(linkedSessionExercises.map((sessionExercise) => sessionExercise.id));
+        await db.sessionExercises.bulkDelete(linkedSessionExercises.map((item) => item.id));
       }
 
       if (linkedSessions.length > 0) {

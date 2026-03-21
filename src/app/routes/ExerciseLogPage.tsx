@@ -1,14 +1,16 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useParams } from "react-router-dom";
-import { db } from "../../db";
 import { SectionTitle } from "../../components/common/SectionTitle";
+import { PRBadge } from "../../features/analytics/components/PRBadge";
 import { SetEntryForm } from "../../features/sessions/components/SetEntryForm";
 import { SetEntryTable } from "../../features/sessions/components/SetEntryTable";
+import { useConfirm } from "../../hooks/useConfirm";
 import {
   addSetEntry,
   deleteSetEntry,
   getLatestExerciseSnapshot,
+  getSessionExerciseDetail,
   updateSetEntry
 } from "../../features/sessions/services/sessionRepository";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
@@ -17,31 +19,18 @@ import type { SetEntry } from "../../types";
 export const ExerciseLogPage = () => {
   const { sessionExerciseId } = useParams();
   const { activeProfileId } = useActiveProfile();
+  const { confirm, ConfirmDialog } = useConfirm();
   const [editingEntry, setEditingEntry] = useState<SetEntry | null>(null);
 
   const detail = useLiveQuery(
-    async () => {
-      if (!sessionExerciseId) {
-        return null;
-      }
-      const sessionExercise = await db.sessionExercises.get(sessionExerciseId);
-      if (!sessionExercise) {
-        return null;
-      }
-      const [session, exercise, sets] = await Promise.all([
-        db.workoutSessions.get(sessionExercise.sessionId),
-        db.exerciseCanonicals.get(sessionExercise.canonicalExerciseId),
-        db.setEntries.where("sessionExerciseId").equals(sessionExercise.id).sortBy("setNumber")
-      ]);
-      return session && exercise ? { sessionExercise, session, exercise, sets } : null;
-    },
+    () => sessionExerciseId ? getSessionExerciseDetail(sessionExerciseId) : null,
     [sessionExerciseId]
   );
 
   const latestSnapshot = useLiveQuery(
-    async () =>
+    () =>
       activeProfileId && detail
-        ? await getLatestExerciseSnapshot(activeProfileId, detail.exercise.id)
+        ? getLatestExerciseSnapshot(activeProfileId, detail.exercise.id)
         : null,
     [activeProfileId, detail?.exercise.id],
     null
@@ -60,6 +49,18 @@ export const ExerciseLogPage = () => {
     }
     return undefined;
   }, [detail?.sets, editingEntry, latestSnapshot]);
+
+  const handleDeleteSet = useCallback(async (setEntryId: string) => {
+    const shouldDelete = await confirm({
+      title: "Elimina serie",
+      message: "Vuoi eliminare questa serie? L'azione non e' reversibile.",
+      confirmLabel: "Elimina",
+      variant: "danger"
+    });
+    if (shouldDelete) {
+      await deleteSetEntry(setEntryId);
+    }
+  }, [confirm]);
 
   const handleSubmit = async (payload: { reps: number; weight: number }) => {
     if (!detail) {
@@ -85,12 +86,21 @@ export const ExerciseLogPage = () => {
   const isCompletedSession = detail.session.status === "completed";
   const backLink = isCompletedSession ? `/history/${detail.session.id}` : "/workout/active";
   const backLabel = isCompletedSession ? "Torna alla sessione" : "Torna sessione";
+  const currentTopWeight = Math.max(...detail.sets.map((s) => s.weight), 0);
 
   return (
     <div className="space-y-5">
+      {ConfirmDialog}
       <SectionTitle
-        title={detail.exercise.canonicalName}
-        subtitle={isCompletedSession ? "Puoi correggere anche gli allenamenti gia chiusi." : "Aggiungi serie manualmente. Le ultime performance vengono usate come suggerimento."}
+        title={
+          <span className="flex items-center gap-2">
+            {detail.exercise.canonicalName}
+            {activeProfileId && currentTopWeight > 0 ? (
+              <PRBadge userId={activeProfileId} canonicalExerciseId={detail.exercise.id} currentWeight={currentTopWeight} />
+            ) : null}
+          </span>
+        }
+        subtitle={isCompletedSession ? "Puoi correggere anche gli allenamenti gia chiusi." : "Aggiungi serie manualmente."}
         action={
           <Link className="secondary-button px-3 py-2 text-xs" to={backLink}>
             {backLabel}
@@ -130,7 +140,7 @@ export const ExerciseLogPage = () => {
         setEntries={detail.sets}
         editingId={editingEntry?.id}
         onEdit={setEditingEntry}
-        onDelete={deleteSetEntry}
+        onDelete={handleDeleteSet}
       />
     </div>
   );

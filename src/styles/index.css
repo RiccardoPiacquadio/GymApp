@@ -91,6 +91,26 @@ body {
   }
 }
 
+@keyframes confirmFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes confirmScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 @keyframes slideInRight {
   from {
     transform: translateX(-25%);
@@ -99,5 +119,22 @@ body {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+/* Flash feedback after voice save */
+.animate-flash {
+  animation: flashGreen 0.6s ease-out;
+}
+
+@keyframes flashGreen {
+  0% {
+    box-shadow: inset 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+  20% {
+    box-shadow: inset 0 0 60px 10px rgba(34, 197, 94, 0.15);
+  }
+  100% {
+    box-shadow: inset 0 0 0 0 rgba(34, 197, 94, 0);
   }
 }

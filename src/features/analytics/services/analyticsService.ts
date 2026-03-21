@@ -13,20 +13,16 @@ const getCompletedSessions = async (userId: string) =>
 
 export const getSessionTotalVolume = async (sessionId: string) => {
   const sessionExercises = await db.sessionExercises.where("sessionId").equals(sessionId).toArray();
-  const exerciseIds = new Set(sessionExercises.map((item) => item.id));
-  const sets = await db.setEntries.toArray();
-  return sum(
-    sets
-      .filter((entry) => exerciseIds.has(entry.sessionExerciseId))
-      .map((entry) => getSetVolume(entry.weight, entry.reps))
-  );
+  const ids = sessionExercises.map((item) => item.id);
+  const sets = await db.setEntries.where("sessionExerciseId").anyOf(ids).toArray();
+  return sum(sets.map((entry) => getSetVolume(entry.weight, entry.reps)));
 };
 
 export const getSessionTotalSets = async (sessionId: string) => {
   const sessionExercises = await db.sessionExercises.where("sessionId").equals(sessionId).toArray();
-  const exerciseIds = new Set(sessionExercises.map((item) => item.id));
-  const sets = await db.setEntries.toArray();
-  return sets.filter((entry) => exerciseIds.has(entry.sessionExerciseId)).length;
+  const ids = sessionExercises.map((item) => item.id);
+  const sets = await db.setEntries.where("sessionExerciseId").anyOf(ids).toArray();
+  return sets.length;
 };
 
 export const getExerciseHistory = async (
@@ -37,11 +33,18 @@ export const getExerciseHistory = async (
   const sessionMap = new Map(sessions.map((session) => [session.id, session]));
   const sessionExercises = await db.sessionExercises.where("canonicalExerciseId").equals(canonicalExerciseId).toArray();
   const filtered = sessionExercises.filter((item) => sessionMap.has(item.sessionId));
-  const sets = await db.setEntries.toArray();
+  const filteredIds = filtered.map((item) => item.id);
+  const sets = await db.setEntries.where("sessionExerciseId").anyOf(filteredIds).toArray();
+  const setsByExercise = new Map<string, typeof sets>();
+  for (const entry of sets) {
+    const arr = setsByExercise.get(entry.sessionExerciseId) ?? [];
+    arr.push(entry);
+    setsByExercise.set(entry.sessionExerciseId, arr);
+  }
 
   return filtered
     .map((item) => {
-      const linkedSets = sets.filter((entry) => entry.sessionExerciseId === item.id);
+      const linkedSets = setsByExercise.get(item.id) ?? [];
       const session = sessionMap.get(item.sessionId)!;
       return {
         sessionId: session.id,
@@ -79,33 +82,57 @@ export const getExerciseTopWeightSeries = async (
   }));
 };
 
-export const getExerciseFrequency = async (
-  userId: string,
-  canonicalExerciseId: string,
-  days: number
-): Promise<number> => {
-  const history = await getExerciseHistory(userId, canonicalExerciseId);
-  const threshold = daysAgoIso(days);
-  return history.filter((item) => item.sessionDate >= threshold).length;
-};
-
 export const getExerciseFrequencySeries = async (
   userId: string,
   canonicalExerciseId: string
-): Promise<FrequencyPoint[]> => [
-  { label: "30 giorni", value: await getExerciseFrequency(userId, canonicalExerciseId, 30) },
-  { label: "90 giorni", value: await getExerciseFrequency(userId, canonicalExerciseId, 90) }
-];
+): Promise<FrequencyPoint[]> => {
+  const history = await getExerciseHistory(userId, canonicalExerciseId);
+  const threshold30 = daysAgoIso(30);
+  const threshold90 = daysAgoIso(90);
+  return [
+    { label: "30 giorni", value: history.filter((item) => item.sessionDate >= threshold30).length },
+    { label: "90 giorni", value: history.filter((item) => item.sessionDate >= threshold90).length }
+  ];
+};
+
+export const getExercisePersonalRecord = async (
+  userId: string,
+  canonicalExerciseId: string
+): Promise<number> => {
+  const history = await getExerciseHistory(userId, canonicalExerciseId);
+  return Math.max(...history.map((item) => item.topWeight), 0);
+};
 
 export const getSessionVolumeSeries = async (userId: string): Promise<SessionVolumePoint[]> => {
   const sessions = await getCompletedSessions(userId);
-  return (
-    await Promise.all(
-      sessions.map(async (session) => ({
+  const sessionIds = sessions.map((s) => s.id);
+  const allSessionExercises = await db.sessionExercises.where("sessionId").anyOf(sessionIds).toArray();
+  const allExerciseIds = allSessionExercises.map((item) => item.id);
+  const allSets = await db.setEntries.where("sessionExerciseId").anyOf(allExerciseIds).toArray();
+
+  const exercisesBySession = new Map<string, string[]>();
+  for (const item of allSessionExercises) {
+    const arr = exercisesBySession.get(item.sessionId) ?? [];
+    arr.push(item.id);
+    exercisesBySession.set(item.sessionId, arr);
+  }
+
+  const setsByExercise = new Map<string, typeof allSets>();
+  for (const entry of allSets) {
+    const arr = setsByExercise.get(entry.sessionExerciseId) ?? [];
+    arr.push(entry);
+    setsByExercise.set(entry.sessionExerciseId, arr);
+  }
+
+  return sessions
+    .map((session) => {
+      const exerciseIds = exercisesBySession.get(session.id) ?? [];
+      const linkedSets = exerciseIds.flatMap((id) => setsByExercise.get(id) ?? []);
+      return {
         sessionId: session.id,
         sessionDate: session.startedAt,
-        totalVolume: await getSessionTotalVolume(session.id)
-      }))
-    )
-  ).sort((left, right) => +new Date(left.sessionDate) - +new Date(right.sessionDate));
+        totalVolume: sum(linkedSets.map((entry) => getSetVolume(entry.weight, entry.reps)))
+      };
+    })
+    .sort((left, right) => +new Date(left.sessionDate) - +new Date(right.sessionDate));
 };

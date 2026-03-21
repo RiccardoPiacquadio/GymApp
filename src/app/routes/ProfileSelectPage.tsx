@@ -5,11 +5,12 @@ import { SectionTitle } from "../../components/common/SectionTitle";
 import { CreateProfileForm } from "../../features/users/components/CreateProfileForm";
 import { ProfileCard } from "../../features/users/components/ProfileCard";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
+import { useConfirm } from "../../hooks/useConfirm";
 import {
   createProfile,
   deleteProfile,
+  getManagerProfileId,
   getProfiles,
-  isProfileManager,
   updateProfileDisplayName
 } from "../../features/users/services/userRepository";
 import type { UserProfile } from "../../types";
@@ -18,12 +19,14 @@ export const ProfileSelectPage = () => {
   const navigate = useNavigate();
   const { activeProfileId, profile: activeProfile, setActiveProfileId } = useActiveProfile();
   const profiles = useLiveQuery(() => getProfiles(), [], []);
+  const managerId = useLiveQuery(() => getManagerProfileId(), [], undefined);
   const [duplicateProfile, setDuplicateProfile] = useState<UserProfile | null>(null);
+  const { confirm, ConfirmDialog } = useConfirm();
   const [editingProfileId, setEditingProfileId] = useState<string>();
   const [editingName, setEditingName] = useState("");
   const [profileAdminMessage, setProfileAdminMessage] = useState<string>();
 
-  const canManageProfiles = isProfileManager(activeProfile);
+  const canManageProfiles = Boolean(activeProfileId && managerId && activeProfileId === managerId);
 
   const handleSelect = async (profileId: string) => {
     await setActiveProfileId(profileId);
@@ -73,9 +76,12 @@ export const ProfileSelectPage = () => {
   };
 
   const handleDelete = async (profile: UserProfile) => {
-    const shouldDelete = window.confirm(
-      `Vuoi cancellare il profilo ${profile.displayName}? Verranno eliminati anche sessioni, esercizi e serie salvate di quel profilo.`
-    );
+    const shouldDelete = await confirm({
+      title: "Cancella profilo",
+      message: `Vuoi cancellare il profilo ${profile.displayName}? Verranno eliminati anche sessioni, esercizi e serie salvate di quel profilo.`,
+      confirmLabel: "Cancella",
+      variant: "danger"
+    });
     if (!shouldDelete) {
       return;
     }
@@ -93,14 +99,15 @@ export const ProfileSelectPage = () => {
 
   return (
     <div className="space-y-5">
+      {ConfirmDialog}
       <section>
         <SectionTitle
           title="Seleziona profilo"
-          subtitle="Login leggero locale: scegli un profilo esistente o creane uno nuovo."
+          subtitle="Scegli o crea un profilo locale."
         />
         {canManageProfiles ? (
           <div className="app-panel mb-3 p-4 text-sm text-ink/80">
-            Sei loggato come Riccardo Piacquadio: puoi modificare e cancellare i profili. La cancellazione � bloccata solo per il profilo attivo; sugli altri profili elimina anche tutto lo storico collegato.
+            Sei il gestore dei profili: puoi modificare e cancellare gli altri profili. La cancellazione e' bloccata solo per il profilo attivo.
           </div>
         ) : null}
         {profileAdminMessage ? <div className="app-panel mb-3 p-4 text-sm text-ink/80">{profileAdminMessage}</div> : null}

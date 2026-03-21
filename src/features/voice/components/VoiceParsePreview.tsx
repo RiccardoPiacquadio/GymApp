@@ -15,32 +15,31 @@ export const VoiceParsePreview = ({
   onConfirm,
   onCancel
 }: VoiceParsePreviewProps) => (
-  <div className="dark-panel space-y-3 p-4">
-    <div className="flex items-center justify-between">
-      <p className="text-sm font-semibold text-white">Anteprima input vocale</p>
-      <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">{Math.round(parsed.confidence * 100)}%</span>
+  <div className="dark-panel p-4">
+    <div className="flex items-center justify-between gap-3">
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold text-white">
+          {exerciseName ?? "Esercizio?"} — {parsed.weight ?? "?"} kg x {parsed.reps ?? "?"}
+        </p>
+        <p className="mt-0.5 truncate text-xs text-white/60">{parsed.rawText}</p>
+      </div>
+      <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-medium text-ink">
+        {Math.round(parsed.confidence * 100)}%
+      </span>
     </div>
-    <div className="space-y-1 text-sm text-white/90">
-      <p>Testo: {parsed.rawText}</p>
-      <p>Esercizio: {exerciseName ?? "Contesto attivo o non riconosciuto"}</p>
-      <p>Numero serie dichiarate: {parsed.setCount ?? "-"}</p>
-      <p>Indice serie: {parsed.setNumber ?? "-"}</p>
-      <p>
-        Set: {parsed.weight ?? "-"} kg x {parsed.reps ?? "-"}
-      </p>
-      {parsed.feedbackMessage ? <p className="font-medium text-chrome">{parsed.feedbackMessage}</p> : null}
-      {candidateNames && candidateNames.length > 0 ? (
-        <p className="text-white">Possibili esercizi: {candidateNames.join(", ")}</p>
-      ) : null}
-    </div>
-    <div className="flex gap-3">
-      <button className="primary-button flex-1" type="button" disabled={!parsed.isValid} onClick={() => void onConfirm()}>
+    {parsed.feedbackMessage ? (
+      <p className="mt-2 text-xs text-chrome">{parsed.feedbackMessage}</p>
+    ) : null}
+    {candidateNames && candidateNames.length > 0 ? (
+      <p className="mt-1 text-xs text-white/60">Forse: {candidateNames.join(", ")}</p>
+    ) : null}
+    <div className="mt-3 flex gap-2">
+      <button className="primary-button flex-1 !py-2 text-xs" type="button" disabled={!parsed.isValid} onClick={() => void onConfirm()}>
         Conferma
       </button>
-      <button className="rounded-2xl border border-white bg-white px-4 py-3 text-sm font-semibold text-ink transition hover:bg-mist" type="button" onClick={onCancel}>
+      <button className="rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-xs font-semibold text-white transition hover:bg-white/20" type="button" onClick={onCancel}>
         Annulla
       </button>
     </div>
   </div>
 );
-

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 type SectionTitleProps = {
-  title: string;
+  title: ReactNode;
   subtitle?: string;
   action?: ReactNode;
 };

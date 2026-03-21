@@ -17,24 +17,27 @@ import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 export const ExerciseDetailPage = () => {
   const { exerciseId } = useParams();
   const { activeProfileId } = useActiveProfile();
-  const exercise = useLiveQuery(async () => (exerciseId ? await getExerciseById(exerciseId) : undefined), [exerciseId]);
+  const exercise = useLiveQuery(
+    () => (exerciseId ? getExerciseById(exerciseId) : undefined),
+    [exerciseId]
+  );
   const volumeSeries = useLiveQuery(
-    async () => (activeProfileId && exerciseId ? await getExerciseVolumeSeries(activeProfileId, exerciseId) : []),
+    () => (activeProfileId && exerciseId ? getExerciseVolumeSeries(activeProfileId, exerciseId) : []),
     [activeProfileId, exerciseId],
     []
   );
   const topWeightSeries = useLiveQuery(
-    async () => (activeProfileId && exerciseId ? await getExerciseTopWeightSeries(activeProfileId, exerciseId) : []),
+    () => (activeProfileId && exerciseId ? getExerciseTopWeightSeries(activeProfileId, exerciseId) : []),
     [activeProfileId, exerciseId],
     []
   );
   const frequencySeries = useLiveQuery(
-    async () => (activeProfileId && exerciseId ? await getExerciseFrequencySeries(activeProfileId, exerciseId) : []),
+    () => (activeProfileId && exerciseId ? getExerciseFrequencySeries(activeProfileId, exerciseId) : []),
     [activeProfileId, exerciseId],
     []
   );
   const history = useLiveQuery(
-    async () => (activeProfileId && exerciseId ? await getExerciseHistory(activeProfileId, exerciseId) : []),
+    () => (activeProfileId && exerciseId ? getExerciseHistory(activeProfileId, exerciseId) : []),
     [activeProfileId, exerciseId],
     []
   );
@@ -67,10 +70,10 @@ export const ExerciseDetailPage = () => {
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-medium">{formatDate(item.sessionDate)}</p>
-                  <p className="mt-1 text-sm text-ink/70">{item.totalSets} serie • {item.totalReps} reps</p>
+                  <p className="mt-1 text-sm text-ink/70">{item.totalSets} serie &middot; {item.totalReps} reps</p>
                 </div>
                 <div className="text-right text-sm">
-                  <p className="font-semibold">{item.volume} vol</p>
+                  <p className="font-semibold">{item.volume >= 1000 ? `${(item.volume / 1000).toFixed(1)} t` : `${item.volume} kg`}</p>
                   <p className="text-ink/70">max {item.topWeight} kg</p>
                 </div>
               </div>

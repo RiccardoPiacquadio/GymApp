@@ -1,27 +1,5 @@
 import type { SpeechCaptureState } from "../types/voice";
-
-type BrowserSpeechRecognitionResult = ArrayLike<{ transcript: string }> & {
-  isFinal?: boolean;
-};
-
-type BrowserSpeechRecognitionEvent = {
-  results: ArrayLike<BrowserSpeechRecognitionResult>;
-};
-
-type BrowserSpeechRecognition = {
-  lang: string;
-  interimResults: boolean;
-  continuous?: boolean;
-  maxAlternatives: number;
-  onstart: (() => void) | null;
-  onresult: ((event: BrowserSpeechRecognitionEvent) => void) | null;
-  onerror: ((event?: { error?: string }) => void) | null;
-  onend: (() => void) | null;
-  start(): void;
-  stop(): void;
-};
-
-type SpeechRecognitionCtor = new () => BrowserSpeechRecognition;
+import { FB_NO_TEXT_RECOGNIZED, FB_SPEECH_ERROR, FB_SPEECH_NOT_SUPPORTED } from "./voiceFeedback";
 
 type SpeechCaptureLifecycle = "listening" | "hearing" | "processing";
 
@@ -31,13 +9,6 @@ type SpeechCaptureOptions = {
   onTranscriptChange?: (transcript: string) => void;
   onStateChange?: (state: SpeechCaptureLifecycle) => void;
 };
-
-declare global {
-  interface Window {
-    webkitSpeechRecognition?: SpeechRecognitionCtor;
-    SpeechRecognition?: SpeechRecognitionCtor;
-  }
-}
 
 const getRecognitionCtor = () => window.SpeechRecognition ?? window.webkitSpeechRecognition;
 
@@ -49,7 +20,7 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
     const config = typeof options === "string" ? { lang: options } : options;
     const Ctor = getRecognitionCtor();
     if (!Ctor) {
-      reject(new Error("Speech recognition non supportato"));
+      reject(new Error(FB_SPEECH_NOT_SUPPORTED));
       return;
     }
 
@@ -128,14 +99,14 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
         return;
       }
 
-      settle(() => reject(new Error("Errore riconoscimento vocale")));
+      settle(() => reject(new Error(FB_SPEECH_ERROR)));
     };
 
     recognition.onend = () => {
       settle(() => {
         const transcript = latestTranscript.trim();
         if (!transcript) {
-          reject(new Error("Nessun testo riconosciuto"));
+          reject(new Error(FB_NO_TEXT_RECOGNIZED));
           return;
         }
 

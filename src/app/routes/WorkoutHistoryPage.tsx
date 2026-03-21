@@ -8,14 +8,14 @@ import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
 export const WorkoutHistoryPage = () => {
   const { activeProfileId } = useActiveProfile();
   const sessions = useLiveQuery(
-    () => (activeProfileId ? getCompletedSessionsForUser(activeProfileId) : Promise.resolve([])),
+    () => (activeProfileId ? getCompletedSessionsForUser(activeProfileId) : []),
     [activeProfileId],
     []
   );
 
   return (
     <div className="space-y-5">
-      <SectionTitle title="Storico allenamenti" subtitle="Elenco sessioni completate per il profilo selezionato." />
+      <SectionTitle title="Storico allenamenti" subtitle="Sessioni completate." />
       <div className="space-y-3">
         {sessions.map((session) => (
           <Link key={session.id} to={`/history/${session.id}`} className="app-panel block p-4">
@@ -23,10 +23,10 @@ export const WorkoutHistoryPage = () => {
               <div>
                 <p className="text-base font-semibold">{formatDate(session.startedAt)}</p>
                 <p className="mt-1 text-sm text-ink/70">
-                  {session.totalExercises} esercizi • {session.totalSets} serie
+                  {session.totalExercises} esercizi &middot; {session.totalSets} serie
                 </p>
               </div>
-              <span className="pill">{session.totalVolume} vol</span>
+              <span className="pill">{session.totalVolume >= 1000 ? `${(session.totalVolume / 1000).toFixed(1)}t` : `${session.totalVolume} kg`}</span>
             </div>
           </Link>
         ))}

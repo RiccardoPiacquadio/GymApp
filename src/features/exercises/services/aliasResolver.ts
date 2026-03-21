@@ -1,5 +1,42 @@
 import { db } from "../../../db";
 import { normalizeExerciseInput } from "../../../lib/normalize";
+import type { ExerciseAlias, ExerciseCanonical } from "../../../types";
+import {
+  AMBIGUOUS_CONFIDENCE_FLOOR,
+  AMBIGUOUS_CONFIDENCE_MULTIPLIER,
+  DISAMBIGUATION_MIN_SCORE,
+  DISAMBIGUATION_SCORE_GAP,
+  EDIT_DISTANCE_1_MIN_LENGTH,
+  EDIT_DISTANCE_2_MIN_LENGTH,
+  MAX_CANDIDATE_RESULTS,
+  SCORE_EDIT_DISTANCE_1,
+  SCORE_EDIT_DISTANCE_2,
+  SCORE_EXACT,
+  SCORE_NO_SPACES,
+  SCORE_SUBSTRING_LONG,
+  SCORE_SUBSTRING_SHORT,
+  SUBSTRING_MIN_LENGTH
+} from "./aliasResolverConstants";
+
+// In-memory cache — exercises change only on seed, so cache is nearly always valid.
+let cachedAliases: ExerciseAlias[] | null = null;
+let cachedCanonicals: ExerciseCanonical[] | null = null;
+
+const getAliases = async (): Promise<ExerciseAlias[]> => {
+  if (!cachedAliases) cachedAliases = await db.exerciseAliases.toArray();
+  return cachedAliases;
+};
+
+const getCanonicals = async (): Promise<ExerciseCanonical[]> => {
+  if (!cachedCanonicals) cachedCanonicals = await db.exerciseCanonicals.toArray();
+  return cachedCanonicals;
+};
+
+/** Call after seeding or adding exercises to invalidate the cache. */
+export const invalidateAliasCache = () => {
+  cachedAliases = null;
+  cachedCanonicals = null;
+};
 
 type MatchCandidate = {
   canonicalExerciseId: string;
@@ -45,29 +82,29 @@ const scoreAliasMatch = (normalizedInput: string, normalizedAlias: string) => {
   }
 
   if (normalizedInput === normalizedAlias) {
-    return 1;
+    return SCORE_EXACT;
   }
 
   const looseInput = toLooseText(normalizedInput);
   const looseAlias = toLooseText(normalizedAlias);
 
   if (looseInput === looseAlias) {
-    return 0.96;
+    return SCORE_NO_SPACES;
   }
 
   if (normalizedAlias.includes(normalizedInput) || normalizedInput.includes(normalizedAlias)) {
-    return normalizedInput.length >= 4 ? 0.76 : 0.44;
+    return normalizedInput.length >= SUBSTRING_MIN_LENGTH ? SCORE_SUBSTRING_LONG : SCORE_SUBSTRING_SHORT;
   }
 
   const maxLength = Math.max(looseInput.length, looseAlias.length);
   const distance = getEditDistance(looseInput, looseAlias);
 
-  if (maxLength >= 6 && distance <= 1) {
-    return 0.87;
+  if (maxLength >= EDIT_DISTANCE_1_MIN_LENGTH && distance <= 1) {
+    return SCORE_EDIT_DISTANCE_1;
   }
 
-  if (maxLength >= 9 && distance <= 2) {
-    return 0.8;
+  if (maxLength >= EDIT_DISTANCE_2_MIN_LENGTH && distance <= 2) {
+    return SCORE_EDIT_DISTANCE_2;
   }
 
   return 0;
@@ -85,7 +122,7 @@ const getBestResolutionFromCandidates = (candidates: MatchCandidate[]): AliasRes
 
   if (
     candidateExerciseIds.length === 1 ||
-    (bestCandidate.score >= 0.84 && (!secondCandidate || bestCandidate.score - secondCandidate.score >= 0.12))
+    (bestCandidate.score >= DISAMBIGUATION_MIN_SCORE && (!secondCandidate || bestCandidate.score - secondCandidate.score >= DISAMBIGUATION_SCORE_GAP))
   ) {
     return {
       canonicalExerciseId: bestCandidate.canonicalExerciseId,
@@ -96,9 +133,9 @@ const getBestResolutionFromCandidates = (candidates: MatchCandidate[]): AliasRes
   }
 
   return {
-    confidence: Math.max(0.25, bestCandidate.score * 0.6),
+    confidence: Math.max(AMBIGUOUS_CONFIDENCE_FLOOR, bestCandidate.score * AMBIGUOUS_CONFIDENCE_MULTIPLIER),
     isAmbiguous: true,
-    candidateExerciseIds: candidateExerciseIds.slice(0, 5),
+    candidateExerciseIds: candidateExerciseIds.slice(0, MAX_CANDIDATE_RESULTS),
     reason: "ambiguous"
   };
 };
@@ -109,7 +146,7 @@ export const resolveExerciseAlias = async (input: string): Promise<AliasResoluti
     return { confidence: 0, isAmbiguous: false, reason: "not_found" };
   }
 
-  const aliases = await db.exerciseAliases.toArray();
+  const aliases = await getAliases();
   const aliasCandidates = aliases
     .map((alias) => ({
       canonicalExerciseId: alias.canonicalExerciseId,
@@ -123,7 +160,7 @@ export const resolveExerciseAlias = async (input: string): Promise<AliasResoluti
     return aliasResolution;
   }
 
-  const canonicals = await db.exerciseCanonicals.toArray();
+  const canonicals = await getCanonicals();
   const canonicalCandidates = canonicals
     .map((canonical) => ({
       canonicalExerciseId: canonical.id,

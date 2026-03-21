@@ -107,6 +107,19 @@ export const addExerciseToSession = async (
 export const getSessionExerciseById = (sessionExerciseId: string) =>
   db.sessionExercises.get(sessionExerciseId);
 
+export const getSessionExerciseDetail = async (sessionExerciseId: string) => {
+  const sessionExercise = await db.sessionExercises.get(sessionExerciseId);
+  if (!sessionExercise) return null;
+
+  const [session, exercise, sets] = await Promise.all([
+    db.workoutSessions.get(sessionExercise.sessionId),
+    db.exerciseCanonicals.get(sessionExercise.canonicalExerciseId),
+    db.setEntries.where("sessionExerciseId").equals(sessionExercise.id).sortBy("setNumber")
+  ]);
+
+  return session && exercise ? { sessionExercise, session, exercise, sets } : null;
+};
+
 export const getSessionExerciseByExercise = (sessionId: string, exerciseId: string) =>
   db.sessionExercises.where({ sessionId, canonicalExerciseId: exerciseId }).first();
 
@@ -118,14 +131,26 @@ export const getSessionExercises = async (sessionId: string): Promise<SessionExe
   const exerciseIds = sessionExercises.map((item) => item.canonicalExerciseId);
   const exercises = await db.exerciseCanonicals.bulkGet(exerciseIds);
   const exerciseMap = new Map(exercises.filter(Boolean).map((item) => [item!.id, item!]));
-  const sets = await db.setEntries.toArray();
+
+  // Indexed query per session exercise — avoids loading ALL set entries
+  const sessionExerciseIds = sessionExercises.map((item) => item.id);
+  const sets = await db.setEntries
+    .where("sessionExerciseId")
+    .anyOf(sessionExerciseIds)
+    .toArray();
+  const setsByExercise = new Map<string, SetEntry[]>();
+  for (const entry of sets) {
+    const arr = setsByExercise.get(entry.sessionExerciseId) ?? [];
+    arr.push(entry);
+    setsByExercise.set(entry.sessionExerciseId, arr);
+  }
 
   return sessionExercises.map((sessionExercise) => ({
     sessionExercise,
     exercise: exerciseMap.get(sessionExercise.canonicalExerciseId)!,
-    sets: sets
-      .filter((entry) => entry.sessionExerciseId === sessionExercise.id)
-      .sort((left, right) => left.setNumber - right.setNumber)
+    sets: (setsByExercise.get(sessionExercise.id) ?? []).sort(
+      (left, right) => left.setNumber - right.setNumber
+    )
   }));
 };
 
@@ -219,15 +244,30 @@ export const getCompletedSessionsForUser = async (
   userId: string
 ): Promise<WorkoutSessionWithSummary[]> => {
   const sessions = await db.workoutSessions.where({ userId, status: "completed" }).toArray();
-  const sessionExercises = await db.sessionExercises.toArray();
-  const sets = await db.setEntries.toArray();
+  const sessionIds = sessions.map((s) => s.id);
+  const sessionExercises = await db.sessionExercises.where("sessionId").anyOf(sessionIds).toArray();
+  const exerciseIds = sessionExercises.map((item) => item.id);
+  const sets = await db.setEntries.where("sessionExerciseId").anyOf(exerciseIds).toArray();
+
+  const exercisesBySession = new Map<string, typeof sessionExercises>();
+  for (const item of sessionExercises) {
+    const arr = exercisesBySession.get(item.sessionId) ?? [];
+    arr.push(item);
+    exercisesBySession.set(item.sessionId, arr);
+  }
+
+  const setsByExercise = new Map<string, SetEntry[]>();
+  for (const entry of sets) {
+    const arr = setsByExercise.get(entry.sessionExerciseId) ?? [];
+    arr.push(entry);
+    setsByExercise.set(entry.sessionExerciseId, arr);
+  }
 
   return sessions
     .sort((left, right) => +new Date(right.startedAt) - +new Date(left.startedAt))
     .map((session) => {
-      const linkedExercises = sessionExercises.filter((item) => item.sessionId === session.id);
-      const linkedExerciseIds = new Set(linkedExercises.map((item) => item.id));
-      const linkedSets = sets.filter((entry) => linkedExerciseIds.has(entry.sessionExerciseId));
+      const linkedExercises = exercisesBySession.get(session.id) ?? [];
+      const linkedSets = linkedExercises.flatMap((item) => setsByExercise.get(item.id) ?? []);
 
       return {
         ...session,

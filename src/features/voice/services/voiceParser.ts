@@ -1,6 +1,13 @@
 import { normalizeExerciseInput } from "../../../lib/normalize";
 import { resolveExerciseAlias } from "../../exercises/services/aliasResolver";
 import type { ParsedVoiceSet } from "../types/voice";
+import {
+  FB_AMBIGUOUS_NAME,
+  FB_COMMAND_RECOGNIZED,
+  FB_EXERCISE_NOT_RECOGNIZED,
+  FB_MISSING_WEIGHT_REPS,
+  FB_WEIGHT_REPS_ONLY
+} from "./voiceFeedback";
 
 const toNumber = (value: string) => Number(value.replace(",", "."));
 
@@ -368,9 +375,12 @@ export const parseMultiSetCommand = async (
   entries: MultiSetEntry[];
   canonicalExerciseId?: string;
 } | null> => {
-  const normalized = normalizeExerciseInput(rawText);
+  // Preserve commas before normalization (normalizeText strips punctuation).
+  // Replace commas with a letter token that survives normalization, restore after.
+  const preserved = rawText.replace(/,/g, " XSEPX ");
+  const normalized = normalizeExerciseInput(preserved);
   const speechNorm = normalizeSpeechArtifacts(normalized);
-  const withDigits = replaceWordNumbers(speechNorm);
+  const withDigits = replaceWordNumbers(speechNorm).replace(/\bxsepx\b/gi, ",");
 
   const entries = extractMultiSetEntries(withDigits);
   if (!entries || entries.length < 2) return null;
@@ -404,15 +414,15 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
 
   let feedbackMessage: string | undefined;
   if (aliasResolution.isAmbiguous) {
-    feedbackMessage = "Nome ambiguo: scegli l'esercizio corretto prima di salvare.";
+    feedbackMessage = FB_AMBIGUOUS_NAME;
   } else if (!hasExercise && hasWeight && hasReps) {
-    feedbackMessage = "Peso e ripetizioni riconosciuti: uso il contesto dell'esercizio attivo se disponibile.";
+    feedbackMessage = FB_WEIGHT_REPS_ONLY;
   } else if (!hasExercise) {
-    feedbackMessage = "Esercizio non riconosciuto.";
+    feedbackMessage = FB_EXERCISE_NOT_RECOGNIZED;
   } else if (!hasWeight || !hasReps) {
-    feedbackMessage = "Mancano peso o ripetizioni nel comando vocale.";
+    feedbackMessage = FB_MISSING_WEIGHT_REPS;
   } else {
-    feedbackMessage = "Comando riconosciuto.";
+    feedbackMessage = FB_COMMAND_RECOGNIZED;
   }
 
   return {

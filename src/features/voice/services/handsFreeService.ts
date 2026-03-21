@@ -11,30 +11,20 @@
  *    the same recognition session (avoids iOS user-gesture requirement for new instances).
  */
 
-// ---------------------------------------------------------------------------
-// Browser type shims (SpeechRecognition)
-// ---------------------------------------------------------------------------
+// SpeechRecognition types are in src/types/speech-recognition.d.ts
 
-type WakeRecognitionResult = ArrayLike<{ transcript: string }> & { isFinal?: boolean };
-
-type WakeRecognitionEvent = {
-  resultIndex: number;
-  results: ArrayLike<WakeRecognitionResult>;
-};
-
-type WakeRecognition = {
-  lang: string;
-  interimResults: boolean;
-  continuous: boolean;
-  maxAlternatives: number;
-  onstart: (() => void) | null;
-  onresult: ((event: WakeRecognitionEvent) => void) | null;
-  onerror: ((event?: { error?: string }) => void) | null;
-  onend: (() => void) | null;
-  start(): void;
-  stop(): void;
-  abort(): void;
-};
+const SILENT_WAV_SAMPLE_RATE = 8000;
+const SILENT_AUDIO_VOLUME = 0.01;
+const BEEP_FREQUENCY_HZ = 880;
+const BEEP_GAIN = 0.15;
+const BEEP_DURATION_S = 0.15;
+const BEEP_CLEANUP_DELAY_MS = 300;
+const VIBRATION_DURATION_MS = 100;
+const CAPTURE_TIMEOUT_MS = 8_000;
+const RECOGNITION_RESTART_DELAY_MS = 300;
+const RECOGNITION_ERROR_RESTART_DELAY_MS = 500;
+const RECOGNITION_START_RETRY_DELAY_MS = 1000;
+const MIN_WAKE_COMMAND_LENGTH = 2;
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -67,8 +57,12 @@ export type HandsFreeOptions = {
 
 let silentAudio: HTMLAudioElement | null = null;
 
+let cachedSilentWav: string | null = null;
+
 const generateSilentWav = (): string => {
-  const sampleRate = 8000;
+  if (cachedSilentWav) return cachedSilentWav;
+
+  const sampleRate = SILENT_WAV_SAMPLE_RATE;
   const numSamples = sampleRate; // 1 second
   const buffer = new ArrayBuffer(44 + numSamples);
   const view = new DataView(buffer);
@@ -94,13 +88,14 @@ const generateSilentWav = (): string => {
   const bytes = new Uint8Array(buffer);
   let binary = "";
   for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-  return "data:audio/wav;base64," + btoa(binary);
+  cachedSilentWav = "data:audio/wav;base64," + btoa(binary);
+  return cachedSilentWav;
 };
 
 const startMediaSession = (onMediaButton: () => void) => {
   silentAudio = new Audio(generateSilentWav());
   silentAudio.loop = true;
-  silentAudio.volume = 0.01;
+  silentAudio.volume = SILENT_AUDIO_VOLUME;
   void silentAudio.play().catch(() => {});
 
   if ("mediaSession" in navigator) {
@@ -131,23 +126,31 @@ const stopMediaSession = () => {
 // Audio / haptic feedback
 // ---------------------------------------------------------------------------
 
+let sharedAudioCtx: AudioContext | null = null;
+
+const getAudioContext = (): AudioContext => {
+  if (!sharedAudioCtx || sharedAudioCtx.state === "closed") {
+    sharedAudioCtx = new AudioContext();
+  }
+  return sharedAudioCtx;
+};
+
 const playBeep = () => {
   try {
-    const ctx = new AudioContext();
+    const ctx = getAudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.frequency.value = 880;
-    gain.gain.value = 0.15;
+    osc.frequency.value = BEEP_FREQUENCY_HZ;
+    gain.gain.value = BEEP_GAIN;
     osc.connect(gain).connect(ctx.destination);
     osc.start();
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-    osc.stop(ctx.currentTime + 0.15);
-    setTimeout(() => void ctx.close(), 300);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + BEEP_DURATION_S);
+    osc.stop(ctx.currentTime + BEEP_DURATION_S);
   } catch {
     /* AudioContext not available */
   }
   if ("vibrate" in navigator) {
-    navigator.vibrate(100);
+    navigator.vibrate(VIBRATION_DURATION_MS);
   }
 };
 
@@ -158,9 +161,7 @@ const playBeep = () => {
 type Phase = "idle" | "capturing" | "cooldown";
 
 const getRecognitionCtor = () =>
-  (window.SpeechRecognition ?? window.webkitSpeechRecognition) as (new () => WakeRecognition) | undefined;
-
-const CAPTURE_TIMEOUT_MS = 8_000;
+  (window.SpeechRecognition ?? window.webkitSpeechRecognition) as SpeechRecognitionCtor | undefined;
 
 export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeController => {
   const { wakePhrase, lang = "it-IT", onCommand, onStatusChange, onWakeDetected } = options;
@@ -169,7 +170,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
   // -- state --
   let active = true;
   let phase: Phase = "idle";
-  let recognition: WakeRecognition | null = null;
+  let recognition: SpeechRecognitionInstance | null = null;
   let recognitionRunning = false;
   let captureTimeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -256,7 +257,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
 
           const afterWake = transcript.slice(wakeIdx + normalizedWake.length).trim();
 
-          if (result.isFinal && afterWake.length > 2) {
+          if (result.isFinal && afterWake.length > MIN_WAKE_COMMAND_LENGTH) {
             // "gym squat 80 per 8" → wake + command in one phrase
             processCommand(afterWake);
             return;
@@ -279,7 +280,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
     rec.onerror = () => {
       recognitionRunning = false;
       if (active && phase !== "cooldown") {
-        setTimeout(startRecognition, 500);
+        setTimeout(startRecognition, RECOGNITION_ERROR_RESTART_DELAY_MS);
       }
     };
 
@@ -287,7 +288,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
       recognitionRunning = false;
       // Auto-restart (iOS stops continuous after silence)
       if (active && phase !== "cooldown") {
-        setTimeout(startRecognition, 300);
+        setTimeout(startRecognition, RECOGNITION_RESTART_DELAY_MS);
       }
     };
 
@@ -296,7 +297,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
       rec.start();
     } catch {
       recognitionRunning = false;
-      if (active) setTimeout(startRecognition, 1000);
+      if (active) setTimeout(startRecognition, RECOGNITION_START_RETRY_DELAY_MS);
     }
   };
 

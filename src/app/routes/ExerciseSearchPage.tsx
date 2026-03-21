@@ -1,17 +1,17 @@
 import { useMemo, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from "../../db";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { ExerciseList } from "../../features/exercises/components/ExerciseList";
 import { ExerciseSearchInput } from "../../features/exercises/components/ExerciseSearchInput";
-import { searchExercises } from "../../features/exercises/services/exerciseRepository";
+import { getAllAliases, searchExercises } from "../../features/exercises/services/exerciseRepository";
 import {
   addExerciseToSession,
   getActiveSessionForUser,
   getWorkoutSessionById
 } from "../../features/sessions/services/sessionRepository";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
+import { useDebounce } from "../../hooks/useDebounce";
 import type { ExerciseCanonical } from "../../types";
 
 export const ExerciseSearchPage = () => {
@@ -19,16 +19,17 @@ export const ExerciseSearchPage = () => {
   const { sessionId } = useParams();
   const { activeProfileId } = useActiveProfile();
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, 200);
   const activeSession = useLiveQuery(
-    async () => (activeProfileId ? await getActiveSessionForUser(activeProfileId) : undefined),
+    () => (activeProfileId ? getActiveSessionForUser(activeProfileId) : undefined),
     [activeProfileId]
   );
   const selectedSession = useLiveQuery(
-    async () => (sessionId ? await getWorkoutSessionById(sessionId) : undefined),
+    () => (sessionId ? getWorkoutSessionById(sessionId) : undefined),
     [sessionId]
   );
-  const exercises = useLiveQuery(async () => await searchExercises(query), [query], []);
-  const aliases = useLiveQuery(async () => await db.exerciseAliases.toArray(), [], []);
+  const exercises = useLiveQuery(() => searchExercises(debouncedQuery), [debouncedQuery], []);
+  const aliases = useLiveQuery(() => getAllAliases(), [], []);
 
   const aliasMap = useMemo(() => {
     return aliases.reduce<Record<string, string[]>>((accumulator, alias) => {

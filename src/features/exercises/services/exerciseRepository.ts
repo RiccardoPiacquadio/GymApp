@@ -5,6 +5,8 @@ export const getExerciseById = (exerciseId: string) => db.exerciseCanonicals.get
 
 export const getAllExercises = () => db.exerciseCanonicals.orderBy("canonicalName").toArray();
 
+export const getAllAliases = () => db.exerciseAliases.toArray();
+
 export const getAliasesForExercise = (canonicalExerciseId: string) =>
   db.exerciseAliases.where("canonicalExerciseId").equals(canonicalExerciseId).toArray();
 

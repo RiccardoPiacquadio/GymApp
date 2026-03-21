@@ -4,6 +4,7 @@ import { toIsoNow } from "../lib/dates";
 import { createId } from "../lib/ids";
 import { normalizeExerciseInput } from "../lib/normalize";
 import { db } from "./schema";
+import { invalidateAliasCache } from "../features/exercises/services/aliasResolver";
 
 const italianHints = new Set([
   "panca",
@@ -189,4 +190,6 @@ export const seedDatabase = async () => {
       await db.exerciseAliases.bulkAdd(aliasesToAdd);
     }
   });
+
+  invalidateAliasCache();
 };
