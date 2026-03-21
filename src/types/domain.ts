@@ -52,6 +52,8 @@ export type SessionExercise = {
 
 export type SetEntryInputMode = "manual" | "voice";
 
+export type SetType = "working" | "warmup" | "dropset" | "amrap" | "failure";
+
 export type SetEntry = {
   id: string;
   sessionExerciseId: string;
@@ -59,6 +61,9 @@ export type SetEntry = {
   reps: number;
   weight: number;
   inputMode: SetEntryInputMode;
+  setType?: SetType;
+  rpe?: number;
+  note?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -78,6 +83,14 @@ export type WorkoutSessionWithSummary = WorkoutSession & {
   totalExercises: number;
   totalSets: number;
   totalVolume: number;
+};
+
+export type BodyWeightEntry = {
+  id: string;
+  userId: string;
+  weight: number;
+  date: string;
+  createdAt: string;
 };
 
 export type WorkoutTemplate = {

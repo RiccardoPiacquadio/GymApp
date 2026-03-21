@@ -2,6 +2,7 @@ import Dexie, { Table } from "dexie";
 import { normalizeText } from "../lib/normalize";
 import type {
   AppSetting,
+  BodyWeightEntry,
   ExerciseAlias,
   ExerciseCanonical,
   SessionExercise,
@@ -22,6 +23,7 @@ export class GymAppDatabase extends Dexie {
   appSettings!: Table<AppSetting, string>;
   workoutTemplates!: Table<WorkoutTemplate, string>;
   workoutTemplateExercises!: Table<WorkoutTemplateExercise, string>;
+  bodyWeightEntries!: Table<BodyWeightEntry, string>;
 
   constructor() {
     super("gymapp-db");
@@ -65,6 +67,20 @@ export class GymAppDatabase extends Dexie {
       appSettings: "key",
       workoutTemplates: "id, userId, name",
       workoutTemplateExercises: "id, templateId, canonicalExerciseId, exerciseOrder"
+    });
+
+    // v4: body weight tracking, set type/rpe/note fields
+    this.version(4).stores({
+      userProfiles: "id, displayName, normalizedDisplayName, createdAt, updatedAt",
+      exerciseCanonicals: "id, slug, canonicalName, createdAt, updatedAt",
+      exerciseAliases: "id, canonicalExerciseId, normalizedAliasText, language, createdAt",
+      workoutSessions: "id, userId, startedAt, endedAt, status, createdAt, updatedAt",
+      sessionExercises: "id, sessionId, canonicalExerciseId, exerciseOrder, createdAt",
+      setEntries: "id, sessionExerciseId, setNumber, reps, weight, inputMode, createdAt, updatedAt",
+      appSettings: "key",
+      workoutTemplates: "id, userId, name",
+      workoutTemplateExercises: "id, templateId, canonicalExerciseId, exerciseOrder",
+      bodyWeightEntries: "id, userId, date, createdAt"
     });
   }
 }

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useNavigate } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
+import { exportUserDataAsCsv, exportUserDataAsJson, downloadFile } from "../../features/analytics/services/dataExportService";
+import { BodyWeightTracker } from "../../features/bodyweight/components/BodyWeightTracker";
 import { CreateProfileForm } from "../../features/users/components/CreateProfileForm";
 import { ProfileCard } from "../../features/users/components/ProfileCard";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
@@ -145,6 +147,39 @@ export const ProfileSelectPage = () => {
           onDismissDuplicate={() => setDuplicateProfile(null)}
         />
       </section>
+
+      {/* Body weight tracker */}
+      {activeProfileId ? <BodyWeightTracker userId={activeProfileId} /> : null}
+
+      {/* Data export */}
+      {activeProfileId ? (
+        <section className="app-panel space-y-3 p-5">
+          <h3 className="text-sm font-semibold">Esporta dati</h3>
+          <p className="text-xs text-ink/50">Scarica tutti i tuoi dati di allenamento.</p>
+          <div className="flex gap-2">
+            <button
+              className="secondary-button px-4 py-2 text-xs"
+              type="button"
+              onClick={async () => {
+                const json = await exportUserDataAsJson(activeProfileId);
+                downloadFile(json, "gymapp-export.json", "application/json");
+              }}
+            >
+              Esporta JSON
+            </button>
+            <button
+              className="secondary-button px-4 py-2 text-xs"
+              type="button"
+              onClick={async () => {
+                const csv = await exportUserDataAsCsv(activeProfileId);
+                downloadFile(csv, "gymapp-export.csv", "text/csv");
+              }}
+            >
+              Esporta CSV
+            </button>
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 };

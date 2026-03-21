@@ -3,6 +3,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useParams } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { PRBadge } from "../../features/analytics/components/PRBadge";
+import { RestTimer } from "../../features/sessions/components/RestTimer";
 import { SetEntryForm } from "../../features/sessions/components/SetEntryForm";
 import { SetEntryTable } from "../../features/sessions/components/SetEntryTable";
 import { useConfirm } from "../../hooks/useConfirm";
@@ -13,8 +14,9 @@ import {
   getSessionExerciseDetail,
   updateSetEntry
 } from "../../features/sessions/services/sessionRepository";
+import { estimateOneRepMax } from "../../features/analytics/services/oneRepMaxService";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
-import type { SetEntry } from "../../types";
+import type { SetEntry, SetType } from "../../types";
 
 export const ExerciseLogPage = () => {
   const { sessionExerciseId } = useParams();
@@ -38,7 +40,7 @@ export const ExerciseLogPage = () => {
 
   const defaultValues = useMemo(() => {
     if (editingEntry) {
-      return { weight: editingEntry.weight, reps: editingEntry.reps };
+      return { weight: editingEntry.weight, reps: editingEntry.reps, setType: editingEntry.setType, rpe: editingEntry.rpe, note: editingEntry.note };
     }
     const latestCurrentSet = detail?.sets[detail.sets.length - 1];
     if (latestCurrentSet) {
@@ -49,6 +51,12 @@ export const ExerciseLogPage = () => {
     }
     return undefined;
   }, [detail?.sets, editingEntry, latestSnapshot]);
+
+  const previousPerformance = useMemo(() => {
+    if (detail?.sets.length) return null; // Already have sets in current session
+    if (!latestSnapshot) return null;
+    return { weight: latestSnapshot.lastWeight, reps: latestSnapshot.lastReps };
+  }, [detail?.sets.length, latestSnapshot]);
 
   const handleDeleteSet = useCallback(async (setEntryId: string) => {
     const shouldDelete = await confirm({
@@ -62,7 +70,7 @@ export const ExerciseLogPage = () => {
     }
   }, [confirm]);
 
-  const handleSubmit = async (payload: { reps: number; weight: number }) => {
+  const handleSubmit = async (payload: { reps: number; weight: number; setType?: SetType; rpe?: number; note?: string }) => {
     if (!detail) {
       return;
     }
@@ -75,7 +83,10 @@ export const ExerciseLogPage = () => {
       sessionExerciseId: detail.sessionExercise.id,
       reps: payload.reps,
       weight: payload.weight,
-      inputMode: "manual"
+      inputMode: "manual",
+      setType: payload.setType,
+      rpe: payload.rpe,
+      note: payload.note
     });
   };
 
@@ -87,6 +98,11 @@ export const ExerciseLogPage = () => {
   const backLink = isCompletedSession ? `/history/${detail.session.id}` : "/workout/active";
   const backLabel = isCompletedSession ? "Torna alla sessione" : "Torna sessione";
   const currentTopWeight = Math.max(...detail.sets.map((s) => s.weight), 0);
+  const bestSet = detail.sets.reduce<SetEntry | null>((best, s) => {
+    const e1rm = estimateOneRepMax(s.weight, s.reps);
+    const bestE1rm = best ? estimateOneRepMax(best.weight, best.reps) : 0;
+    return e1rm > bestE1rm ? s : best;
+  }, null);
 
   return (
     <div className="space-y-5">
@@ -108,6 +124,20 @@ export const ExerciseLogPage = () => {
         }
       />
 
+      {/* 1RM estimate for current exercise */}
+      {bestSet ? (
+        <div className="app-panel flex items-center justify-between gap-4 p-4">
+          <div>
+            <p className="text-sm font-semibold">1RM stimato</p>
+            <p className="mt-0.5 text-[10px] text-ink/50">Formula Epley</p>
+          </div>
+          <span className="text-xl font-bold text-accent">
+            {estimateOneRepMax(bestSet.weight, bestSet.reps)} kg
+          </span>
+        </div>
+      ) : null}
+
+      {/* Previous performance */}
       {latestSnapshot ? (
         <div className="app-panel flex items-center justify-between gap-4 p-4">
           <div>
@@ -132,9 +162,15 @@ export const ExerciseLogPage = () => {
       <SetEntryForm
         key={`${editingEntry?.id ?? "new"}-${defaultValues?.weight ?? ""}-${defaultValues?.reps ?? ""}`}
         defaultValues={defaultValues}
+        previousPerformance={previousPerformance}
         submitLabel={editingEntry ? "Salva modifica" : "Aggiungi serie"}
         onSubmit={handleSubmit}
       />
+
+      {/* Rest timer — auto-starts after each set */}
+      {!isCompletedSession ? (
+        <RestTimer trigger={detail.sets.length} />
+      ) : null}
 
       <SetEntryTable
         setEntries={detail.sets}

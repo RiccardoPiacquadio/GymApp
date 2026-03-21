@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useParams } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
 import { FrequencyChart } from "../../features/analytics/components/FrequencyChart";
+import { OneRepMaxChart } from "../../features/analytics/components/OneRepMaxChart";
 import { TopWeightChart } from "../../features/analytics/components/TopWeightChart";
 import { VolumeChart } from "../../features/analytics/components/VolumeChart";
 import {
@@ -58,6 +59,7 @@ export const ExerciseDetailPage = () => {
         }
       />
 
+      {activeProfileId && exerciseId ? <OneRepMaxChart userId={activeProfileId} canonicalExerciseId={exerciseId} /> : null}
       {volumeSeries.length > 0 ? <VolumeChart data={volumeSeries} /> : null}
       {topWeightSeries.length > 0 ? <TopWeightChart data={topWeightSeries} /> : null}
       {frequencySeries.length > 0 ? <FrequencyChart data={frequencySeries} /> : null}
