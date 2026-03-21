@@ -104,7 +104,7 @@ export const TemplateEditPage = () => {
 
       const transcript = await captureSpeechOnce({
         lang: "it-IT",
-        silenceMs: 5000,
+        silenceMs: 3000,
         onTranscriptChange: setLiveTranscript,
         onStateChange: () => {}
       });
