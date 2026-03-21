@@ -20,18 +20,18 @@ export const MuscleGroupCard = ({ userId }: { userId: string }) => {
   const max = Math.max(...data.map((d) => d.count), 1);
 
   return (
-    <section className="app-panel space-y-4 p-4">
+    <section className="app-panel space-y-4 p-5">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold">Esercizi per gruppo muscolare</h3>
-        <div className="flex gap-1">
+        <h3 className="text-sm font-semibold">Gruppi muscolari</h3>
+        <div className="flex rounded-xl bg-ink/[0.04] p-0.5">
           {PERIOD_OPTIONS.map((opt) => (
             <button
               key={opt.days}
               type="button"
-              className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
+              className={`rounded-lg px-3 py-1 text-[10px] font-semibold transition-all duration-200 ${
                 days === opt.days
-                  ? "bg-ink text-white"
-                  : "bg-mist text-ink/70 hover:bg-ink/10"
+                  ? "bg-ink text-white shadow-sm"
+                  : "text-ink/40 hover:text-ink/60"
               }`}
               onClick={() => setDays(opt.days)}
             >
@@ -40,17 +40,17 @@ export const MuscleGroupCard = ({ userId }: { userId: string }) => {
           ))}
         </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         {data.map((item) => (
           <div key={item.group} className="flex items-center gap-3">
-            <span className="w-16 shrink-0 text-xs text-ink/70">{item.group}</span>
-            <div className="relative h-5 flex-1 overflow-hidden rounded-md bg-mist">
+            <span className="w-[60px] shrink-0 text-[11px] font-medium text-ink/50">{item.group}</span>
+            <div className="relative h-[18px] flex-1 overflow-hidden rounded-full bg-ink/[0.04]">
               <div
-                className="absolute inset-y-0 left-0 rounded-md bg-accent transition-all duration-300"
-                style={{ width: `${(item.count / max) * 100}%` }}
+                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-accent to-flare transition-all duration-500 ease-out"
+                style={{ width: `${Math.max((item.count / max) * 100, item.count > 0 ? 8 : 0)}%` }}
               />
             </div>
-            <span className="w-6 text-right text-xs font-semibold tabular-nums">{item.count}</span>
+            <span className="w-5 text-right text-[11px] font-bold tabular-nums text-ink/70">{item.count}</span>
           </div>
         ))}
       </div>
