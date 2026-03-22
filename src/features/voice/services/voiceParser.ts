@@ -136,10 +136,33 @@ const normalizeSpeechArtifacts = (text: string) =>
     .replace(/\brap\b/gi, " rep ")
     .replace(/\bripetizione\b/gi, " ripetizioni ")
     .replace(/\breps\b/gi, " rep ")
+    // Common Italian speech-to-text misrecognitions
+    .replace(/\bpanka\b/gi, "panca")
+    .replace(/\bsquot\b/gi, "squat")
+    .replace(/\bsquad\b/gi, "squat")
+    .replace(/\bscuat\b/gi, "squat")
+    .replace(/\bstacchi?\s+da\s+terra\b/gi, "stacco da terra")
+    .replace(/\bstacchi\b/gi, "stacco")
+    .replace(/\btrazioni\s+alla\s+sbarra\b/gi, "trazioni")
+    .replace(/\bpressa?\s+(?:per\s+le\s+)?gambe\b/gi, "leg press")
+    .replace(/\bcurl\s+con\s+(?:il\s+)?bilanciere\b/gi, "curl bilanciere")
+    .replace(/\bcurl\s+con\s+(?:i\s+)?manubri\b/gi, "curl manubri")
+    .replace(/\bdistensioni?\s+su\s+panca\b/gi, "panca piana")
+    .replace(/\bdistensioni?\s+(?:sopra\s+la\s+testa|overhead)\b/gi, "overhead press")
+    .replace(/\brematore\s+con\s+(?:il\s+)?bilanciere\b/gi, "rematore bilanciere")
+    .replace(/\brematore\s+con\s+(?:il\s+)?manubrio\b/gi, "rematore manubrio")
+    .replace(/\balzate?\s+laterale?\b/gi, "alzate laterali")
+    .replace(/\bfrench\s+press\b/gi, "french press")
+    .replace(/\bpush\s+up\b/gi, "push-up")
+    .replace(/\bpull\s+up\b/gi, "pull-up")
+    .replace(/\bsit\s+up\b/gi, "sit-up")
+    .replace(/\bdip\s+(?:alle\s+)?parallele\b/gi, "dip parallele")
+    .replace(/\baffondi?\b/gi, "affondi")
+    .replace(/\baddominali\b/gi, "crunch")
     // Filler words / speech artifacts
-    .replace(/\b(?:ehm|emm|mmm|hmm|ah|oh|uhm|tipo|cioè|praticamente|diciamo|insomma|ecco|niente|vabbè|ok)\b/gi, " ")
-    // "un" / "una" before exercise — often noise from speech
-    .replace(/\b(?:ho fatto|faccio|facciamo|metto|metti|aggiungi)\b/gi, " ")
+    .replace(/\b(?:ehm|emm|mmm|hmm|ah|oh|uhm|tipo|cioè|praticamente|diciamo|insomma|ecco|niente|vabbè|vabbeh|ok|allora|dunque|quindi)\b/gi, " ")
+    // Action verbs that are noise
+    .replace(/\b(?:ho fatto|faccio|facciamo|metto|metti|aggiungi|voglio fare|adesso faccio|ora faccio|sto facendo)\b/gi, " ")
     // Normalize whitespace
     .replace(/\s+/g, " ")
     .trim();
@@ -356,7 +379,7 @@ const extractExerciseText = (text: string) =>
     .replace(/(?:con\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
     .replace(/\b(?:per|x)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?\b/gi, " ")
     .replace(/\b\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/gi, " ")
-    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|sto facendo|faccio|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|rap|colpo|colpi|volte|volta|anche|di nuovo|ancora|uguale|stessa|stesso|con|chili|kili|kg|chilogrammi|da|per|il|la|le|lo|gli|dei|delle|del|di|un|una|al)\b/gi, " ")
+    .replace(/\b(?:allora|ho fatto|fatto|ho eseguito|eseguito|sto facendo|faccio|facciamo|voglio fare|adesso|ora|una serie di|un set di|serie di|set di|una serie|un set|serie|set|ripetizioni|rip|rep|reps|rap|colpo|colpi|volte|volta|anche|di nuovo|ancora|uguale|stessa|stesso|con|chili|kili|kg|chilogrammi|da|per|il|la|le|lo|gli|dei|delle|del|di|un|una|al|alla|alle|allo|agli|nel|nella|nelle|nello|sul|sulla|sulle|sullo|che|e|o)\b/gi, " ")
     .replace(/\b\d+(?:[.,]\d+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();

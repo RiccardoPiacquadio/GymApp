@@ -1,4 +1,4 @@
-import { seedExercises } from "./seedExercises";
+import { SEED_EXERCISES } from "./seedExercises";
 import type { ExerciseAlias, ExerciseCanonical } from "../types";
 import { toIsoNow } from "../lib/dates";
 import { createId } from "../lib/ids";
@@ -7,58 +7,101 @@ import { db } from "./schema";
 import { invalidateAliasCache } from "../features/exercises/services/aliasResolver";
 
 const italianHints = new Set([
-  "panca", "bilanciere", "manubri", "macchina", "croci", "petto", "piegamenti",
-  "flessioni", "lento", "spalle", "alzate", "tirate", "viso", "mento", "trazioni",
-  "rematore", "busto", "stacco", "rumeni", "gambe", "affondi", "femorali",
-  "quadricipiti", "glutei", "seduto", "sdraiato", "inclinata", "declinata",
-  "presa", "larga", "stretta", "corda", "sopra", "testa", "parallele",
-  "addominali", "sbarra", "assistite", "multipower",
-  // New from expanded catalog
-  "abduttori", "adduttori", "accosciata", "addominale", "affondo", "alternato",
-  "appeso", "arrampicata", "avanti", "bacino", "basso", "braccia", "braccio",
-  "bulgaro", "calice", "camminata", "camminati", "cavaliere", "cavi", "cavo",
-  "completi", "concentrazione", "diagonale", "distensioni", "dorsali",
-  "estensione", "estensioni", "flesso", "frontale", "frontali", "ginocchia",
-  "ginocchio", "girata", "indietro", "incrociato", "inverse", "inverso",
-  "iperestensioni", "laterale", "laterali", "lombari", "mani", "monolaterale",
-  "monopodalico", "nordico", "olimpico", "polpacci", "polsi", "posteriore",
-  "posteriori", "pressa", "pronazione", "quadrupedico", "rollout", "ruota",
-  "salita", "salto", "scale", "scalatore", "scrollate", "slancio", "slanci",
-  "sollevamento", "spinta", "strappo", "supina", "supinazione", "tenuta",
-  "torsioni", "trapezi", "tronco", "tuffo", "verticale"
+  // Equipment & tools
+  "bilanciere", "manubri", "manubrio", "macchina", "cavo", "cavi", "elastico",
+  "banda", "multipower", "girya", "fitball", "palla", "corda",
+  // Body parts
+  "petto", "spalle", "braccia", "braccio", "gambe", "gamba", "glutei",
+  "femorali", "quadricipiti", "polpacci", "addominali", "dorsali", "lombari",
+  "trapezi", "tricipiti", "polsi", "busto", "tronco", "schiena", "bacino",
+  "ginocchia", "ginocchio", "mento", "anche", "mani", "palmi",
+  // Movement types
+  "alzate", "tirate", "tirata", "trazioni", "rematore", "stacco", "croci",
+  "spinte", "spinta", "distensioni", "estensioni", "estensione", "flessioni",
+  "flessione", "piegamenti", "scrollate", "slancio", "slanci", "sollevamento",
+  "sollevamenti", "lento", "girata", "strappo", "torsioni", "circonduzioni",
+  "rotazione",
+  // Positions & orientations
+  "seduto", "sdraiato", "inclinata", "inclinato", "declinata", "declinato",
+  "piana", "frontale", "frontali", "laterale", "laterali", "posteriore",
+  "posteriori", "verticale", "supina", "prona",
+  // Grip & hand position
+  "presa", "larga", "stretta", "stretto", "largo", "inverso", "inversa",
+  "inverse",
+  // Modifiers
+  "alternato", "alternata", "monolaterale", "concentrazione", "zavorrato",
+  "completi", "statico",
+  // Directions & prepositions
+  "avanti", "indietro", "sopra", "testa", "terra", "piedi", "dietro",
+  // Exercises & techniques
+  "panca", "affondo", "affondi", "pressa", "ponte", "strappo", "salto",
+  "saltato", "camminata", "camminato", "flesso", "appeso", "sospensione",
+  "stretching", "allungamento",
+  // Stance & style
+  "parallele", "sbarra", "assistite", "bulgaro", "nordico", "olimpico",
+  "calice", "scott", "martello", "russe",
+  // Other distinctive Italian words
+  "con", "su", "al", "da", "un", "ai", "alla", "la", "una", "due", "le",
+  "sul", "per", "di",
+  // Body mechanics
+  "abduttori", "adduttori", "accosciata", "addominale", "iperestensioni",
+  "pronazione", "supinazione", "quadrupedico", "monopodalico", "diagonale",
+  "incrociato", "tese",
+  // Additional exercise words
+  "rollout", "ruota", "salita", "scale", "scalatore", "tenuta", "tuffo",
+  "cavaliere", "arrampicata", "potenza", "medica", "cerchi",
 ]);
 
 const englishHints = new Set([
-  "bench", "press", "barbell", "dumbbell", "machine", "fly", "push", "pushup",
-  "pushups", "shoulder", "military", "overhead", "raise", "rear", "delt", "face",
-  "upright", "row", "lat", "pulldown", "pull", "pullup", "pullups", "chin",
-  "cable", "low", "landmine", "pullover", "squat", "goblet", "leg", "hack",
-  "bulgarian", "walking", "static", "split", "romanian", "rdl", "stiff",
-  "deadlift", "sumo", "hip", "thrust", "bridge", "extension", "curl",
-  "standing", "seated", "lying", "calf", "ez", "hammer", "incline",
-  "preacher", "rope", "skull", "crusher", "dips", "dip", "crunch",
-  "plank", "wheel", "assisted", "smith", "arnold",
-  // New from expanded catalog
-  "abdominal", "abduction", "abductor", "adduction", "adductor", "air",
-  "alternating", "anterior", "arm", "australian", "backward", "banana",
-  "bicycle", "block", "body", "bodyweight", "box", "burpee", "butterfly",
-  "catch", "chest", "clean", "climb", "climber", "climbing", "closegrip",
-  "concentration", "conventional", "converging", "crawl", "crossover",
-  "curtsy", "decline", "diamond", "dirty", "dive", "dog", "donkey",
-  "double", "elevated", "floor", "foot", "forward", "free", "front",
-  "full", "gymnastic", "hamstring", "hand", "handstand", "hang", "hanging",
-  "heel", "hex", "high", "hindu", "hold", "hollow", "horizontal",
-  "hyperextension", "inverted", "isometric", "jack", "jackknife", "jerk",
-  "jump", "jumping", "kettlebell", "kick", "kickback", "knee", "kneeling",
-  "lateral", "lever", "lunge", "mountain", "muscle", "narrow", "natural",
-  "neutral", "nordic", "nose", "olympic", "overhand", "parallel",
-  "partial", "pelvic", "pistol", "planche", "plate", "plyometric",
-  "power", "pressdown", "pronated", "prone", "pushdown", "quadruped",
-  "rack", "rebound", "reverse", "ring", "rock", "rollout", "rotating",
-  "runner", "running", "russian", "seal", "shrug", "side", "single",
-  "skipping", "sled", "snatch", "spider", "stair", "star", "step",
-  "straight", "strict", "supinated", "trap", "tricep", "triceps", "trunk",
-  "underhand", "wall", "wide", "wrestler", "wrist", "zottman"
+  // Equipment
+  "barbell", "dumbbell", "cable", "machine", "kettlebell", "ez", "smith",
+  "plate", "rope", "band", "ring", "sled", "hex", "rack", "bar",
+  // Common abbreviations
+  "bb", "db", "kb", "mach",
+  // Body parts
+  "chest", "shoulder", "arm", "leg", "calf", "hamstring", "quad",
+  "delt", "lat", "trap", "tricep", "triceps", "wrist", "hip", "heel",
+  "knee", "elbow", "ankle",
+  // Movement types
+  "press", "pull", "push", "raise", "raises", "row", "curl", "fly", "flys",
+  "extension", "extensions", "crunch", "shrug", "lunge", "lunges", "squat",
+  "deadlift", "thrust", "bridge", "plank", "dip", "dips", "pulldown",
+  "pulldowns", "pullover", "pullup", "pullups", "pushup", "pushups",
+  "pushdown", "pressdown", "kickback", "crossover",
+  // Positions & orientations
+  "standing", "seated", "lying", "incline", "decline", "front", "rear",
+  "lateral", "laterals", "side", "overhead", "behind", "prone", "supinated",
+  "pronated", "overhand", "underhand",
+  // Grip & hand position
+  "close", "wide", "narrow", "neutral",
+  // Modifiers
+  "alternating", "single", "double", "two", "reverse", "inverted",
+  "assisted", "weighted", "bodyweight", "isometric", "plyometric",
+  "straight", "stiff", "strict",
+  // Directions & prepositions
+  "forward", "backward", "low", "high", "upper", "lower", "above",
+  // Exercise types & styles
+  "bench", "preacher", "skull", "crusher", "skullcrusher", "hack",
+  "goblet", "military", "arnold", "bulgarian", "romanian", "rdl",
+  "sumo", "hindu", "russian", "nordic", "olympic", "zottman", "cuban",
+  "bradford", "guillotine",
+  // Body movements
+  "clean", "snatch", "jerk", "swing", "jump", "jumping", "step",
+  "walking", "running", "climbing", "crawl", "burpee", "jack",
+  "mountain", "climber", "skipping",
+  // Stance & position words
+  "split", "stagger", "kneeling", "hanging", "elevated", "floor",
+  "wall", "parallel", "handstand", "pistol", "planche",
+  // Anatomy terms
+  "abdominal", "abduction", "abductor", "adduction", "adductor",
+  "hyperextension", "hyperextensions", "pelvic", "scapular",
+  // Other distinctive English words
+  "face", "chin", "upright", "landmine", "wheel", "roller",
+  "spider", "diamond", "star", "seal", "hollow", "banana",
+  "dog", "donkey", "bird", "wrestler", "rocky", "catch",
+  "concentration", "converging", "static", "partial", "full",
+  "depth", "power", "muscle", "air", "box", "block",
+  "of", "the",
 ]);
 
 const detectAliasLanguage = (aliasText: string): "it" | "en" => {
@@ -87,7 +130,7 @@ export const seedDatabase = async () => {
   const canonicalsToPut: ExerciseCanonical[] = [];
   const aliasesToAdd: ExerciseAlias[] = [];
 
-  for (const exercise of seedExercises) {
+  for (const exercise of SEED_EXERCISES) {
     const existingCanonical = canonicalsBySlug.get(exercise.slug);
     const canonicalId = existingCanonical?.id ?? createId();
 
