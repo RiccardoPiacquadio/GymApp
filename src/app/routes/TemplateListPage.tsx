@@ -85,7 +85,7 @@ export const TemplateListPage = () => {
                   <p className="mt-1 text-sm text-ink/70">
                     {bundle.exercises.length} esercizi
                     {bundle.exercises.length > 0
-                      ? ` · ${bundle.exercises.map((e) => e.exercise.canonicalName).join(", ")}`
+                      ? ` ; ${bundle.exercises.map((e) => e.exercise.canonicalName).join(", ")}`
                       : null}
                   </p>
                 </Link>
