@@ -7,10 +7,10 @@ import { getSessionExercises, getSessionSummary, getWorkoutSessionById } from ".
 
 export const WorkoutDetailPage = () => {
   const { sessionId } = useParams();
-  const session = useLiveQuery(async () => (sessionId ? await getWorkoutSessionById(sessionId) : undefined), [sessionId]);
-  const bundles = useLiveQuery(async () => (sessionId ? await getSessionExercises(sessionId) : []), [sessionId], []);
+  const session = useLiveQuery(() => (sessionId ? getWorkoutSessionById(sessionId) : undefined), [sessionId]);
+  const bundles = useLiveQuery(() => (sessionId ? getSessionExercises(sessionId) : []), [sessionId], []);
   const summary = useLiveQuery(
-    async () => (sessionId ? await getSessionSummary(sessionId) : { totalExercises: 0, totalSets: 0, totalVolume: 0 }),
+    () => (sessionId ? getSessionSummary(sessionId) : { totalExercises: 0, totalSets: 0, totalVolume: 0 }),
     [sessionId],
     { totalExercises: 0, totalSets: 0, totalVolume: 0 }
   );

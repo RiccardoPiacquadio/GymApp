@@ -16,9 +16,11 @@ export const ExerciseList = ({ exercises, aliasMap, onSelect }: ExerciseListProp
         className="app-panel w-full p-4 text-left transition hover:border-slate-300"
       >
         <p className="text-base font-semibold">{exercise.canonicalName}</p>
-        <p className="mt-1 text-sm text-ink/70">
-          {(aliasMap?.[exercise.id] ?? []).slice(0, 3).join(" ; ") || exercise.slug}
-        </p>
+        {(aliasMap?.[exercise.id]?.length ?? 0) > 0 ? (
+          <p className="mt-1 text-sm text-ink/50">
+            {aliasMap![exercise.id].slice(0, 3).join(" · ")}
+          </p>
+        ) : null}
       </button>
     ))}
   </div>

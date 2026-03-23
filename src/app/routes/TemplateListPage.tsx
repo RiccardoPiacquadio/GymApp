@@ -111,8 +111,14 @@ export const TemplateListPage = () => {
           </div>
         ))}
         {bundles.length === 0 ? (
-          <div className="app-panel p-4 text-sm text-ink/70">
-            Nessun template creato. Crea il tuo primo allenamento predefinito!
+          <div className="app-panel space-y-3 p-5 text-center">
+            <p className="text-sm text-ink/50">Nessun template ancora.</p>
+            <p className="text-xs text-ink/40">
+              Un template è un allenamento predefinito (es. &ldquo;Push Day&rdquo;, &ldquo;Gambe&rdquo;) che puoi avviare con un tocco.
+            </p>
+            <Link className="primary-button inline-flex text-sm" to="/templates/new">
+              Crea il primo template
+            </Link>
           </div>
         ) : null}
       </div>

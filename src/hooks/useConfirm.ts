@@ -1,4 +1,4 @@
-import { createElement, useCallback, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useRef, useState } from "react";
 import { ConfirmModal } from "../components/common/ConfirmModal";
 
 type ConfirmOptions = {
@@ -15,7 +15,17 @@ export const useConfirm = () => {
   const [modal, setModal] = useState<ModalState>({ open: false });
   const resolveRef = useRef<((value: boolean) => void) | null>(null);
 
+  // Resolve pending promise on unmount to prevent leak
+  useEffect(() => {
+    return () => {
+      resolveRef.current?.(false);
+      resolveRef.current = null;
+    };
+  }, []);
+
   const confirm = useCallback((options: ConfirmOptions): Promise<boolean> => {
+    // Resolve any previous pending promise before opening a new one
+    resolveRef.current?.(false);
     return new Promise<boolean>((resolve) => {
       resolveRef.current = resolve;
       setModal({ ...options, open: true });

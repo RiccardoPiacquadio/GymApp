@@ -57,7 +57,7 @@ export const ExerciseSearchPage = () => {
     <div className="space-y-5">
       <SectionTitle
         title="Cerca esercizio"
-        subtitle={sessionId ? "Aggiungi o riapri un esercizio dentro una sessione gia chiusa." : "Ricerca per nome canonico o alias italiano/inglese."}
+        subtitle={sessionId ? "Aggiungi o modifica un esercizio della sessione." : "Cerca per nome in italiano o inglese."}
       />
       <ExerciseSearchInput value={query} onChange={setQuery} />
       <ExerciseList exercises={exercises} aliasMap={aliasMap} onSelect={handleSelect} />

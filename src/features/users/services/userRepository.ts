@@ -144,10 +144,7 @@ export const deleteProfile = async (profileId: string): Promise<DeleteProfileRes
 
   await db.transaction(
     "rw",
-    db.userProfiles,
-    db.workoutSessions,
-    db.sessionExercises,
-    db.setEntries,
+    [db.userProfiles, db.workoutSessions, db.sessionExercises, db.setEntries, db.bodyWeightEntries, db.workoutTemplates, db.workoutTemplateExercises],
     async () => {
       const linkedSessions = await db.workoutSessions.where("userId").equals(profileId).toArray();
       const linkedSessionIds = linkedSessions.map((session) => session.id);
@@ -171,6 +168,17 @@ export const deleteProfile = async (profileId: string): Promise<DeleteProfileRes
 
       if (linkedSessions.length > 0) {
         await db.workoutSessions.bulkDelete(linkedSessions.map((session) => session.id));
+      }
+
+      // Delete body weight entries
+      await db.bodyWeightEntries.where("userId").equals(profileId).delete();
+
+      // Delete workout templates and their exercises
+      const linkedTemplates = await db.workoutTemplates.where("userId").equals(profileId).toArray();
+      if (linkedTemplates.length > 0) {
+        const templateIds = linkedTemplates.map((t) => t.id);
+        await db.workoutTemplateExercises.where("templateId").anyOf(templateIds).delete();
+        await db.workoutTemplates.bulkDelete(templateIds);
       }
 
       await db.userProfiles.delete(profileId);

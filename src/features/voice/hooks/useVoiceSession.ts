@@ -160,7 +160,7 @@ export type VoiceSessionState = {
 };
 
 export type VoiceSessionActions = {
-  handleVoiceCapture: () => Promise<void>;
+  handleVoiceCapture: () => Promise<boolean>;
   toggleHandsFree: () => void;
   setPendingSessionClose: (value: boolean) => void;
   setVoiceFeedback: (value: string | undefined) => void;
@@ -270,10 +270,11 @@ export const useVoiceSession = (
   processTranscriptRef.current = processTranscript;
 
   // -- Manual voice capture (button tap) --
-  const handleVoiceCapture = useCallback(async () => {
-    if (!activeProfileIdRef.current) return;
+  const handleVoiceCapture = useCallback(async (): Promise<boolean> => {
+    if (!activeProfileIdRef.current) return false;
 
     handsFreeRef.current?.pauseListening();
+    let success = false;
 
     try {
       dispatch({ type: "CAPTURE_STARTED" });
@@ -286,6 +287,7 @@ export const useVoiceSession = (
       });
 
       await processTranscriptRef.current(transcript);
+      success = true;
     } catch (error) {
       dispatch({
         type: "CAPTURE_ERROR",
@@ -301,6 +303,8 @@ export const useVoiceSession = (
         handsFreeRef.current?.resumeListening();
       }
     }
+
+    return success;
   }, []);
 
   // -- Hands-free toggle --

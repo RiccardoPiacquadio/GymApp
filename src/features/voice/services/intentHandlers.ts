@@ -75,11 +75,26 @@ export const getQuickIntent = (normalizedText: string): QuickIntent | null => {
     return { type: "repeat_last_set" };
   }
 
-  const repeatWithReps = normalizedText.match(
-    /^(?:ancora\s+|di nuovo\s+|fatte\s+|metti\s+)?(\d+)(?:\s+(?:rep|reps|rip|ripetizioni|colpo|colpi))?$/
+  // Match "ancora 8", "di nuovo 10", "8 reps" — but NOT bare large numbers like "80" (likely weight, not reps)
+  const repeatWithExplicitReps = normalizedText.match(
+    /^(?:ancora\s+|di nuovo\s+|fatte\s+|metti\s+)?(\d+)\s+(?:rep|reps|rip|ripetizioni|colpo|colpi)$/
   );
-  if (repeatWithReps) {
-    return { type: "repeat_with_reps", reps: Number(repeatWithReps[1]) };
+  if (repeatWithExplicitReps) {
+    return { type: "repeat_with_reps", reps: Number(repeatWithExplicitReps[1]) };
+  }
+  const repeatWithBareNumber = normalizedText.match(
+    /^(?:ancora\s+|di nuovo\s+|fatte\s+|metti\s+)(\d+)$/
+  );
+  if (repeatWithBareNumber) {
+    const val = Number(repeatWithBareNumber[1]);
+    if (val <= 30) return { type: "repeat_with_reps", reps: val };
+  }
+  // Bare single number without prefix — only treat as reps if <= 30 (likely reps, not weight)
+  const bareNumber = normalizedText.match(/^(\d+)$/);
+  if (bareNumber) {
+    const val = Number(bareNumber[1]);
+    if (val <= 30) return { type: "repeat_with_reps", reps: val };
+    // val > 30 → fall through to full parser (could be weight)
   }
 
   const correctionMatch = normalizedText.match(

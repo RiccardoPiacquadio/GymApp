@@ -2,11 +2,11 @@ import { useState } from "react";
 import type { SetType } from "../../../types";
 
 const SET_TYPES: { value: SetType; label: string }[] = [
-  { value: "working", label: "Working" },
-  { value: "warmup", label: "Warm-up" },
-  { value: "dropset", label: "Drop" },
+  { value: "working", label: "Lavoro" },
+  { value: "warmup", label: "Riscaldamento" },
+  { value: "dropset", label: "Drop set" },
   { value: "amrap", label: "AMRAP" },
-  { value: "failure", label: "Failure" },
+  { value: "failure", label: "Cedimento" },
 ];
 
 type SetEntryFormProps = {
@@ -34,14 +34,17 @@ export const SetEntryForm = ({ defaultValues, previousPerformance, submitLabel =
   const [note, setNote] = useState(defaultValues?.note ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showExtra, setShowExtra] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const weightNumber = Number(weight);
     const repsNumber = Number(reps);
     if (!Number.isFinite(weightNumber) || !Number.isFinite(repsNumber) || weightNumber <= 0 || repsNumber <= 0) {
+      setValidationError("Inserisci peso e ripetizioni validi (> 0).");
       return;
     }
+    setValidationError(null);
 
     const rpeNumber = rpe ? Number(rpe) : undefined;
 
@@ -159,6 +162,9 @@ export const SetEntryForm = ({ defaultValues, previousPerformance, submitLabel =
         </div>
       ) : null}
 
+      {validationError ? (
+        <p className="text-xs font-medium text-red-500">{validationError}</p>
+      ) : null}
       <button className="primary-button w-full" disabled={isSubmitting} type="submit">
         {submitLabel}
       </button>

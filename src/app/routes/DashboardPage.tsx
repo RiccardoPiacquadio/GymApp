@@ -2,6 +2,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../lib/dates";
 import { SectionTitle } from "../../components/common/SectionTitle";
+import { formatVolume } from "../../lib/math";
 import { MuscleGroupCard } from "../../features/analytics/components/MuscleGroupCard";
 import { PlateCalculator } from "../../features/analytics/components/PlateCalculator";
 import { TrainingCalendar } from "../../features/analytics/components/TrainingCalendar";
@@ -13,9 +14,6 @@ import {
   startWorkoutSession
 } from "../../features/sessions/services/sessionRepository";
 import { useActiveProfile } from "../../features/users/hooks/useActiveProfile";
-
-const formatVolume = (vol: number) =>
-  vol >= 1000 ? `${(vol / 1000).toFixed(1)} t` : `${vol} kg`;
 
 export const DashboardPage = () => {
   const navigate = useNavigate();
@@ -52,6 +50,8 @@ export const DashboardPage = () => {
     ? Math.round(sessions.reduce((sum, s) => sum + s.totalExercises, 0) / totalSessions)
     : 0;
 
+  const isNewUser = totalSessions === 0;
+
   return (
     <div className="space-y-5">
       {/* Hero panel */}
@@ -60,7 +60,9 @@ export const DashboardPage = () => {
           <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-white/40">Profilo attivo</p>
           <h2 className="mt-2 text-3xl font-bold text-white">{profile?.displayName ?? "Nessun profilo"}</h2>
           <p className="mt-2 max-w-[26ch] text-sm leading-relaxed text-white/60">
-            Registra carichi, serie e reps via voce o manualmente.
+            {isNewUser
+              ? "Pronto per il primo allenamento? Tocca il pulsante qui sotto!"
+              : "Registra carichi, serie e reps via voce o manualmente."}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -68,30 +70,69 @@ export const DashboardPage = () => {
             <Link className="primary-button" to="/workout/active">Continua workout</Link>
           ) : (
             <button className="primary-button" type="button" onClick={() => void handleStartWorkout()}>
-              Inizia allenamento
+              {isNewUser ? "Inizia il primo workout" : "Inizia allenamento"}
             </button>
           )}
-          <Link className="inline-flex items-center justify-center rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink shadow-sm transition-all duration-200 hover:bg-white/90 active:scale-[0.97]" to="/history">
-            Vedi storico
-          </Link>
+          {isNewUser ? (
+            <Link className="inline-flex items-center justify-center rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink shadow-sm transition-all duration-200 hover:bg-white/90 active:scale-[0.97]" to="/templates">
+              Crea un template
+            </Link>
+          ) : (
+            <Link className="inline-flex items-center justify-center rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-ink shadow-sm transition-all duration-200 hover:bg-white/90 active:scale-[0.97]" to="/history">
+              Vedi storico
+            </Link>
+          )}
         </div>
 
-        {/* Stat cards */}
-        <div className="grid grid-cols-3 gap-2.5">
-          <div className="rounded-2xl border border-white/[0.08] bg-accent/90 px-3 py-3">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-white/60">Sessioni</p>
-            <p className="mt-1 text-xl font-bold text-white">{totalSessions}</p>
+        {/* Stat cards — only show when user has data */}
+        {!isNewUser ? (
+          <div className="grid grid-cols-3 gap-2.5">
+            <div className="rounded-2xl border border-white/[0.08] bg-accent/90 px-3 py-3">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-white/60">Sessioni</p>
+              <p className="mt-1 text-xl font-bold text-white">{totalSessions}</p>
+            </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.06] px-3 py-3 backdrop-blur">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-white/50">Volume</p>
+              <p className="mt-1 text-xl font-bold text-white">{formatVolume(totalVolume)}</p>
+            </div>
+            <div className="rounded-2xl border border-white/[0.08] bg-white/[0.06] px-3 py-3 backdrop-blur">
+              <p className="text-[10px] font-medium uppercase tracking-wider text-white/50">Media</p>
+              <p className="mt-1 text-xl font-bold text-white">{avgExercises}<span className="text-xs font-normal text-white/40">/sess</span></p>
+            </div>
           </div>
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.06] px-3 py-3 backdrop-blur">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-white/50">Volume</p>
-            <p className="mt-1 text-xl font-bold text-white">{formatVolume(totalVolume)}</p>
-          </div>
-          <div className="rounded-2xl border border-white/[0.08] bg-white/[0.06] px-3 py-3 backdrop-blur">
-            <p className="text-[10px] font-medium uppercase tracking-wider text-white/50">Media</p>
-            <p className="mt-1 text-xl font-bold text-white">{avgExercises}<span className="text-xs font-normal text-white/40">/sess</span></p>
-          </div>
-        </div>
+        ) : null}
       </section>
+
+      {/* Quick start guide for new users */}
+      {isNewUser ? (
+        <section className="app-panel space-y-4 p-5">
+          <p className="text-sm font-semibold text-ink">Come funziona</p>
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">1</span>
+              <p className="text-sm text-ink/70">Tocca <strong>Inizia il primo workout</strong> per creare una sessione</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">2</span>
+              <p className="text-sm text-ink/70">Aggiungi esercizi dalla lista oppure <strong>dettali a voce</strong></p>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">3</span>
+              <p className="text-sm text-ink/70">Per ogni esercizio, registra serie con peso e ripetizioni</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">4</span>
+              <p className="text-sm text-ink/70">Chiudi la sessione e il tuo storico si aggiorna automaticamente</p>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-accent/[0.06] px-4 py-3">
+            <p className="text-xs leading-relaxed text-ink/60">
+              <strong className="text-ink/80">Suggerimento vocale:</strong> durante il workout premi il microfono e dì ad esempio
+              &ldquo;panca piana 80 per 8&rdquo; oppure &ldquo;squat 100 per 5&rdquo; per registrare una serie istantaneamente.
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       {/* Recent sessions */}
       <section>

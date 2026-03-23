@@ -23,9 +23,19 @@ const vibrate = () => {
   }
 };
 
+// Shared AudioContext — reuse to avoid exhausting the browser's limit (~6 instances)
+let sharedAudioCtx: AudioContext | null = null;
+const getAudioCtx = (): AudioContext => {
+  if (!sharedAudioCtx || sharedAudioCtx.state === "closed") {
+    sharedAudioCtx = new AudioContext();
+  }
+  return sharedAudioCtx;
+};
+
 const playBeep = () => {
   try {
-    const ctx = new AudioContext();
+    const ctx = getAudioCtx();
+    if (ctx.state === "suspended") void ctx.resume();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
@@ -34,7 +44,6 @@ const playBeep = () => {
     gain.gain.value = 0.3;
     osc.start();
     osc.stop(ctx.currentTime + 0.3);
-    setTimeout(() => ctx.close(), 500);
   } catch {
     // Audio not supported
   }
@@ -46,6 +55,7 @@ export const RestTimer = ({ trigger, defaultSeconds = 90 }: RestTimerProps) => {
   const [isRunning, setIsRunning] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const endTimeRef = useRef<number>(0);
   const prevTrigger = useRef(trigger);
 
   const stop = useCallback(() => {
@@ -59,21 +69,23 @@ export const RestTimer = ({ trigger, defaultSeconds = 90 }: RestTimerProps) => {
 
   const start = useCallback((seconds: number) => {
     if (intervalRef.current) clearInterval(intervalRef.current);
+    endTimeRef.current = Date.now() + seconds * 1000;
     setRemaining(seconds);
     setIsRunning(true);
     intervalRef.current = setInterval(() => {
-      setRemaining((prev) => {
-        if (prev <= 1) {
-          clearInterval(intervalRef.current!);
-          intervalRef.current = null;
-          setIsRunning(false);
-          vibrate();
-          playBeep();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+      const left = Math.round((endTimeRef.current - Date.now()) / 1000);
+      if (left <= 0) {
+        clearInterval(intervalRef.current!);
+        intervalRef.current = null;
+        setIsRunning(false);
+        setRemaining(0);
+        // Fire alerts outside state updater
+        vibrate();
+        playBeep();
+      } else {
+        setRemaining(left);
+      }
+    }, 250); // Poll at 250ms for accuracy, display updates every second due to Math.round
   }, []);
 
   // Auto-start when trigger changes (new set logged)
@@ -107,7 +119,7 @@ export const RestTimer = ({ trigger, defaultSeconds = 90 }: RestTimerProps) => {
             <polyline points="10,7 10,11 13,13" />
             <line x1="8" y1="2" x2="12" y2="2" />
           </svg>
-          <span className="text-sm font-semibold text-ink">Rest Timer</span>
+          <span className="text-sm font-semibold text-ink">Timer di recupero</span>
         </div>
         <div className="flex items-center gap-3">
           {isRunning ? (
@@ -167,14 +179,20 @@ export const RestTimer = ({ trigger, defaultSeconds = 90 }: RestTimerProps) => {
                 <button
                   type="button"
                   className="secondary-button flex-1 py-2 text-xs"
-                  onClick={() => setRemaining((r) => Math.max(0, r - 15))}
+                  onClick={() => {
+                    endTimeRef.current = Math.max(Date.now(), endTimeRef.current - 15000);
+                    setRemaining((r) => Math.max(1, r - 15));
+                  }}
                 >
                   -15s
                 </button>
                 <button
                   type="button"
                   className="secondary-button flex-1 py-2 text-xs"
-                  onClick={() => setRemaining((r) => r + 15)}
+                  onClick={() => {
+                    endTimeRef.current += 15000;
+                    setRemaining((r) => r + 15);
+                  }}
                 >
                   +15s
                 </button>

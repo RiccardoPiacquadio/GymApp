@@ -36,6 +36,9 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
     let settled = false;
     let requestedStop = false;
     let silenceTimer: ReturnType<typeof setTimeout> | undefined;
+    let maxTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const MAX_CAPTURE_MS = 60_000;
 
     const clearSilenceTimer = () => {
       if (silenceTimer) {
@@ -59,6 +62,10 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
       }
       settled = true;
       clearSilenceTimer();
+      if (maxTimer) {
+        clearTimeout(maxTimer);
+        maxTimer = undefined;
+      }
       handler();
     };
 
@@ -116,4 +123,11 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
     };
 
     recognition.start();
+
+    // Safety net: force-stop after MAX_CAPTURE_MS to prevent indefinite mic usage
+    maxTimer = setTimeout(() => {
+      requestedStop = true;
+      config.onStateChange?.("processing");
+      recognition.stop();
+    }, MAX_CAPTURE_MS);
   });

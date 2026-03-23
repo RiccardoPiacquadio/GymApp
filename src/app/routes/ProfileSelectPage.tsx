@@ -134,7 +134,10 @@ export const ProfileSelectPage = () => {
             />
           ))}
           {profiles.length === 0 ? (
-            <div className="app-panel p-4 text-sm text-ink/70">Nessun profilo creato. Inizia dal modulo qui sotto.</div>
+            <div className="app-panel space-y-2 p-5 text-center">
+              <p className="text-sm font-medium text-ink/70">Benvenuto in CalleGymApp! 💪</p>
+              <p className="text-xs text-ink/40">Crea il tuo profilo qui sotto per iniziare a tracciare i tuoi allenamenti.</p>
+            </div>
           ) : null}
         </div>
       </section>

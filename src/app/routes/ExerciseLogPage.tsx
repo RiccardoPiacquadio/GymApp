@@ -96,7 +96,7 @@ export const ExerciseLogPage = () => {
 
   const isCompletedSession = detail.session.status === "completed";
   const backLink = isCompletedSession ? `/history/${detail.session.id}` : "/workout/active";
-  const backLabel = isCompletedSession ? "Torna alla sessione" : "Torna sessione";
+  const backLabel = isCompletedSession ? "Torna alla sessione" : "Torna al workout";
   const currentTopWeight = Math.max(...detail.sets.map((s) => s.weight), 0);
   const bestSet = detail.sets.reduce<SetEntry | null>((best, s) => {
     const e1rm = estimateOneRepMax(s.weight, s.reps);
@@ -116,7 +116,7 @@ export const ExerciseLogPage = () => {
             ) : null}
           </span>
         }
-        subtitle={isCompletedSession ? "Puoi correggere anche gli allenamenti gia chiusi." : "Aggiungi serie manualmente."}
+        subtitle={isCompletedSession ? "Puoi correggere anche sessioni passate." : "Inserisci peso e ripetizioni per ogni serie."}
         action={
           <Link className="secondary-button px-3 py-2 text-xs" to={backLink}>
             {backLabel}

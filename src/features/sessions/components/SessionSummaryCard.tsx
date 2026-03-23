@@ -1,3 +1,5 @@
+import { formatVolume } from "../../../lib/math";
+
 type SessionSummaryCardProps = {
   totalExercises: number;
   totalSets: number;
@@ -20,8 +22,7 @@ export const SessionSummaryCard = ({
     </div>
     <div>
       <p className="text-xs uppercase tracking-[0.2em] text-ink/70">Volume</p>
-      <p className="mt-1 text-2xl font-semibold">{totalVolume >= 1000 ? `${(totalVolume / 1000).toFixed(1)}t` : `${totalVolume} kg`}</p>
+      <p className="mt-1 text-2xl font-semibold">{formatVolume(totalVolume)}</p>
     </div>
   </div>
 );
-

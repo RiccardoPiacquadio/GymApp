@@ -73,9 +73,17 @@ export const completeWorkoutSession = async (sessionId: string) => {
   }
 
   const now = toIsoNow();
+  // If session was paused, accumulate the final pause segment before completing
+  const finalPausedMs =
+    current.status === "paused" && current.pausedAt
+      ? (current.totalPausedMs ?? 0) + (Date.now() - new Date(current.pausedAt).getTime())
+      : current.totalPausedMs;
+
   await db.workoutSessions.update(sessionId, {
     status: "completed",
     endedAt: now,
+    totalPausedMs: finalPausedMs,
+    pausedAt: undefined,
     updatedAt: now
   });
 };
@@ -146,7 +154,9 @@ export const getSessionExercises = async (sessionId: string): Promise<SessionExe
     setsByExercise.set(entry.sessionExerciseId, arr);
   }
 
-  return sessionExercises.map((sessionExercise) => ({
+  return sessionExercises
+    .filter((sessionExercise) => exerciseMap.has(sessionExercise.canonicalExerciseId))
+    .map((sessionExercise) => ({
     sessionExercise,
     exercise: exerciseMap.get(sessionExercise.canonicalExerciseId)!,
     sets: (setsByExercise.get(sessionExercise.id) ?? []).sort(

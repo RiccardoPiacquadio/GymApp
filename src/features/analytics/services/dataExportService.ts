@@ -4,14 +4,13 @@ import { db } from "../../../db";
  * Export all workout data for a user as a JSON blob.
  */
 export const exportUserDataAsJson = async (userId: string): Promise<string> => {
-  const [sessions, sessionExercises, bodyWeight] = await Promise.all([
+  const [sessions, bodyWeight] = await Promise.all([
     db.workoutSessions.where("userId").equals(userId).toArray(),
-    db.sessionExercises.toArray(),
     db.bodyWeightEntries.where("userId").equals(userId).toArray()
   ]);
 
-  const sessionIds = new Set(sessions.map((s) => s.id));
-  const filteredExercises = sessionExercises.filter((se) => sessionIds.has(se.sessionId));
+  const sessionIds = sessions.map((s) => s.id);
+  const filteredExercises = await db.sessionExercises.where("sessionId").anyOf(sessionIds).toArray();
   const seIds = filteredExercises.map((se) => se.id);
   const sets = await db.setEntries.where("sessionExerciseId").anyOf(seIds).toArray();
 
@@ -55,12 +54,10 @@ export const exportUserDataAsJson = async (userId: string): Promise<string> => {
  */
 export const exportUserDataAsCsv = async (userId: string): Promise<string> => {
   const sessions = await db.workoutSessions.where("userId").equals(userId).toArray();
-  const sessionIds = new Set(sessions.map((s) => s.id));
+  const sessionIds = sessions.map((s) => s.id);
   const sessionMap = new Map(sessions.map((s) => [s.id, s]));
 
-  const sessionExercises = (await db.sessionExercises.toArray()).filter(
-    (se) => sessionIds.has(se.sessionId)
-  );
+  const sessionExercises = await db.sessionExercises.where("sessionId").anyOf(sessionIds).toArray();
   const seIds = sessionExercises.map((se) => se.id);
   const sets = await db.setEntries.where("sessionExerciseId").anyOf(seIds).toArray();
 

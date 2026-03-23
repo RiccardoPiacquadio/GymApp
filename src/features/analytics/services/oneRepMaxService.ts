@@ -29,7 +29,6 @@ export const getOneRepMaxHistory = async (
   if (sessions.length === 0) return [];
 
   const sessionMap = new Map(sessions.map((s) => [s.id, s]));
-  const sessionIds = sessions.map((s) => s.id);
 
   const sessionExercises = (
     await db.sessionExercises

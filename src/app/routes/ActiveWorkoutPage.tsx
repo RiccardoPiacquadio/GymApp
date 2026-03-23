@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { SectionTitle } from "../../components/common/SectionTitle";
+import { formatVolume } from "../../lib/math";
 import {
   completeWorkoutSession,
   getActiveSessionForUser,
@@ -19,13 +20,11 @@ import { setVoiceConversationState } from "../../features/voice/services/voiceCo
 import { useVoiceSession } from "../../features/voice/hooks/useVoiceSession";
 import { VoiceErrorBoundary } from "../../components/common/VoiceErrorBoundary";
 
-const formatVolume = (vol: number) =>
-  vol >= 1000 ? `${(vol / 1000).toFixed(1)} t` : `${vol} kg`;
-
 export const ActiveWorkoutPage = () => {
   const navigate = useNavigate();
   const { activeProfileId } = useActiveProfile();
   const [voicePanelOpen, setVoicePanelOpen] = useState(false);
+  const [voiceHelpOpen, setVoiceHelpOpen] = useState(false);
   const [flashFeedback, setFlashFeedback] = useState(false);
 
   const activeSession = useLiveQuery(
@@ -82,11 +81,24 @@ export const ActiveWorkoutPage = () => {
 
   if (!activeSession) {
     return (
-      <div className="app-panel space-y-4 p-5">
-        <p className="text-lg font-semibold">Nessuna sessione attiva</p>
-        <Link className="primary-button w-full" to="/dashboard">
-          Inizia allenamento
-        </Link>
+      <div className="app-panel space-y-4 p-5 text-center">
+        <svg width="48" height="48" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" className="mx-auto text-ink/20">
+          <rect x="1" y="6" width="3" height="8" rx="1" />
+          <rect x="16" y="6" width="3" height="8" rx="1" />
+          <rect x="4" y="4" width="3" height="12" rx="1" />
+          <rect x="13" y="4" width="3" height="12" rx="1" />
+          <line x1="7" y1="10" x2="13" y2="10" />
+        </svg>
+        <p className="text-lg font-semibold text-ink">Nessun workout in corso</p>
+        <p className="text-sm text-ink/50">Inizia un nuovo allenamento dalla dashboard o da un template.</p>
+        <div className="grid grid-cols-2 gap-3 pt-1">
+          <Link className="primary-button" to="/dashboard">
+            Vai alla dashboard
+          </Link>
+          <Link className="inline-flex items-center justify-center rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm font-semibold text-ink shadow-sm transition-all hover:bg-ink/[0.03] active:scale-[0.97]" to="/templates">
+            I miei template
+          </Link>
+        </div>
       </div>
     );
   }
@@ -97,7 +109,7 @@ export const ActiveWorkoutPage = () => {
     <div className={`space-y-5 ${flashFeedback ? "animate-flash" : ""}`}>
       <SectionTitle
         title={isPaused ? "Sessione in pausa" : "Sessione attiva"}
-        subtitle="Comandi vocali: squat 100x8, ancora, no 7, cancella."
+        subtitle={isPaused ? "Riprendi quando sei pronto." : "Aggiungi esercizi e registra le serie."}
       />
 
       {/* Session timer with pause/resume/close controls */}
@@ -113,7 +125,7 @@ export const ActiveWorkoutPage = () => {
         <Link className="primary-button" to="/workout/active/exercises">
           Aggiungi esercizio
         </Link>
-        <VoiceCaptureButton state={voice.speechState} onStart={async () => { await voice.handleVoiceCapture(); triggerFlash(); }} />
+        <VoiceCaptureButton state={voice.speechState} onStart={async () => { const ok = await voice.handleVoiceCapture(); if (ok) triggerFlash(); }} />
       </div>
 
       {/* Hands-free toggle */}
@@ -133,9 +145,53 @@ export const ActiveWorkoutPage = () => {
             {voice.handsFreeStatus === "wake_detected" ? " — parla ora" : ""}
           </span>
         ) : (
-          "Vivavoce OFF — attiva per AirPods e parola chiave"
+          "Attiva vivavoce (AirPods / cuffie)"
         )}
       </button>
+
+      {/* Voice commands guide — expandable */}
+      <div className="app-panel overflow-hidden">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between p-4"
+          onClick={() => setVoiceHelpOpen((v) => !v)}
+        >
+          <div className="flex items-center gap-2.5">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-accent">
+              <circle cx="10" cy="10" r="8" />
+              <line x1="10" y1="9" x2="10" y2="14" />
+              <circle cx="10" cy="6.5" r="0.5" fill="currentColor" />
+            </svg>
+            <span className="text-sm font-semibold text-ink">Come usare la voce</span>
+          </div>
+          <svg
+            width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+            className={`text-ink/30 transition-transform ${voiceHelpOpen ? "rotate-180" : ""}`}
+          >
+            <polyline points="2,4 6,8 10,4" />
+          </svg>
+        </button>
+        {voiceHelpOpen ? (
+          <div className="space-y-2.5 border-t border-ink/[0.06] px-4 pb-4 pt-3">
+            <p className="text-xs leading-relaxed text-ink/60">
+              Premi il <strong className="text-ink/80">microfono</strong> e pronuncia uno di questi comandi:
+            </p>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;panca 80 per 8&rdquo;</span><span className="text-ink/50">→ registra 80kg x 8 reps</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;squat 100x5&rdquo;</span><span className="text-ink/50">→ registra 100kg x 5 reps</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;ancora&rdquo;</span><span className="text-ink/50">→ ripeti l&apos;ultima serie</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;ancora 6&rdquo;</span><span className="text-ink/50">→ stessi kg, 6 reps</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;no 7&rdquo;</span><span className="text-ink/50">→ correggi le reps a 7</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;correggi peso 75&rdquo;</span><span className="text-ink/50">→ correggi il peso</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;cancella&rdquo;</span><span className="text-ink/50">→ elimina l&apos;ultima serie</span></div>
+              <div className="flex gap-2"><span className="shrink-0 font-semibold text-accent">&ldquo;chiudi sessione&rdquo;</span><span className="text-ink/50">→ termina il workout</span></div>
+            </div>
+            <p className="pt-1 text-[10px] text-ink/40">
+              Puoi anche dettare più serie: &ldquo;70 per 8, 50 per 7, 90 per 5&rdquo;
+            </p>
+          </div>
+        ) : null}
+      </div>
 
       <SessionSummaryCard {...sessionSummary} />
 
@@ -214,16 +270,16 @@ export const ActiveWorkoutPage = () => {
               />
               <p className="text-sm font-semibold text-white">
                 {voice.listeningPhase === "processing"
-                  ? "Sto chiudendo l'ascolto..."
+                  ? "Sto elaborando..."
                   : voice.listeningPhase === "hearing"
-                    ? "Ti sto sentendo"
+                    ? "Ti ascolto, continua..."
                     : voice.pendingSessionClose
-                      ? "Dimmi: sì per confermare, no per annullare"
-                      : "In ascolto"}
+                      ? "Dì 'sì' per chiudere, 'no' per annullare"
+                      : "In ascolto — parla pure"}
               </p>
             </div>
             <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-ink">
-              stop dopo 4s di silenzio
+              si ferma dopo il silenzio
             </span>
           </div>
           <p
@@ -272,7 +328,12 @@ export const ActiveWorkoutPage = () => {
             );
           })}
           {sessionBundles.length === 0 ? (
-            <div className="app-panel p-4 text-sm text-ink/70">Aggiungi il primo esercizio della sessione.</div>
+            <div className="app-panel space-y-2 p-5 text-center">
+              <p className="text-sm text-ink/50">Nessun esercizio ancora.</p>
+              <p className="text-xs text-ink/40">
+                Tocca &ldquo;Aggiungi esercizio&rdquo; per cercare nella lista, oppure usa il microfono per dettare direttamente.
+              </p>
+            </div>
           ) : null}
         </div>
       </section>

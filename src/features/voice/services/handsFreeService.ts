@@ -24,6 +24,7 @@ const CAPTURE_TIMEOUT_MS = 8_000;
 const RECOGNITION_RESTART_DELAY_MS = 300;
 const RECOGNITION_ERROR_RESTART_DELAY_MS = 500;
 const RECOGNITION_START_RETRY_DELAY_MS = 1000;
+const MAX_CONSECUTIVE_ERRORS = 5;
 const MIN_WAKE_COMMAND_LENGTH = 2;
 
 // ---------------------------------------------------------------------------
@@ -172,6 +173,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
   let phase: Phase = "idle";
   let recognition: SpeechRecognitionInstance | null = null;
   let recognitionRunning = false;
+  let consecutiveErrors = 0;
   let captureTimeout: ReturnType<typeof setTimeout> | undefined;
 
   // -- helpers --
@@ -279,8 +281,10 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
 
     rec.onerror = () => {
       recognitionRunning = false;
-      if (active && phase !== "cooldown") {
-        setTimeout(startRecognition, RECOGNITION_ERROR_RESTART_DELAY_MS);
+      consecutiveErrors++;
+      if (active && phase !== "cooldown" && consecutiveErrors <= MAX_CONSECUTIVE_ERRORS) {
+        const backoff = RECOGNITION_ERROR_RESTART_DELAY_MS * Math.pow(2, consecutiveErrors - 1);
+        setTimeout(startRecognition, Math.min(backoff, 10_000));
       }
     };
 
@@ -288,6 +292,7 @@ export const startHandsFreeMode = (options: HandsFreeOptions): HandsFreeControll
       recognitionRunning = false;
       // Auto-restart (iOS stops continuous after silence)
       if (active && phase !== "cooldown") {
+        consecutiveErrors = 0; // Successful session → reset error counter
         setTimeout(startRecognition, RECOGNITION_RESTART_DELAY_MS);
       }
     };
