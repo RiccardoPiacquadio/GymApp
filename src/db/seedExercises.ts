@@ -2,7 +2,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "3/4 Sit-Up",
     slug: "34_situp",
-    aliases: ["3/4 sit up", "3 4 sit-up", "3 4 Sit Up", "sit-up", "addominali completi", "sit up"]
+    aliases: ["3/4 sit up", "3 4 sit-up", "3 4 Sit Up", "sit-up"]
   },
   {
     canonicalName: "90/90 Hamstring",
@@ -12,7 +12,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Ab Crunch Machine",
     slug: "ab_crunch_machine",
-    aliases: ["ab crunch mach", "crunch alla macchina", "crunch machine"]
+    aliases: ["ab crunch mach"]
   },
   {
     canonicalName: "Ab roller",
@@ -47,7 +47,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Alternate Hammer Curl",
     slug: "alternate_hammer_curl",
-    aliases: ["alternate hammer curls", "curl martello", "curl martello alternato", "hammer curl", "curl martello alternata"]
+    aliases: ["alternate hammer curls", "curl martello alternato", "curl martello alternata"]
   },
   {
     canonicalName: "Alternate heel touchers",
@@ -57,7 +57,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Alternate Incline Dumbbell Curl",
     slug: "alternate_incline_dumbbell_curl",
-    aliases: ["alternate incline dumbbell curls", "alternate incline db curl", "curl con manubri", "curl con manubrio", "curl inclinato", "curl su panca inclinata", "curl alternato", "curl alternata", "curl alternato con manubri", "curl alternato con manubrio", "curl alternata con manubri", "curl alternata con manubrio", "curl inclinato con manubri", "curl inclinato con manubrio"]
+    aliases: ["alternate incline dumbbell curls", "alternate incline db curl"]
   },
   {
     canonicalName: "Alternate leg diagonal bound",
@@ -67,7 +67,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Alternating Cable Shoulder Press",
     slug: "alternating_cable_shoulder_press",
-    aliases: ["alternating cable shoulder press", "spinte sopra la testa", "shoulder press", "spinte per le spalle", "lento avanti alternato", "lento avanti alternata", "lento avanti ai cavi", "lento avanti al cavo"]
+    aliases: ["alternating cable shoulder press", "lento avanti alternato", "lento avanti alternata"]
   },
   {
     canonicalName: "Alternating Deltoid Raise",
@@ -77,22 +77,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Alternating Floor Press",
     slug: "alternating_floor_press",
-    aliases: ["alternating floor press", "floor press", "distensioni da terra", "floor press alternato", "floor press alternata"]
+    aliases: ["alternating floor press", "floor press alternato", "floor press alternata"]
   },
   {
     canonicalName: "Alternating Hang Clean",
     slug: "alternating_hang_clean",
-    aliases: ["hang clean", "girata da sospensione", "girata alternato", "girata alternata"]
+    aliases: ["girata alternato", "girata alternata"]
   },
   {
     canonicalName: "Alternating Kettlebell Press",
     slug: "alternating_kettlebell_press",
-    aliases: ["alternating kb press", "alternating kettlebell press", "press con kettlebell", "press alternato", "press alternata", "press con girya", "press alternato con kettlebell", "press alternato con girya", "press alternata con kettlebell", "press alternata con girya"]
+    aliases: ["alternating kb press", "alternating kettlebell press", "press alternato", "press alternata", "press alternato con kettlebell", "press alternato con girya", "press alternata con kettlebell", "press alternata con girya"]
   },
   {
     canonicalName: "Alternating Kettlebell Row",
     slug: "alternating_kettlebell_row",
-    aliases: ["alternating kb row", "alternating kettlebell rows", "rematore con kettlebell", "rematore alternato", "rematore alternata", "rematore con girya", "rematore alternato con kettlebell", "rematore alternato con girya", "rematore alternata con kettlebell", "rematore alternata con girya"]
+    aliases: ["alternating kb row", "alternating kettlebell rows", "rematore alternato con kettlebell", "rematore alternato con girya", "rematore alternata con kettlebell", "rematore alternata con girya"]
   },
   {
     canonicalName: "Alternating Renegade Row",
@@ -107,7 +107,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Anterior Tibialis-SMR",
     slug: "anterior_tibialissmr",
-    aliases: ["Anterior Tibialis Smr", "auto-massaggio", "SMR"]
+    aliases: ["Anterior Tibialis Smr"]
   },
   {
     canonicalName: "Anti-Gravity Press",
@@ -117,7 +117,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Arnold Dumbbell Press",
     slug: "arnold_dumbbell_press",
-    aliases: ["arnold db press", "arnold dumbbell press", "arnold press", "press con manubri", "spinte con manubri", "press con manubrio"]
+    aliases: ["arnold db press", "arnold dumbbell press", "arnold press", "press con manubrio"]
   },
   {
     canonicalName: "Around the worlds",
@@ -167,7 +167,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Band Assisted Pull-Up",
     slug: "band_assisted_pullup",
-    aliases: ["Band Assisted Pull Up", "pull-up", "trazioni alla sbarra", "trazioni con elastico", "trazioni con banda"]
+    aliases: ["Band Assisted Pull Up", "trazioni con elastico", "trazioni con banda"]
   },
   {
     canonicalName: "Band Bench Press",
@@ -182,7 +182,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Band Good Morning (Pull Through)",
     slug: "band_good_morning_pull_through",
-    aliases: ["Band Good Morning Pull Through", "Band Good Morning", "good morning con elastico", "good morning con banda"]
+    aliases: ["Band Good Morning Pull Through", "Band Good Morning"]
   },
   {
     canonicalName: "Band hip adductions",
@@ -197,7 +197,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Band Skullcrusher",
     slug: "band_skullcrusher",
-    aliases: ["Band Skull Crusher", "skull crusher", "french press con elastico", "french press con banda"]
+    aliases: ["Band Skull Crusher", "skull crusher con elastico", "skull crusher con banda"]
   },
   {
     canonicalName: "Barbell Ab Rollout",
@@ -207,7 +207,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Ab Rollout - On Knees",
     slug: "barbell_ab_rollout_on_knees",
-    aliases: ["bb ab roll out on knees", "barbell ab rollout on knees", "barbell ab roll out - on knees", "Barbell Ab Roll Out on Knees", "rollout", "roll out", "rollout con bilanciere"]
+    aliases: ["bb ab roll out on knees", "barbell ab rollout on knees", "barbell ab roll out - on knees", "Barbell Ab Roll Out on Knees"]
   },
   {
     canonicalName: "Barbell Bench Press",
@@ -217,12 +217,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Bench Press - Medium Grip",
     slug: "barbell_bench_press_medium_grip",
-    aliases: ["bb bench press medium grip", "Barbell Bench Press Medium Grip", "panca piana con bilanciere", "distensioni su panca piana con bilanciere"]
+    aliases: ["bb bench press medium grip", "Barbell Bench Press Medium Grip"]
   },
   {
     canonicalName: "Barbell Bench Press with Chains",
     slug: "barbell_bench_press_with_chains",
-    aliases: ["bb bench press with chains", "panca piana con bilanciere", "distensioni su panca piana con bilanciere"]
+    aliases: ["bb bench press with chains"]
   },
   {
     canonicalName: "Barbell Curl",
@@ -232,7 +232,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Curls Lying Against An Incline",
     slug: "barbell_curls_lying_against_an_incline",
-    aliases: ["Barbell Curl Lying Against An Incline", "bb curl lying against an incline", "curl con bilanciere", "curl bilanciere", "curl inclinato", "curl su panca inclinata", "curl sdraiato", "curl inclinato con bilanciere", "curl su panca inclinata con bilanciere", "curl sdraiato con bilanciere"]
+    aliases: ["Barbell Curl Lying Against An Incline", "bb curl lying against an incline", "curl inclinato con bilanciere", "curl su panca inclinata con bilanciere"]
   },
   {
     canonicalName: "Barbell Deadlift",
@@ -247,7 +247,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Full Squat",
     slug: "barbell_full_squat",
-    aliases: ["bb full squat", "squat con bilanciere"]
+    aliases: ["bb full squat"]
   },
   {
     canonicalName: "Barbell Glute Bridge",
@@ -257,12 +257,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Guillotine Bench Press",
     slug: "barbell_guillotine_bench_press",
-    aliases: ["bb guillotine bench press", "barbell guillotine bench press", "panca piana con bilanciere", "distensioni su panca piana con bilanciere"]
+    aliases: ["bb guillotine bench press", "barbell guillotine bench press"]
   },
   {
     canonicalName: "Barbell Hack Squat",
     slug: "barbell_hack_squat",
-    aliases: ["bb hack squat", "hack squat", "hack squat con bilanciere"]
+    aliases: ["bb hack squat", "hack squat con bilanciere"]
   },
   {
     canonicalName: "Barbell Incline Bench Press",
@@ -272,17 +272,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Incline Bench Press - Medium Grip",
     slug: "barbell_incline_bench_press_medium_grip",
-    aliases: ["Barbell Incline Bench Press Medium Grip", "bb incline bench press medium grip", "panca inclinata con bilanciere", "distensioni su panca inclinata con bilanciere", "panca inclinata su panca inclinata"]
+    aliases: ["Barbell Incline Bench Press Medium Grip", "bb incline bench press medium grip"]
   },
   {
     canonicalName: "Barbell Incline Shoulder Raise",
     slug: "barbell_incline_shoulder_raise",
-    aliases: ["barbell incline shoulder raises", "bb incline shoulder raise", "alzate inclinato", "alzate su panca inclinata", "alzate con bilanciere", "alzate inclinato con bilanciere", "alzate su panca inclinata con bilanciere"]
+    aliases: ["barbell incline shoulder raises", "bb incline shoulder raise", "alzate con bilanciere", "alzate inclinato con bilanciere", "alzate su panca inclinata con bilanciere"]
   },
   {
     canonicalName: "Barbell Lunge",
     slug: "barbell_lunge",
-    aliases: ["bb lunge", "affondo", "affondo con bilanciere"]
+    aliases: ["bb lunge", "affondo con bilanciere"]
   },
   {
     canonicalName: "Barbell Rear Delt Row",
@@ -292,27 +292,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Rollout from Bench",
     slug: "barbell_rollout_from_bench",
-    aliases: ["Barbell Roll Out From Bench", "bb roll out from bench", "rollout", "roll out", "rollout con bilanciere", "rollout su panca"]
+    aliases: ["Barbell Roll Out From Bench", "bb roll out from bench", "rollout su panca"]
   },
   {
     canonicalName: "Barbell Seated Calf Raise",
     slug: "barbell_seated_calf_raise",
-    aliases: ["barbell seated calf raises", "bb seated calf raise", "calf raise", "sollevamenti polpacci", "calf raise con bilanciere", "calf raise da seduto con bilanciere"]
+    aliases: ["barbell seated calf raises", "bb seated calf raise", "calf raise con bilanciere", "calf raise da seduto con bilanciere"]
   },
   {
     canonicalName: "Barbell Shoulder Press",
     slug: "barbell_shoulder_press",
-    aliases: ["bb shoulder press", "barbell shoulder press", "lento avanti", "spinte sopra la testa", "lento avanti con bilanciere", "spinte sopra la testa con bilanciere", "shoulder press", "spinte per le spalle", "military press", "pressa militare", "overhead press"]
+    aliases: ["bb shoulder press", "barbell shoulder press", "lento avanti", "lento avanti con bilanciere", "spinte sopra la testa con bilanciere", "military press", "pressa militare", "overhead press"]
   },
   {
     canonicalName: "Barbell Shrug",
     slug: "barbell_shrug",
-    aliases: ["bb shrug", "scrollate", "scrollate con bilanciere"]
+    aliases: ["bb shrug", "scrollate con bilanciere"]
   },
   {
     canonicalName: "Barbell Shrug Behind The Back",
     slug: "barbell_shrug_behind_the_back",
-    aliases: ["bb shrug behind the back", "scrollate", "scrollate dietro la schiena", "scrollate con bilanciere", "scrollate dietro la schiena con bilanciere"]
+    aliases: ["bb shrug behind the back", "scrollate dietro la schiena", "scrollate dietro la schiena con bilanciere"]
   },
   {
     canonicalName: "Barbell Side Bend",
@@ -322,7 +322,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Side Split Squat",
     slug: "barbell_side_split_squat",
-    aliases: ["bb side split squat", "split squat", "affondo statico", "split squat con bilanciere"]
+    aliases: ["bb side split squat", "split squat con bilanciere"]
   },
   {
     canonicalName: "Barbell Squat",
@@ -332,7 +332,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Squat To A Bench",
     slug: "barbell_squat_to_a_bench",
-    aliases: ["bb squat to a bench", "squat con bilanciere", "squat su panca"]
+    aliases: ["bb squat to a bench", "squat su panca"]
   },
   {
     canonicalName: "Barbell Step Ups",
@@ -342,7 +342,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Barbell Walking Lunge",
     slug: "barbell_walking_lunge",
-    aliases: ["bb walking lunge", "affondo", "affondo camminato", "affondo con bilanciere", "affondo camminato con bilanciere"]
+    aliases: ["bb walking lunge", "affondo camminato", "affondo camminato con bilanciere"]
   },
   {
     canonicalName: "Battling ropes",
@@ -372,17 +372,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bench Press - Powerlifting",
     slug: "bench_press_powerlifting",
-    aliases: ["Bench Press Powerlifting", "distensioni su panca piana", "panca piana di potenza"]
+    aliases: ["Bench Press Powerlifting", "panca piana di potenza"]
   },
   {
     canonicalName: "Bench Press - With Bands",
     slug: "bench_press_with_bands",
-    aliases: ["Bench Press with Bands", "panca piana con elastico", "distensioni su panca piana con elastico", "panca piana con banda"]
+    aliases: ["Bench Press with Bands"]
   },
   {
     canonicalName: "Bench Press with Chains",
     slug: "bench_press_with_chains",
-    aliases: ["distensioni su panca piana"]
+    aliases: ["bench press with chains", "panca piana con catene"]
   },
   {
     canonicalName: "Bench sprint",
@@ -392,37 +392,37 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bent Over Barbell Row",
     slug: "bent_over_barbell_row",
-    aliases: ["bent over bb row", "bent over barbell rows", "rematore", "rematore con bilanciere", "rematore busto flesso"]
+    aliases: ["bent over bb row", "bent over barbell rows", "rematore", "rematore busto flesso"]
   },
   {
     canonicalName: "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
     slug: "bent_over_dumbbell_rear_delt_raise_with_head_on_bench",
-    aliases: ["bent over dumbbell rear-delt raise with head on bench", "bent over db rear delt raise with head on bench", "alzate con manubri", "alzate posteriori", "alzate busto flesso", "alzate posteriore", "alzate con manubrio", "alzate su panca", "alzate posteriore con manubri", "alzate posteriore con manubrio"]
+    aliases: ["bent over dumbbell rear-delt raise with head on bench", "bent over db rear delt raise with head on bench", "alzate posteriore con manubri", "alzate posteriore con manubrio"]
   },
   {
     canonicalName: "Bent Over Low-Pulley Side Lateral",
     slug: "bent_over_lowpulley_side_lateral",
-    aliases: ["Bent Over Low Pulley Side Lateral", "alzate laterali", "alzate laterali busto flesso"]
+    aliases: ["Bent Over Low Pulley Side Lateral", "alzate laterali busto flesso"]
   },
   {
     canonicalName: "Bent Over One-Arm Long Bar Row",
     slug: "bent_over_onearm_long_bar_row",
-    aliases: ["bent over one arm long bar rows", "Bent Over One Arm Long Bar Row", "rematore busto flesso", "rematore a un braccio", "rematore monolaterale"]
+    aliases: ["bent over one arm long bar rows", "Bent Over One Arm Long Bar Row"]
   },
   {
     canonicalName: "Bent Over Two-Arm Long Bar Row",
     slug: "bent_over_twoarm_long_bar_row",
-    aliases: ["Bent Over Two Arm Long Bar Row", "bent over two arm long bar rows", "rematore busto flesso", "rematore a due braccia"]
+    aliases: ["Bent Over Two Arm Long Bar Row", "bent over two arm long bar rows"]
   },
   {
     canonicalName: "Bent Over Two-Dumbbell Row",
     slug: "bent_over_twodumbbell_row",
-    aliases: ["Bent Over Two Dumbbell Row", "bent over two dumbbell rows", "bent over two db row", "rematore con manubrio", "rematore con manubri", "rematore busto flesso"]
+    aliases: ["Bent Over Two Dumbbell Row", "bent over two dumbbell rows", "bent over two db row"]
   },
   {
     canonicalName: "Bent Over Two-Dumbbell Row With Palms In",
     slug: "bent_over_twodumbbell_row_with_palms_in",
-    aliases: ["bent over two db row with palms in", "Bent Over Two Dumbbell Row with Palms in", "rematore con manubrio", "rematore con manubri", "rematore busto flesso"]
+    aliases: ["bent over two db row with palms in", "Bent Over Two Dumbbell Row with Palms in"]
   },
   {
     canonicalName: "Bent Press",
@@ -437,7 +437,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bent-Arm Dumbbell Pullover",
     slug: "bentarm_dumbbell_pullover",
-    aliases: ["bent arm db pullover", "Bent Arm Dumbbell Pullover", "pullover", "pullover con manubri", "pullover con manubrio"]
+    aliases: ["bent arm db pullover", "Bent Arm Dumbbell Pullover", "pullover con manubri", "pullover con manubrio"]
   },
   {
     canonicalName: "Bent-Knee Hip Raise",
@@ -487,12 +487,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bodyweight Walking Lunge",
     slug: "bodyweight_walking_lunge",
-    aliases: ["affondo", "affondo camminato"]
+    aliases: ["bodyweight walking lunge", "affondo camminato a corpo libero"]
   },
   {
     canonicalName: "Bosu Ball Cable Crunch With Side Bends",
     slug: "bosu_ball_cable_crunch_with_side_bends",
-    aliases: ["flessione laterale", "side bend", "flessione laterale ai cavi", "flessione laterale al cavo"]
+    aliases: ["bosu ball cable crunch with side bends", "crunch su bosu con flessioni laterali"]
   },
   {
     canonicalName: "Bottoms up",
@@ -502,12 +502,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bottoms-Up Clean From The Hang Position",
     slug: "bottomsup_clean_from_the_hang_position",
-    aliases: ["Bottoms Up Clean From the Hang Position", "girata da sospensione"]
+    aliases: ["Bottoms Up Clean From the Hang Position"]
   },
   {
     canonicalName: "Box Jump (Multiple Response)",
     slug: "box_jump_multiple_response",
-    aliases: ["Box Jump Multiple Response", "Box Jump", "salto sul box"]
+    aliases: ["Box Jump Multiple Response"]
   },
   {
     canonicalName: "Box skip",
@@ -522,17 +522,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Box Squat with Bands",
     slug: "box_squat_with_bands",
-    aliases: ["box squat", "box squat con elastico", "box squat con banda"]
+    aliases: ["box squat con elastico", "box squat con banda"]
   },
   {
     canonicalName: "Box Squat with Chains",
     slug: "box_squat_with_chains",
-    aliases: ["box squat", "box squat with chains"]
+    aliases: ["box squat with chains"]
   },
   {
     canonicalName: "Brachialis-SMR",
     slug: "brachialissmr",
-    aliases: ["Brachialis Smr", "auto-massaggio", "SMR"]
+    aliases: ["Brachialis Smr"]
   },
   {
     canonicalName: "Bradford/Rocky Presses",
@@ -542,7 +542,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Butt Lift (Bridge)",
     slug: "butt_lift_bridge",
-    aliases: ["Butt Lift Bridge", "Butt Lift", "ponte"]
+    aliases: ["Butt Lift Bridge", "Butt Lift"]
   },
   {
     canonicalName: "Butt ups",
@@ -567,7 +567,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Crunch",
     slug: "cable_crunch",
-    aliases: ["crunch ai cavi", "crunch al cavo"]
+    aliases: ["crunch ai cavi"]
   },
   {
     canonicalName: "Cable Deadlifts",
@@ -577,7 +577,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Hammer Curls - Rope Attachment",
     slug: "cable_hammer_curls_rope_attachment",
-    aliases: ["Cable Hammer Curls (Rope Attachment)", "Cable Hammer Curls", "Cable Hammer Curl Rope Attachment", "curl martello", "curl martello al cavo", "curl martello ai cavi", "hammer curl"]
+    aliases: ["Cable Hammer Curls (Rope Attachment)", "Cable Hammer Curls", "Cable Hammer Curl Rope Attachment", "curl martello al cavo", "curl martello ai cavi"]
   },
   {
     canonicalName: "Cable hip adduction",
@@ -587,17 +587,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Incline Pushdown",
     slug: "cable_incline_pushdown",
-    aliases: ["Cable Incline Push Down", "pushdown", "pushdown tricipiti", "pushdown inclinato", "pushdown su panca inclinata", "pushdown ai cavi", "pushdown al cavo", "pushdown inclinato ai cavi", "pushdown inclinato al cavo", "pushdown su panca inclinata ai cavi", "pushdown su panca inclinata al cavo"]
+    aliases: ["Cable Incline Push Down", "pushdown inclinato", "pushdown su panca inclinata", "pushdown ai cavi", "pushdown al cavo", "pushdown inclinato ai cavi", "pushdown inclinato al cavo", "pushdown su panca inclinata ai cavi", "pushdown su panca inclinata al cavo"]
   },
   {
     canonicalName: "Cable Incline Triceps Extension",
     slug: "cable_incline_triceps_extension",
-    aliases: ["Cable Incline triceps Extension", "cable incline triceps extensions", "triceps extension", "estensioni tricipiti inclinato", "estensioni tricipiti su panca inclinata", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
+    aliases: ["Cable Incline triceps Extension", "cable incline triceps extensions", "estensioni tricipiti inclinato", "estensioni tricipiti su panca inclinata"]
   },
   {
     canonicalName: "Cable Internal Rotation",
     slug: "cable_internal_rotation",
-    aliases: ["rotazione", "rotazione ai cavi", "rotazione al cavo"]
+    aliases: ["rotazione ai cavi", "rotazione al cavo"]
   },
   {
     canonicalName: "Cable iron cross",
@@ -612,12 +612,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Lying Triceps Extension",
     slug: "cable_lying_triceps_extension",
-    aliases: ["Cable Lying triceps Extension", "cable lying triceps extensions", "triceps extension", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo", "estensioni tricipiti da sdraiato ai cavi", "estensioni tricipiti da sdraiato al cavo"]
+    aliases: ["Cable Lying triceps Extension", "cable lying triceps extensions", "estensioni tricipiti da sdraiato ai cavi", "estensioni tricipiti da sdraiato al cavo"]
   },
   {
     canonicalName: "Cable One Arm Tricep Extension",
     slug: "cable_one_arm_tricep_extension",
-    aliases: ["cable one-arm triceps extension", "cable one arm triceps extensions", "Cable One Arm triceps Extension", "triceps extension", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
+    aliases: ["cable one-arm triceps extension", "cable one arm triceps extensions", "Cable One Arm triceps Extension", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale"]
   },
   {
     canonicalName: "Cable Preacher Curl",
@@ -627,37 +627,37 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Rear Delt Fly",
     slug: "cable_rear_delt_fly",
-    aliases: ["cable rear-delt fly", "cable rear delt flys", "croci inverse", "alzate posteriori", "croci inverse ai cavi", "croci inverse al cavo", "rear delt fly", "croci inverse posteriore"]
+    aliases: ["cable rear-delt fly", "cable rear delt flys", "croci inverse ai cavi", "croci inverse al cavo", "rear delt fly", "croci inverse posteriore"]
   },
   {
     canonicalName: "Cable Reverse Crunch",
     slug: "cable_reverse_crunch",
-    aliases: ["crunch inverso", "crunch reverse", "crunch ai cavi", "crunch al cavo", "crunch inverso ai cavi", "crunch inverso al cavo", "crunch reverse ai cavi", "crunch reverse al cavo"]
+    aliases: ["crunch inverso ai cavi", "crunch inverso al cavo", "crunch reverse ai cavi", "crunch reverse al cavo"]
   },
   {
     canonicalName: "Cable Rope Overhead Triceps Extension",
     slug: "cable_rope_overhead_triceps_extension",
-    aliases: ["Cable Rope Overhead triceps Extension", "cable rope overhead triceps extensions", "triceps extension", "estensioni tricipiti sopra la testa", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
+    aliases: ["Cable Rope Overhead triceps Extension", "cable rope overhead triceps extensions"]
   },
   {
     canonicalName: "Cable Rope Rear-Delt Rows",
     slug: "cable_rope_reardelt_rows",
-    aliases: ["cable rope rear-delt row", "Cable Rope Rear Delt Row", "cable rope rear delt rows", "rematore al cavo", "rematore ai cavi", "rematore posteriore", "rematore posteriore ai cavi", "rematore posteriore al cavo"]
+    aliases: ["cable rope rear-delt row", "Cable Rope Rear Delt Row", "cable rope rear delt rows", "rematore posteriore ai cavi", "rematore posteriore al cavo"]
   },
   {
     canonicalName: "Cable Russian Twists",
     slug: "cable_russian_twists",
-    aliases: ["torsioni russe", "russian twist", "torsioni russe ai cavi", "torsioni russe al cavo"]
+    aliases: ["torsioni russe ai cavi", "torsioni russe al cavo"]
   },
   {
     canonicalName: "Cable Seated Crunch",
     slug: "cable_seated_crunch",
-    aliases: ["crunch seduto", "crunch ai cavi", "crunch al cavo", "crunch seduto ai cavi", "crunch seduto al cavo", "crunch da seduto ai cavi", "crunch da seduto al cavo"]
+    aliases: ["crunch seduto", "crunch seduto ai cavi", "crunch seduto al cavo", "crunch da seduto ai cavi", "crunch da seduto al cavo"]
   },
   {
     canonicalName: "Cable Seated Lateral Raise",
     slug: "cable_seated_lateral_raise",
-    aliases: ["cable seated lateral raises", "alzate laterali", "alzate laterali ai cavi", "alzate laterali al cavo", "alzate laterali da seduto ai cavi", "alzate laterali da seduto al cavo"]
+    aliases: ["cable seated lateral raises", "alzate laterali ai cavi", "alzate laterali al cavo", "alzate laterali da seduto ai cavi", "alzate laterali da seduto al cavo"]
   },
   {
     canonicalName: "Cable Shoulder Press",
@@ -667,7 +667,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cable Shrugs",
     slug: "cable_shrugs",
-    aliases: ["scrollate", "scrollate ai cavi", "scrollate al cavo"]
+    aliases: ["scrollate ai cavi", "scrollate al cavo"]
   },
   {
     canonicalName: "Cable Wrist Curl",
@@ -682,17 +682,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Calf Press On The Leg Press Machine",
     slug: "calf_press_on_the_leg_press_machine",
-    aliases: ["calf press on the leg press mach", "pressa", "leg press", "press alla macchina", "press machine"]
+    aliases: ["calf press on the leg press mach"]
   },
   {
     canonicalName: "Calf Raise On A Dumbbell",
     slug: "calf_raise_on_a_dumbbell",
-    aliases: ["calf raise on a db", "calf raise", "sollevamenti polpacci", "calf raise con manubri", "calf raise con manubrio"]
+    aliases: ["calf raise on a db", "calf raise con manubri", "calf raise con manubrio"]
   },
   {
     canonicalName: "Calf Raises - With Bands",
     slug: "calf_raises_with_bands",
-    aliases: ["Calf Raise with Bands", "calf raise", "sollevamenti polpacci", "calf raise con elastico", "calf raise con banda"]
+    aliases: ["Calf Raise with Bands", "calf raise con elastico", "calf raise con banda"]
   },
   {
     canonicalName: "Calf Stretch Elbows Against Wall",
@@ -707,12 +707,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Calf-Machine Shoulder Shrug",
     slug: "calfmachine_shoulder_shrug",
-    aliases: ["Calf Machine Shoulder Shrug", "calf mach shoulder shrug", "scrollate", "scrollate alla macchina", "scrollate machine"]
+    aliases: ["Calf Machine Shoulder Shrug", "calf mach shoulder shrug", "scrollate alla macchina", "scrollate machine"]
   },
   {
     canonicalName: "Calves-SMR",
     slug: "calvessmr",
-    aliases: ["Calves Smr", "auto-massaggio", "SMR"]
+    aliases: ["Calves Smr"]
   },
   {
     canonicalName: "Car Deadlift",
@@ -782,7 +782,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Chest push multiple response",
     slug: "chest_push_multiple_response",
-    aliases: ["Chest Push (multiple response)", "Chest Push"]
+    aliases: ["Chest Push (multiple response)"]
   },
   {
     canonicalName: "Chest push single response",
@@ -837,7 +837,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Clean and Jerk",
     slug: "clean_and_jerk",
-    aliases: ["girata e slancio", "slancio"]
+    aliases: ["girata e slancio"]
   },
   {
     canonicalName: "Clean and Press",
@@ -872,22 +872,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Close-Grip Barbell Bench Press",
     slug: "closegrip_barbell_bench_press",
-    aliases: ["close grip bb bench press", "close grip barbell bench press", "panca piana con bilanciere", "distensioni su panca piana con bilanciere", "panca piana presa stretta"]
+    aliases: ["close grip bb bench press", "close grip barbell bench press", "panca piana presa stretta"]
   },
   {
     canonicalName: "Close-Grip Dumbbell Press",
     slug: "closegrip_dumbbell_press",
-    aliases: ["Close Grip Dumbbell Press", "close grip db press", "press con manubri", "spinte con manubri", "press presa stretta", "press con manubrio"]
+    aliases: ["Close Grip Dumbbell Press", "close grip db press"]
   },
   {
     canonicalName: "Close-Grip EZ Bar Curl",
     slug: "closegrip_ez_bar_curl",
-    aliases: ["Close Grip Ez Bar Curl", "close grip ez-bar curl", "close grip ez bar curls", "curl con bilanciere EZ", "curl presa stretta", "curl presa stretta con bilanciere EZ"]
+    aliases: ["Close Grip Ez Bar Curl", "close grip ez-bar curl", "close grip ez bar curls", "curl presa stretta", "curl presa stretta con bilanciere EZ"]
   },
   {
     canonicalName: "Close-Grip EZ-Bar Curl with Band",
     slug: "closegrip_ezbar_curl_with_band",
-    aliases: ["close-grip ez bar curl with band", "close grip ez-bar curl with band", "Close Grip Ez Bar Curl with Band", "curl con bilanciere EZ", "curl presa stretta", "curl con elastico", "curl con banda", "curl presa stretta con bilanciere EZ"]
+    aliases: ["close-grip ez bar curl with band", "close grip ez-bar curl with band", "Close Grip Ez Bar Curl with Band"]
   },
   {
     canonicalName: "Close-Grip EZ-Bar Press",
@@ -902,12 +902,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Close-Grip Push-Up off of a Dumbbell",
     slug: "closegrip_pushup_off_of_a_dumbbell",
-    aliases: ["close grip push-up off of a dumbbell", "Close Grip Push Up Off of A Dumbbell", "close grip push up off of a db", "close-grip push up off of a dumbbell", "piegamenti presa stretta", "piegamenti con manubri", "piegamenti con manubrio"]
+    aliases: ["close grip push-up off of a dumbbell", "Close Grip Push Up Off of A Dumbbell", "close grip push up off of a db", "close-grip push up off of a dumbbell", "piegamenti con manubri", "piegamenti con manubrio"]
   },
   {
     canonicalName: "Close-Grip Standing Barbell Curl",
     slug: "closegrip_standing_barbell_curl",
-    aliases: ["Close Grip Standing Barbell Curl", "close grip standing bb curl", "close grip standing barbell curls", "curl con bilanciere", "curl bilanciere", "curl presa stretta", "curl in piedi"]
+    aliases: ["Close Grip Standing Barbell Curl", "close grip standing bb curl", "close grip standing barbell curls"]
   },
   {
     canonicalName: "Cocoons",
@@ -927,7 +927,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Cross Body Hammer Curl",
     slug: "cross_body_hammer_curl",
-    aliases: ["cross body hammer curls", "curl martello", "hammer curl"]
+    aliases: ["cross body hammer curls"]
   },
   {
     canonicalName: "Cross over with bands",
@@ -942,7 +942,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Crossover Reverse Lunge",
     slug: "crossover_reverse_lunge",
-    aliases: ["affondo", "affondo inverso", "affondo reverse"]
+    aliases: ["affondo inverso", "affondo reverse"]
   },
   {
     canonicalName: "Crucifix",
@@ -957,7 +957,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Crunch - Legs On Exercise Ball",
     slug: "crunch_legs_on_exercise_ball",
-    aliases: ["Crunch Legs on Exercise Ball", "crunch su fitball", "crunch su palla fitness"]
+    aliases: ["Crunch Legs on Exercise Ball"]
   },
   {
     canonicalName: "Crunches",
@@ -997,12 +997,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Decline Barbell Bench Press",
     slug: "decline_barbell_bench_press",
-    aliases: ["decline barbell bench press", "decline bb bench press", "panca declinata con bilanciere", "distensioni su panca declinata con bilanciere", "panca declinata su panca declinata"]
+    aliases: ["decline barbell bench press", "decline bb bench press"]
   },
   {
     canonicalName: "Decline Close-Grip Bench To Skull Crusher",
     slug: "decline_closegrip_bench_to_skull_crusher",
-    aliases: ["decline close grip bench to skullcrusher", "Decline Close Grip Bench to Skull Crusher", "skull crusher", "french press presa stretta", "french press declinato", "french press su panca declinata", "french press su panca"]
+    aliases: ["decline close grip bench to skullcrusher", "Decline Close Grip Bench to Skull Crusher", "french press presa stretta", "french press declinato", "french press su panca declinata", "french press su panca"]
   },
   {
     canonicalName: "Decline Crunch",
@@ -1012,27 +1012,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Decline Dumbbell Bench Press",
     slug: "decline_dumbbell_bench_press",
-    aliases: ["decline db bench press", "decline dumbbell bench press", "panca declinata con manubri", "distensioni su panca declinata con manubri", "panca declinata su panca declinata", "panca declinata con manubrio"]
+    aliases: ["decline db bench press", "decline dumbbell bench press", "panca declinata con manubri", "distensioni su panca declinata con manubri", "panca declinata con manubrio"]
   },
   {
     canonicalName: "Decline Dumbbell Flyes",
     slug: "decline_dumbbell_flyes",
-    aliases: ["decline db fly", "decline dumbbell flys", "Decline Dumbbell Fly", "croci con manubri", "croci declinato", "croci su panca declinata", "croci con manubrio", "croci declinato con manubri", "croci declinato con manubrio", "croci su panca declinata con manubri", "croci su panca declinata con manubrio"]
+    aliases: ["decline db fly", "decline dumbbell flys", "Decline Dumbbell Fly", "croci declinato", "croci su panca declinata", "croci declinato con manubri", "croci declinato con manubrio", "croci su panca declinata con manubri", "croci su panca declinata con manubrio"]
   },
   {
     canonicalName: "Decline Dumbbell Triceps Extension",
     slug: "decline_dumbbell_triceps_extension",
-    aliases: ["decline dumbbell triceps extensions", "Decline Dumbbell triceps Extension", "decline db triceps extension", "triceps extension", "estensioni tricipiti declinato", "estensioni tricipiti su panca declinata", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["decline dumbbell triceps extensions", "Decline Dumbbell triceps Extension", "decline db triceps extension"]
   },
   {
     canonicalName: "Decline EZ Bar Triceps Extension",
     slug: "decline_ez_bar_triceps_extension",
-    aliases: ["Decline Ez Bar triceps Extension", "decline ez bar triceps extensions", "decline ez-bar triceps extension", "triceps extension", "estensioni tricipiti declinato", "estensioni tricipiti su panca declinata", "estensioni tricipiti con bilanciere EZ", "estensioni tricipiti declinato con bilanciere EZ", "estensioni tricipiti su panca declinata con bilanciere EZ"]
+    aliases: ["Decline Ez Bar triceps Extension", "decline ez bar triceps extensions", "decline ez-bar triceps extension", "estensioni tricipiti declinato", "estensioni tricipiti su panca declinata", "estensioni tricipiti con bilanciere EZ", "estensioni tricipiti declinato con bilanciere EZ", "estensioni tricipiti su panca declinata con bilanciere EZ"]
   },
   {
     canonicalName: "Decline Oblique Crunch",
     slug: "decline_oblique_crunch",
-    aliases: ["crunch declinato", "crunch su panca declinata"]
+    aliases: ["decline oblique crunch", "crunch obliquo su panca declinata"]
   },
   {
     canonicalName: "Decline Push-Up",
@@ -1042,7 +1042,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Decline Reverse Crunch",
     slug: "decline_reverse_crunch",
-    aliases: ["crunch declinato", "crunch su panca declinata", "crunch inverso", "crunch reverse"]
+    aliases: ["decline reverse crunch", "crunch inverso su panca declinata"]
   },
   {
     canonicalName: "Decline Smith Press",
@@ -1062,7 +1062,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dips - Chest Version",
     slug: "dips_chest_version",
-    aliases: ["Dips Chest Version", "dip petto", "parallele petto"]
+    aliases: ["Dips Chest Version"]
   },
   {
     canonicalName: "Dips - Triceps Version",
@@ -1077,27 +1077,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dips (Triceps Focus)",
     slug: "dips_triceps_focus",
-    aliases: ["Dips triceps Focus", "Dips", "dip tricipiti"]
+    aliases: ["Dips triceps Focus", "dip tricipiti"]
   },
   {
     canonicalName: "Donkey Calf Raises",
     slug: "donkey_calf_raises",
-    aliases: ["Donkey Calf Raise", "calf raise", "sollevamenti polpacci"]
+    aliases: ["Donkey Calf Raise"]
   },
   {
     canonicalName: "Double Kettlebell Alternating Hang Clean",
     slug: "double_kettlebell_alternating_hang_clean",
-    aliases: ["double kb alternating hang clean", "hang clean", "girata da sospensione", "girata alternato", "girata alternata", "girata con kettlebell", "girata con girya", "girata alternato con kettlebell", "girata alternato con girya", "girata alternata con kettlebell", "girata alternata con girya", "girata da sospensione con kettlebell", "girata da sospensione con girya"]
+    aliases: ["double kb alternating hang clean", "girata alternato con kettlebell", "girata alternato con girya", "girata alternata con kettlebell", "girata alternata con girya"]
   },
   {
     canonicalName: "Double Kettlebell Jerk",
     slug: "double_kettlebell_jerk",
-    aliases: ["double kb jerk", "slancio", "slancio con kettlebell", "slancio con girya"]
+    aliases: ["double kb jerk", "slancio con kettlebell", "slancio con girya"]
   },
   {
     canonicalName: "Double Kettlebell Push Press",
     slug: "double_kettlebell_push_press",
-    aliases: ["double kb push press", "double kettlebell push press", "push press", "spinta con slancio", "press con kettlebell", "push press con kettlebell", "push press con girya"]
+    aliases: ["double kb push press", "double kettlebell push press", "push press con kettlebell", "push press con girya"]
   },
   {
     canonicalName: "Double Kettlebell Snatch",
@@ -1132,7 +1132,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Alternate Bicep Curl",
     slug: "dumbbell_alternate_bicep_curl",
-    aliases: ["dumbbell alternate bicep curls", "db alternate bicep curl", "curl con manubri", "curl con manubrio", "curl alternato", "curl alternata", "curl alternato con manubri", "curl alternato con manubrio", "curl alternata con manubri", "curl alternata con manubrio"]
+    aliases: ["dumbbell alternate bicep curls", "db alternate bicep curl", "curl alternato", "curl alternata", "curl alternato con manubri", "curl alternato con manubrio", "curl alternata con manubri", "curl alternata con manubrio"]
   },
   {
     canonicalName: "Dumbbell Bench Press",
@@ -1142,7 +1142,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Bench Press with Neutral Grip",
     slug: "dumbbell_bench_press_with_neutral_grip",
-    aliases: ["db bench press with neutral grip", "panca piana con manubri", "distensioni su panca piana con manubri", "panca piana presa neutra", "panca piana con manubrio"]
+    aliases: ["db bench press with neutral grip", "panca piana presa neutra"]
   },
   {
     canonicalName: "Dumbbell Bicep Curl",
@@ -1157,12 +1157,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Decline Bench Press",
     slug: "dumbbell_decline_bench_press",
-    aliases: ["dumbbell decline bench press", "db decline bench press", "panca declinata con manubri", "distensioni su panca declinata con manubri", "panca declinata su panca declinata", "panca declinata con manubrio"]
+    aliases: ["dumbbell decline bench press", "db decline bench press"]
   },
   {
     canonicalName: "Dumbbell Floor Press",
     slug: "dumbbell_floor_press",
-    aliases: ["db floor press", "dumbbell floor press", "floor press", "distensioni da terra", "press con manubri", "spinte con manubri", "floor press con manubri", "floor press con manubrio"]
+    aliases: ["db floor press", "dumbbell floor press", "press con manubri", "spinte con manubri", "floor press con manubri", "floor press con manubrio"]
   },
   {
     canonicalName: "Dumbbell Flyes",
@@ -1172,22 +1172,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Incline Row",
     slug: "dumbbell_incline_row",
-    aliases: ["dumbbell incline rows", "db incline row", "rematore con manubrio", "rematore con manubri", "rematore inclinato", "rematore su panca inclinata", "rematore inclinato con manubri", "rematore inclinato con manubrio", "rematore su panca inclinata con manubri", "rematore su panca inclinata con manubrio"]
+    aliases: ["dumbbell incline rows", "db incline row", "rematore inclinato", "rematore su panca inclinata", "rematore inclinato con manubri", "rematore inclinato con manubrio", "rematore su panca inclinata con manubri", "rematore su panca inclinata con manubrio"]
   },
   {
     canonicalName: "Dumbbell Incline Shoulder Raise",
     slug: "dumbbell_incline_shoulder_raise",
-    aliases: ["db incline shoulder raise", "dumbbell incline shoulder raises", "alzate con manubri", "alzate inclinato", "alzate su panca inclinata", "alzate con manubrio", "alzate inclinato con manubri", "alzate inclinato con manubrio", "alzate su panca inclinata con manubri", "alzate su panca inclinata con manubrio"]
+    aliases: ["db incline shoulder raise", "dumbbell incline shoulder raises"]
   },
   {
     canonicalName: "Dumbbell Lunges",
     slug: "dumbbell_lunges",
-    aliases: ["db lunges", "affondo", "affondo con manubri", "affondo con manubrio"]
+    aliases: ["db lunges", "affondo con manubri", "affondo con manubrio"]
   },
   {
     canonicalName: "Dumbbell Lying One-Arm Rear Lateral Raise",
     slug: "dumbbell_lying_onearm_rear_lateral_raise",
-    aliases: ["Dumbbell Lying One Arm Rear Lateral Raise", "dumbbell lying one arm rear lateral raises", "db lying one arm rear lateral raise", "alzate laterali", "alzate laterali con manubri", "alzate posteriori", "alzate laterali a un braccio", "alzate laterali monolaterale", "alzate laterali con manubrio"]
+    aliases: ["Dumbbell Lying One Arm Rear Lateral Raise", "dumbbell lying one arm rear lateral raises", "db lying one arm rear lateral raise"]
   },
   {
     canonicalName: "Dumbbell lying pronation",
@@ -1197,7 +1197,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Lying Rear Lateral Raise",
     slug: "dumbbell_lying_rear_lateral_raise",
-    aliases: ["dumbbell lying rear lateral raises", "db lying rear lateral raise", "alzate laterali", "alzate laterali con manubri", "alzate posteriori", "alzate laterali posteriore", "alzate laterali con manubrio", "alzate laterali da sdraiato con manubri", "alzate laterali da sdraiato con manubrio"]
+    aliases: ["dumbbell lying rear lateral raises", "db lying rear lateral raise", "alzate laterali posteriore", "alzate laterali con manubrio", "alzate laterali da sdraiato con manubri", "alzate laterali da sdraiato con manubrio"]
   },
   {
     canonicalName: "Dumbbell lying supination",
@@ -1207,17 +1207,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell One-Arm Shoulder Press",
     slug: "dumbbell_onearm_shoulder_press",
-    aliases: ["Dumbbell One Arm Shoulder Press", "db one arm shoulder press", "spinte sopra la testa", "lento avanti con manubri", "spinte sopra la testa con manubri", "shoulder press", "spinte per le spalle", "lento avanti a un braccio", "lento avanti monolaterale", "lento avanti con manubrio"]
+    aliases: ["Dumbbell One Arm Shoulder Press", "db one arm shoulder press", "lento avanti a un braccio", "lento avanti monolaterale"]
   },
   {
     canonicalName: "Dumbbell One-Arm Triceps Extension",
     slug: "dumbbell_onearm_triceps_extension",
-    aliases: ["Dumbbell One Arm triceps Extension", "db one arm triceps extension", "dumbbell one arm triceps extensions", "dumbbell one-arm triceps extension", "triceps extension", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["Dumbbell One Arm triceps Extension", "db one arm triceps extension", "dumbbell one arm triceps extensions", "dumbbell one-arm triceps extension"]
   },
   {
     canonicalName: "Dumbbell One-Arm Upright Row",
     slug: "dumbbell_onearm_upright_row",
-    aliases: ["Dumbbell One Arm Upright Row", "db one arm upright row", "dumbbell one arm upright rows", "tirate al mento", "upright row", "tirate al mento a un braccio", "tirate al mento monolaterale", "tirate al mento con manubri", "tirate al mento con manubrio", "tirate al mento a un braccio con manubri", "tirate al mento a un braccio con manubrio", "tirate al mento monolaterale con manubri", "tirate al mento monolaterale con manubrio"]
+    aliases: ["Dumbbell One Arm Upright Row", "db one arm upright row", "dumbbell one arm upright rows", "tirate al mento a un braccio", "tirate al mento monolaterale", "tirate al mento con manubri", "tirate al mento con manubrio", "tirate al mento a un braccio con manubri", "tirate al mento a un braccio con manubrio", "tirate al mento monolaterale con manubri", "tirate al mento monolaterale con manubrio"]
   },
   {
     canonicalName: "Dumbbell Preacher Curl",
@@ -1227,7 +1227,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Prone Incline Curl",
     slug: "dumbbell_prone_incline_curl",
-    aliases: ["db prone incline curl", "dumbbell prone incline curls", "curl con manubri", "curl con manubrio", "curl inclinato", "curl su panca inclinata", "curl inclinato con manubri", "curl inclinato con manubrio", "curl su panca inclinata con manubri", "curl su panca inclinata con manubrio"]
+    aliases: ["db prone incline curl", "dumbbell prone incline curls"]
   },
   {
     canonicalName: "Dumbbell Raise",
@@ -1237,7 +1237,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Rear Lunge",
     slug: "dumbbell_rear_lunge",
-    aliases: ["db rear lunge", "affondo", "affondo posteriore", "affondo con manubri", "affondo con manubrio", "affondo posteriore con manubri", "affondo posteriore con manubrio"]
+    aliases: ["db rear lunge", "affondo posteriore", "affondo posteriore con manubri", "affondo posteriore con manubrio"]
   },
   {
     canonicalName: "Dumbbell scaption",
@@ -1247,32 +1247,32 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Seated Box Jump",
     slug: "dumbbell_seated_box_jump",
-    aliases: ["db seated box jump", "salto sul box", "box jump"]
+    aliases: ["db seated box jump"]
   },
   {
     canonicalName: "Dumbbell Seated One-Leg Calf Raise",
     slug: "dumbbell_seated_oneleg_calf_raise",
-    aliases: ["db seated one leg calf raise", "dumbbell seated one leg calf raises", "Dumbbell Seated One Leg Calf Raise", "calf raise", "sollevamenti polpacci", "calf raise a una gamba", "calf raise monolaterale", "calf raise con manubri", "calf raise con manubrio"]
+    aliases: ["db seated one leg calf raise", "dumbbell seated one leg calf raises", "Dumbbell Seated One Leg Calf Raise", "calf raise a una gamba", "calf raise monolaterale"]
   },
   {
     canonicalName: "Dumbbell Shoulder Press",
     slug: "dumbbell_shoulder_press",
-    aliases: ["db shoulder press", "dumbbell shoulder press", "spinte sopra la testa", "lento avanti con manubri", "spinte sopra la testa con manubri", "shoulder press", "spinte per le spalle", "lento avanti con manubrio"]
+    aliases: ["db shoulder press", "dumbbell shoulder press", "lento avanti con manubri", "spinte sopra la testa con manubri", "lento avanti con manubrio"]
   },
   {
     canonicalName: "Dumbbell Shrug",
     slug: "dumbbell_shrug",
-    aliases: ["db shrug", "scrollate", "scrollate con manubri", "scrollate con manubrio"]
+    aliases: ["db shrug", "scrollate con manubri", "scrollate con manubrio"]
   },
   {
     canonicalName: "Dumbbell Side Bend",
     slug: "dumbbell_side_bend",
-    aliases: ["db side bend", "flessione laterale", "side bend", "flessione laterale con manubri", "flessione laterale con manubrio"]
+    aliases: ["db side bend", "flessione laterale con manubri", "flessione laterale con manubrio"]
   },
   {
     canonicalName: "Dumbbell Skullcrusher",
     slug: "dumbbell_skullcrusher",
-    aliases: ["Dumbbell French Press", "Dumbbell Skull Crusher", "db skull crusher", "db french press", "skull crusher", "french press con manubri", "french press con manubrio", "press con manubri", "spinte con manubri", "press con manubrio"]
+    aliases: ["Dumbbell French Press", "Dumbbell Skull Crusher", "db skull crusher", "db french press", "french press con manubri", "french press con manubrio"]
   },
   {
     canonicalName: "Dumbbell Squat",
@@ -1282,17 +1282,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Dumbbell Squat To A Bench",
     slug: "dumbbell_squat_to_a_bench",
-    aliases: ["db squat to a bench", "squat con manubri", "squat con manubrio", "squat su panca"]
+    aliases: ["db squat to a bench"]
   },
   {
     canonicalName: "Dumbbell Step Ups",
     slug: "dumbbell_step_ups",
-    aliases: ["db step ups", "dumbbell step-ups", "step-up", "salita al box", "step up", "step-up con manubri", "step-up con manubrio"]
+    aliases: ["db step ups", "dumbbell step-ups", "step-up con manubri", "step-up con manubrio"]
   },
   {
     canonicalName: "Dumbbell Tricep Extension -Pronated Grip",
     slug: "dumbbell_tricep_extension_pronated_grip",
-    aliases: ["Dumbbell Tricep Extension - Pronated Grip", "db triceps extension pronated grip", "Dumbbell triceps Extension Pronated Grip", "triceps extension", "estensioni tricipiti presa prona", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["Dumbbell Tricep Extension - Pronated Grip", "db triceps extension pronated grip", "Dumbbell triceps Extension Pronated Grip", "estensioni tricipiti presa prona"]
   },
   {
     canonicalName: "Dynamic Back Stretch",
@@ -1307,7 +1307,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Elbow Circles",
     slug: "elbow_circles",
-    aliases: ["circonduzioni", "cerchi"]
+    aliases: ["elbow circles", "cerchi con i gomiti", "rotazioni gomiti"]
   },
   {
     canonicalName: "Elbow to knee",
@@ -1322,12 +1322,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Elevated Back Lunge",
     slug: "elevated_back_lunge",
-    aliases: ["affondo", "elevated back lunge"]
+    aliases: ["elevated back lunge"]
   },
   {
     canonicalName: "Elevated Cable Rows",
     slug: "elevated_cable_rows",
-    aliases: ["Elevated Cable Row", "rematore al cavo", "rematore ai cavi"]
+    aliases: ["Elevated Cable Row"]
   },
   {
     canonicalName: "Elliptical trainer",
@@ -1347,22 +1347,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Extended Range One-Arm Kettlebell Floor Press",
     slug: "extended_range_onearm_kettlebell_floor_press",
-    aliases: ["extended range one arm kettlebell floor press", "extended range one arm kb floor press", "floor press", "distensioni da terra", "press con kettlebell", "press a un braccio", "floor press a un braccio", "floor press monolaterale", "floor press con kettlebell", "floor press con girya"]
+    aliases: ["extended range one arm kettlebell floor press", "extended range one arm kb floor press"]
   },
   {
     canonicalName: "External Rotation",
     slug: "external_rotation",
-    aliases: ["rotazione", "external rotation"]
+    aliases: ["external rotation"]
   },
   {
     canonicalName: "External Rotation with Band",
     slug: "external_rotation_with_band",
-    aliases: ["rotazione", "rotazione con elastico", "rotazione con banda"]
+    aliases: ["rotazione con elastico", "rotazione con banda"]
   },
   {
     canonicalName: "External Rotation with Cable",
     slug: "external_rotation_with_cable",
-    aliases: ["rotazione", "rotazione ai cavi", "rotazione al cavo"]
+    aliases: ["external rotation with cable", "extrarotazione al cavo"]
   },
   {
     canonicalName: "EZ-Bar Curl",
@@ -1372,7 +1372,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "EZ-Bar Skullcrusher",
     slug: "ezbar_skullcrusher",
-    aliases: ["Ez Bar Skull Crusher", "ez-bar skull crusher", "ez bar skullcrusher", "skull crusher", "french press con bilanciere EZ"]
+    aliases: ["Ez Bar Skull Crusher", "ez-bar skull crusher", "ez bar skullcrusher", "french press con bilanciere EZ"]
   },
   {
     canonicalName: "Face pull",
@@ -1382,7 +1382,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Farmer's walk",
     slug: "farmers_walk",
-    aliases: ["Farmer S Walk", "camminata del contadino", "camminata", "walk"]
+    aliases: ["Farmer S Walk", "camminata del contadino"]
   },
   {
     canonicalName: "Fast skipping",
@@ -1397,7 +1397,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Flat Bench Cable Flyes",
     slug: "flat_bench_cable_flyes",
-    aliases: ["flat bench cable flys", "Flat Bench Cable Fly", "croci ai cavi", "croci al cavo", "croci su panca"]
+    aliases: ["flat bench cable flys", "Flat Bench Cable Fly", "croci su panca"]
   },
   {
     canonicalName: "Flat bench leg pull in",
@@ -1407,17 +1407,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Flat Bench Lying Leg Raise",
     slug: "flat_bench_lying_leg_raise",
-    aliases: ["flat bench lying leg raises", "sollevamento gambe", "leg raise", "sollevamento gambe su panca", "sollevamento gambe da sdraiato su panca"]
+    aliases: ["flat bench lying leg raises", "sollevamento gambe su panca", "sollevamento gambe da sdraiato su panca"]
   },
   {
     canonicalName: "Flexor Incline Dumbbell Curls",
     slug: "flexor_incline_dumbbell_curls",
-    aliases: ["Flexor Incline Dumbbell Curl", "flexor incline db curl", "curl con manubri", "curl con manubrio", "curl inclinato", "curl su panca inclinata", "curl inclinato con manubri", "curl inclinato con manubrio", "curl su panca inclinata con manubri", "curl su panca inclinata con manubrio"]
+    aliases: ["Flexor Incline Dumbbell Curl", "flexor incline db curl"]
   },
   {
     canonicalName: "Floor Glute-Ham Raise",
     slug: "floor_gluteham_raise",
-    aliases: ["floor glute ham raises", "Floor Glute Ham Raise", "glute-ham raise", "GHR"]
+    aliases: ["floor glute ham raises", "Floor Glute Ham Raise"]
   },
   {
     canonicalName: "Floor Press",
@@ -1427,7 +1427,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Floor Press with Chains",
     slug: "floor_press_with_chains",
-    aliases: ["floor press", "distensioni da terra"]
+    aliases: ["floor press with chains", "floor press con catene"]
   },
   {
     canonicalName: "Flutter kicks",
@@ -1462,17 +1462,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Frog Sit-Ups",
     slug: "frog_situps",
-    aliases: ["Frog Sit Ups", "sit-up", "addominali completi", "sit up"]
+    aliases: ["Frog Sit Ups"]
   },
   {
     canonicalName: "Front Barbell Squat",
     slug: "front_barbell_squat",
-    aliases: ["front-barbell squat", "front bb squat", "squat con bilanciere", "squat frontale", "squat frontale con bilanciere", "front squat"]
+    aliases: ["front-barbell squat", "front bb squat", "squat frontale", "squat frontale con bilanciere", "front squat"]
   },
   {
     canonicalName: "Front Barbell Squat To A Bench",
     slug: "front_barbell_squat_to_a_bench",
-    aliases: ["front-barbell squat to a bench", "front bb squat to a bench", "squat con bilanciere", "squat frontale", "squat su panca", "squat frontale con bilanciere", "squat frontale su panca"]
+    aliases: ["front-barbell squat to a bench", "front bb squat to a bench", "squat frontale su panca"]
   },
   {
     canonicalName: "Front Box Jump",
@@ -1482,7 +1482,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Front Cable Raise",
     slug: "front_cable_raise",
-    aliases: ["front cable raises", "alzate ai cavi", "alzate frontali", "alzate frontale", "alzate al cavo", "alzate frontale ai cavi", "alzate frontale al cavo"]
+    aliases: ["front cable raises", "alzate ai cavi", "alzate frontale", "alzate al cavo", "alzate frontale ai cavi", "alzate frontale al cavo"]
   },
   {
     canonicalName: "Front cone hops or hurdle hops",
@@ -1492,47 +1492,47 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Front Dumbbell Raise",
     slug: "front_dumbbell_raise",
-    aliases: ["front db raise", "front dumbbell raises", "alzate con manubri", "alzate frontali", "alzate frontale", "alzate con manubrio", "alzate frontale con manubri", "alzate frontale con manubrio"]
+    aliases: ["front db raise", "front dumbbell raises", "alzate frontale con manubri", "alzate frontale con manubrio"]
   },
   {
     canonicalName: "Front Incline Dumbbell Raise",
     slug: "front_incline_dumbbell_raise",
-    aliases: ["front incline dumbbell raises", "front incline db raise", "alzate con manubri", "alzate frontali", "alzate inclinato", "alzate su panca inclinata", "alzate frontale", "alzate con manubrio", "alzate inclinato con manubri", "alzate inclinato con manubrio", "alzate su panca inclinata con manubri", "alzate su panca inclinata con manubrio", "alzate frontale con manubri", "alzate frontale con manubrio"]
+    aliases: ["front incline dumbbell raises", "front incline db raise", "alzate inclinato", "alzate su panca inclinata", "alzate inclinato con manubri", "alzate inclinato con manubrio", "alzate su panca inclinata con manubri", "alzate su panca inclinata con manubrio"]
   },
   {
     canonicalName: "Front Leg Raises",
     slug: "front_leg_raises",
-    aliases: ["Front Leg Raise", "sollevamento gambe", "leg raise", "alzate frontali", "sollevamento gambe frontale"]
+    aliases: ["Front Leg Raise", "alzate frontali", "sollevamento gambe frontale"]
   },
   {
     canonicalName: "Front Plate Raise",
     slug: "front_plate_raise",
-    aliases: ["front plate raises", "alzate con disco", "alzate frontali", "alzate frontale"]
+    aliases: ["front plate raises", "alzate con disco"]
   },
   {
     canonicalName: "Front Raise And Pullover",
     slug: "front_raise_and_pullover",
-    aliases: ["pullover", "alzate frontali", "pullover frontale"]
+    aliases: ["pullover frontale"]
   },
   {
     canonicalName: "Front Squat (Clean Grip)",
     slug: "front_squat_clean_grip",
-    aliases: ["Front Squat", "Front Squat Clean Grip", "squat frontale"]
+    aliases: ["Front Squat Clean Grip"]
   },
   {
     canonicalName: "Front Squats With Two Kettlebells",
     slug: "front_squats_with_two_kettlebells",
-    aliases: ["front squats with two kbs", "squat frontale", "squat frontale con kettlebell", "front squat", "squat frontale con girya"]
+    aliases: ["front squats with two kbs", "squat frontale con kettlebell", "squat frontale con girya"]
   },
   {
     canonicalName: "Front Two-Dumbbell Raise",
     slug: "front_twodumbbell_raise",
-    aliases: ["Front Two Dumbbell Raise", "front two dumbbell raises", "front two db raise", "alzate con manubri", "alzate frontali", "alzate frontale", "alzate con manubrio", "alzate frontale con manubri", "alzate frontale con manubrio"]
+    aliases: ["Front Two Dumbbell Raise", "front two dumbbell raises", "front two db raise"]
   },
   {
     canonicalName: "Full Range-Of-Motion Lat Pulldown",
     slug: "full_rangeofmotion_lat_pulldown",
-    aliases: ["full range of motion lat pulldown", "full range-of-motion lat pull down", "Full Range of Motion Lat Pull Down", "lat pulldown", "lat"]
+    aliases: ["full range of motion lat pulldown", "full range-of-motion lat pull down", "Full Range of Motion Lat Pull Down"]
   },
   {
     canonicalName: "Gironda sternum chins",
@@ -1592,7 +1592,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hammer Grip Incline DB Bench Press",
     slug: "hammer_grip_incline_db_bench_press",
-    aliases: ["hammer grip incline db bench press", "distensioni su panca inclinata", "panca inclinata su panca inclinata"]
+    aliases: ["hammer grip incline db bench press", "distensioni su panca inclinata"]
   },
   {
     canonicalName: "Hamstring Stretch",
@@ -1602,7 +1602,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hamstring-SMR",
     slug: "hamstringsmr",
-    aliases: ["Hamstring Smr", "auto-massaggio", "SMR"]
+    aliases: ["Hamstring Smr"]
   },
   {
     canonicalName: "Handstand Push-Ups",
@@ -1617,7 +1617,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hang Clean - Below the Knees",
     slug: "hang_clean_below_the_knees",
-    aliases: ["Hang Clean Below the Knees", "hang clean", "girata da sospensione"]
+    aliases: ["Hang Clean Below the Knees"]
   },
   {
     canonicalName: "Hang Snatch",
@@ -1627,7 +1627,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hang Snatch - Below Knees",
     slug: "hang_snatch_below_knees",
-    aliases: ["Hang Snatch Below Knees", "hang snatch", "strappo da sospensione"]
+    aliases: ["Hang Snatch Below Knees", "hang snatch"]
   },
   {
     canonicalName: "Hanging Bar Good Morning",
@@ -1637,7 +1637,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hanging Leg Raise",
     slug: "hanging_leg_raise",
-    aliases: ["hanging leg raises", "sollevamento gambe", "leg raise", "sollevamento gambe da sospensione"]
+    aliases: ["hanging leg raises", "sollevamento gambe da sospensione"]
   },
   {
     canonicalName: "Hanging pike",
@@ -1657,12 +1657,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "High Cable Curls",
     slug: "high_cable_curls",
-    aliases: ["High Cable Curl", "curl al cavo", "curl ai cavi"]
+    aliases: ["High Cable Curl"]
   },
   {
     canonicalName: "Hip Circles (prone)",
     slug: "hip_circles_prone",
-    aliases: ["Hip Circles", "Hip Circles Prone", "circonduzioni", "cerchi"]
+    aliases: ["Hip Circles", "Hip Circles Prone"]
   },
   {
     canonicalName: "Hip Extension with Bands",
@@ -1677,7 +1677,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Hip Lift with Band",
     slug: "hip_lift_with_band",
-    aliases: ["sollevamento anche", "sollevamento anche con elastico", "sollevamento anche con banda"]
+    aliases: ["sollevamento anche con elastico", "sollevamento anche con banda"]
   },
   {
     canonicalName: "Hip thrust",
@@ -1712,7 +1712,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Iliotibial Tract-SMR",
     slug: "iliotibial_tractsmr",
-    aliases: ["Iliotibial Tract Smr", "auto-massaggio", "SMR"]
+    aliases: ["Iliotibial Tract Smr"]
   },
   {
     canonicalName: "Inchworm",
@@ -1722,7 +1722,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Incline Barbell Triceps Extension",
     slug: "incline_barbell_triceps_extension",
-    aliases: ["Incline Barbell triceps Extension", "incline bb triceps extension", "incline barbell triceps extensions", "triceps extension", "estensioni tricipiti inclinato", "estensioni tricipiti su panca inclinata", "estensioni tricipiti con bilanciere"]
+    aliases: ["Incline Barbell triceps Extension", "incline bb triceps extension", "incline barbell triceps extensions", "estensioni tricipiti con bilanciere"]
   },
   {
     canonicalName: "Incline bench pull",
@@ -1732,12 +1732,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Incline Cable Chest Press",
     slug: "incline_cable_chest_press",
-    aliases: ["incline cable chest press", "press inclinato", "press su panca inclinata", "press ai cavi", "press al cavo", "press inclinato ai cavi", "press inclinato al cavo", "press su panca inclinata ai cavi", "press su panca inclinata al cavo"]
+    aliases: ["incline cable chest press", "press inclinato ai cavi", "press inclinato al cavo", "press su panca inclinata ai cavi", "press su panca inclinata al cavo"]
   },
   {
     canonicalName: "Incline Cable Flye",
     slug: "incline_cable_flye",
-    aliases: ["croci ai cavi", "croci al cavo", "croci su panca inclinata", "croci inclinato", "croci inclinato ai cavi", "croci inclinato al cavo", "croci su panca inclinata ai cavi", "croci su panca inclinata al cavo"]
+    aliases: ["croci al cavo", "croci su panca inclinata", "croci inclinato", "croci inclinato ai cavi", "croci inclinato al cavo", "croci su panca inclinata ai cavi", "croci su panca inclinata al cavo"]
   },
   {
     canonicalName: "Incline dumbbell bench with palms facing in",
@@ -1747,32 +1747,32 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Incline Dumbbell Curl",
     slug: "incline_dumbbell_curl",
-    aliases: ["incline dumbbell curls", "incline db curl", "curl con manubri", "curl con manubrio", "curl inclinato", "curl su panca inclinata", "curl inclinato con manubri", "curl inclinato con manubrio", "curl su panca inclinata con manubri", "curl su panca inclinata con manubrio"]
+    aliases: ["incline dumbbell curls", "incline db curl", "curl inclinato", "curl su panca inclinata", "curl inclinato con manubri", "curl inclinato con manubrio", "curl su panca inclinata con manubri", "curl su panca inclinata con manubrio"]
   },
   {
     canonicalName: "Incline Dumbbell Flyes",
     slug: "incline_dumbbell_flyes",
-    aliases: ["Incline Dumbbell Fly", "incline db fly", "incline dumbbell flys", "croci con manubri", "croci su panca inclinata", "croci inclinato", "croci con manubrio", "croci inclinato con manubri", "croci inclinato con manubrio", "croci su panca inclinata con manubri", "croci su panca inclinata con manubrio"]
+    aliases: ["Incline Dumbbell Fly", "incline db fly", "incline dumbbell flys", "croci inclinato con manubri", "croci inclinato con manubrio", "croci su panca inclinata con manubri", "croci su panca inclinata con manubrio"]
   },
   {
     canonicalName: "Incline Dumbbell Flyes - With A Twist",
     slug: "incline_dumbbell_flyes_with_a_twist",
-    aliases: ["incline db fly with a twist", "Incline Dumbbell Fly with A Twist", "croci con manubri", "croci su panca inclinata", "croci inclinato", "croci con manubrio", "croci inclinato con manubri", "croci inclinato con manubrio", "croci su panca inclinata con manubri", "croci su panca inclinata con manubrio"]
+    aliases: ["incline db fly with a twist", "Incline Dumbbell Fly with A Twist"]
   },
   {
     canonicalName: "Incline Dumbbell Press",
     slug: "incline_dumbbell_press",
-    aliases: ["incline dumbbell press", "incline db press", "press con manubri", "spinte con manubri", "press inclinato", "press su panca inclinata", "press con manubrio", "press inclinato con manubri", "press inclinato con manubrio", "press su panca inclinata con manubri", "press su panca inclinata con manubrio"]
+    aliases: ["incline dumbbell press", "incline db press", "press inclinato", "press su panca inclinata", "press inclinato con manubri", "press inclinato con manubrio", "press su panca inclinata con manubri", "press su panca inclinata con manubrio"]
   },
   {
     canonicalName: "Incline Hammer Curl",
     slug: "incline_hammer_curl",
-    aliases: ["Incline Hammer Curls", "curl martello", "curl martello inclinato", "curl martello su panca inclinata", "hammer curl"]
+    aliases: ["Incline Hammer Curls", "curl martello inclinato", "curl martello su panca inclinata", "hammer curl"]
   },
   {
     canonicalName: "Incline Inner Biceps Curl",
     slug: "incline_inner_biceps_curl",
-    aliases: ["incline inner biceps curls", "curl inclinato", "curl su panca inclinata"]
+    aliases: ["incline inner biceps curls"]
   },
   {
     canonicalName: "Incline Push-Up",
@@ -1782,27 +1782,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Incline Push-Up Close-Grip",
     slug: "incline_pushup_closegrip",
-    aliases: ["incline push-up close grip", "Incline Push Up Close Grip", "incline push up close-grip", "piegamenti presa stretta", "piegamenti inclinato", "piegamenti su panca inclinata"]
+    aliases: ["incline push-up close grip", "Incline Push Up Close Grip", "incline push up close-grip", "piegamenti presa stretta"]
   },
   {
     canonicalName: "Incline Push-Up Depth Jump",
     slug: "incline_pushup_depth_jump",
-    aliases: ["Incline Push Up Depth Jump", "piegamenti inclinato", "piegamenti su panca inclinata"]
+    aliases: ["Incline Push Up Depth Jump"]
   },
   {
     canonicalName: "Incline Push-Up Medium",
     slug: "incline_pushup_medium",
-    aliases: ["Incline Push Up Medium", "piegamenti inclinato", "piegamenti su panca inclinata"]
+    aliases: ["Incline Push Up Medium"]
   },
   {
     canonicalName: "Incline Push-Up Reverse Grip",
     slug: "incline_pushup_reverse_grip",
-    aliases: ["incline push up reverse-grip", "Incline Push Up Reverse Grip", "piegamenti presa inversa", "piegamenti inclinato", "piegamenti su panca inclinata", "piegamenti inverso"]
+    aliases: ["incline push up reverse-grip", "Incline Push Up Reverse Grip", "piegamenti presa inversa", "piegamenti inverso"]
   },
   {
     canonicalName: "Incline Push-Up Wide",
     slug: "incline_pushup_wide",
-    aliases: ["Incline Push Up Wide", "piegamenti inclinato", "piegamenti su panca inclinata", "piegamenti largo"]
+    aliases: ["Incline Push Up Wide"]
   },
   {
     canonicalName: "Intermediate Groin Stretch",
@@ -1817,7 +1817,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Internal Rotation with Band",
     slug: "internal_rotation_with_band",
-    aliases: ["rotazione", "rotazione con elastico", "rotazione con banda"]
+    aliases: ["internal rotation with band", "intrarotazione con elastico"]
   },
   {
     canonicalName: "Inverted Row",
@@ -1867,12 +1867,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Jackknife Sit-Up",
     slug: "jackknife_situp",
-    aliases: ["Jackknife Sit Up", "sit-up", "addominali completi", "sit up"]
+    aliases: ["Jackknife Sit Up"]
   },
   {
     canonicalName: "Janda Sit-Up",
     slug: "janda_situp",
-    aliases: ["Janda Sit Up", "sit-up", "addominali completi", "sit up"]
+    aliases: ["Janda Sit Up"]
   },
   {
     canonicalName: "Jefferson Squats",
@@ -1882,12 +1882,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Jerk Balance",
     slug: "jerk_balance",
-    aliases: ["slancio", "jerk balance"]
+    aliases: ["jerk balance"]
   },
   {
     canonicalName: "Jerk Dip Squat",
     slug: "jerk_dip_squat",
-    aliases: ["slancio", "jerk dip squat"]
+    aliases: ["jerk dip squat"]
   },
   {
     canonicalName: "JM Press",
@@ -1907,7 +1907,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kettlebell Arnold Press",
     slug: "kettlebell_arnold_press",
-    aliases: ["kb arnold press", "kettlebell arnold press", "arnold press", "press con kettlebell", "press con girya"]
+    aliases: ["kb arnold press", "kettlebell arnold press", "press con kettlebell", "press con girya"]
   },
   {
     canonicalName: "Kettlebell Dead Clean",
@@ -1922,12 +1922,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kettlebell Hang Clean",
     slug: "kettlebell_hang_clean",
-    aliases: ["kb hang clean", "hang clean", "girata da sospensione", "girata con kettlebell", "girata con girya", "girata da sospensione con kettlebell", "girata da sospensione con girya"]
+    aliases: ["kb hang clean", "hang clean", "girata da sospensione con kettlebell", "girata da sospensione con girya"]
   },
   {
     canonicalName: "Kettlebell One-Legged Deadlift",
     slug: "kettlebell_onelegged_deadlift",
-    aliases: ["kb one legged deadlift", "Kettlebell One Legged Deadlift", "stacco da terra con kettlebell", "stacco da terra a una gamba", "stacco da terra monolaterale", "stacco da terra con girya", "stacco da terra a una gamba con kettlebell", "stacco da terra a una gamba con girya", "stacco da terra monolaterale con kettlebell", "stacco da terra monolaterale con girya"]
+    aliases: ["kb one legged deadlift", "Kettlebell One Legged Deadlift", "stacco da terra con kettlebell", "stacco da terra a una gamba", "stacco da terra con girya", "stacco da terra a una gamba con kettlebell", "stacco da terra a una gamba con girya", "stacco da terra monolaterale con kettlebell", "stacco da terra monolaterale con girya"]
   },
   {
     canonicalName: "Kettlebell pass between the legs",
@@ -1942,17 +1942,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kettlebell Pistol Squat",
     slug: "kettlebell_pistol_squat",
-    aliases: ["kb pistol squat", "squat con kettlebell", "squat con girya"]
+    aliases: ["kb pistol squat", "squat con girya"]
   },
   {
     canonicalName: "Kettlebell Seated Press",
     slug: "kettlebell_seated_press",
-    aliases: ["kettlebell seated press", "kb seated press", "press con kettlebell", "press seduto", "press con girya", "press seduto con kettlebell", "press seduto con girya", "press da seduto con kettlebell", "press da seduto con girya"]
+    aliases: ["kettlebell seated press", "kb seated press", "press seduto con kettlebell", "press seduto con girya", "press da seduto con kettlebell", "press da seduto con girya"]
   },
   {
     canonicalName: "Kettlebell Seesaw Press",
     slug: "kettlebell_seesaw_press",
-    aliases: ["kettlebell seesaw press", "kb seesaw press", "press con kettlebell", "press con girya"]
+    aliases: ["kettlebell seesaw press", "kb seesaw press"]
   },
   {
     canonicalName: "Kettlebell sumo high pull",
@@ -1962,12 +1962,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kettlebell Turkish Get-Up (Lunge style)",
     slug: "kettlebell_turkish_getup_lunge_style",
-    aliases: ["kb turkish get up lunge style", "Kettlebell Turkish Get Up Lunge Style", "Kettlebell Turkish Get-Up", "affondo", "affondo con kettlebell", "affondo con girya"]
+    aliases: ["kb turkish get up lunge style", "Kettlebell Turkish Get Up Lunge Style", "Kettlebell Turkish Get-Up", "affondo con kettlebell", "affondo con girya"]
   },
   {
     canonicalName: "Kettlebell Turkish Get-Up (Squat style)",
     slug: "kettlebell_turkish_getup_squat_style",
-    aliases: ["Kettlebell Turkish Get-Up", "Kettlebell Turkish Get Up Squat Style", "kb turkish get up squat style", "squat con kettlebell", "squat con girya"]
+    aliases: ["Kettlebell Turkish Get Up Squat Style", "kb turkish get up squat style"]
   },
   {
     canonicalName: "Kettlebell windmill",
@@ -1997,7 +1997,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Knee/Hip Raise On Parallel Bars",
     slug: "kneehip_raise_on_parallel_bars",
-    aliases: ["Knee Hip Raise on Parallel Bars", "sollevamento anche"]
+    aliases: ["Knee Hip Raise on Parallel Bars"]
   },
   {
     canonicalName: "Kneeling arm drill",
@@ -2007,12 +2007,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kneeling Cable Crunch With Alternating Oblique Twists",
     slug: "kneeling_cable_crunch_with_alternating_oblique_twists",
-    aliases: ["crunch alternato", "crunch alternata", "crunch in ginocchio", "crunch ai cavi", "crunch al cavo", "crunch alternato ai cavi", "crunch alternato al cavo", "crunch alternata ai cavi", "crunch alternata al cavo"]
+    aliases: ["crunch alternato", "crunch alternata", "crunch in ginocchio", "crunch alternato ai cavi", "crunch alternato al cavo", "crunch alternata ai cavi", "crunch alternata al cavo"]
   },
   {
     canonicalName: "Kneeling Cable Triceps Extension",
     slug: "kneeling_cable_triceps_extension",
-    aliases: ["kneeling cable triceps extensions", "Kneeling Cable triceps Extension", "triceps extension", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
+    aliases: ["kneeling cable triceps extensions", "Kneeling Cable triceps Extension"]
   },
   {
     canonicalName: "Kneeling Forearm Stretch",
@@ -2032,12 +2032,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Kneeling Jump Squat",
     slug: "kneeling_jump_squat",
-    aliases: ["jump squat", "squat saltato"]
+    aliases: ["kneeling jump squat", "squat con salto da ginocchia"]
   },
   {
     canonicalName: "Kneeling Single-Arm High Pulley Row",
     slug: "kneeling_singlearm_high_pulley_row",
-    aliases: ["kneeling single arm high pulley rows", "Kneeling Single Arm High Pulley Row", "rematore a un braccio", "rematore monolaterale", "rematore in ginocchio"]
+    aliases: ["kneeling single arm high pulley rows", "Kneeling Single Arm High Pulley Row"]
   },
   {
     canonicalName: "Kneeling Squat",
@@ -2062,7 +2062,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lateral Box Jump",
     slug: "lateral_box_jump",
-    aliases: ["salto sul box", "box jump"]
+    aliases: ["lateral box jump", "salto laterale su box"]
   },
   {
     canonicalName: "Lateral cone hops",
@@ -2072,12 +2072,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lateral Raise - With Bands",
     slug: "lateral_raise_with_bands",
-    aliases: ["Lateral Raise with Bands", "alzate laterali", "alzate laterali con elastico", "alzate laterali con banda"]
+    aliases: ["Lateral Raise with Bands", "alzate laterali con elastico", "alzate laterali con banda"]
   },
   {
     canonicalName: "Latissimus Dorsi-SMR",
     slug: "latissimus_dorsismr",
-    aliases: ["Latissimus Dorsi Smr", "auto-massaggio", "SMR"]
+    aliases: ["Latissimus Dorsi Smr"]
   },
   {
     canonicalName: "Leg Extensions",
@@ -2102,7 +2102,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Leg-Over Floor Press",
     slug: "legover_floor_press",
-    aliases: ["leg over floor press", "floor press", "distensioni da terra"]
+    aliases: ["leg over floor press"]
   },
   {
     canonicalName: "Leg-Up Hamstring Stretch",
@@ -2122,7 +2122,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Leverage Decline Chest Press",
     slug: "leverage_decline_chest_press",
-    aliases: ["leverage decline chest press", "press declinato", "press su panca declinata"]
+    aliases: ["leverage decline chest press"]
   },
   {
     canonicalName: "Leverage High Row",
@@ -2132,7 +2132,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Leverage Incline Chest Press",
     slug: "leverage_incline_chest_press",
-    aliases: ["leverage incline chest press", "press inclinato", "press su panca inclinata"]
+    aliases: ["leverage incline chest press"]
   },
   {
     canonicalName: "Leverage Iso Row",
@@ -2142,12 +2142,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Leverage Shoulder Press",
     slug: "leverage_shoulder_press",
-    aliases: ["leverage shoulder press", "spinte sopra la testa", "shoulder press", "spinte per le spalle"]
+    aliases: ["leverage shoulder press"]
   },
   {
     canonicalName: "Leverage Shrug",
     slug: "leverage_shrug",
-    aliases: ["scrollate", "leverage shrug"]
+    aliases: ["leverage shrug"]
   },
   {
     canonicalName: "Linear 3 part start technique",
@@ -2172,7 +2172,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "London Bridges",
     slug: "london_bridges",
-    aliases: ["ponte", "london bridges"]
+    aliases: ["london bridges"]
   },
   {
     canonicalName: "Looking at ceiling",
@@ -2182,12 +2182,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Low Cable Crossover",
     slug: "low_cable_crossover",
-    aliases: ["crossover ai cavi", "cable crossover", "crossover ai cavi al cavo", "croci ai cavi", "crossover"]
+    aliases: ["cable crossover"]
   },
   {
     canonicalName: "Low Cable Triceps Extension",
     slug: "low_cable_triceps_extension",
-    aliases: ["low cable triceps extensions", "Low Cable triceps Extension", "triceps extension", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
+    aliases: ["low cable triceps extensions", "Low Cable triceps Extension", "estensioni tricipiti ai cavi", "estensioni tricipiti al cavo"]
   },
   {
     canonicalName: "Low Pulley Row To Neck",
@@ -2202,12 +2202,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lower Back-SMR",
     slug: "lower_backsmr",
-    aliases: ["Lower Back Smr", "auto-massaggio", "SMR"]
+    aliases: ["Lower Back Smr"]
   },
   {
     canonicalName: "Lunge Pass Through",
     slug: "lunge_pass_through",
-    aliases: ["affondo", "lunge pass through"]
+    aliases: ["lunge pass through"]
   },
   {
     canonicalName: "Lunge Sprint",
@@ -2222,27 +2222,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying Cable Curl",
     slug: "lying_cable_curl",
-    aliases: ["lying cable curls", "curl al cavo", "curl ai cavi", "curl sdraiato", "curl sdraiato ai cavi", "curl sdraiato al cavo", "curl da sdraiato ai cavi", "curl da sdraiato al cavo"]
+    aliases: ["lying cable curls", "curl sdraiato ai cavi", "curl sdraiato al cavo", "curl da sdraiato ai cavi", "curl da sdraiato al cavo"]
   },
   {
     canonicalName: "Lying Cambered Barbell Row",
     slug: "lying_cambered_barbell_row",
-    aliases: ["lying cambered bb row", "lying cambered barbell rows", "rematore con bilanciere", "rematore sdraiato", "rematore sdraiato con bilanciere", "rematore da sdraiato con bilanciere"]
+    aliases: ["lying cambered bb row", "lying cambered barbell rows", "rematore sdraiato", "rematore sdraiato con bilanciere", "rematore da sdraiato con bilanciere"]
   },
   {
     canonicalName: "Lying Close-Grip Bar Curl On High Pulley",
     slug: "lying_closegrip_bar_curl_on_high_pulley",
-    aliases: ["Lying Close Grip Bar Curl on High Pulley", "curl presa stretta", "curl sdraiato"]
+    aliases: ["Lying Close Grip Bar Curl on High Pulley"]
   },
   {
     canonicalName: "Lying Close-Grip Barbell Triceps Extension Behind The Head",
     slug: "lying_closegrip_barbell_triceps_extension_behind_the_head",
-    aliases: ["lying close grip barbell triceps extension behind the head", "lying close-grip barbell triceps extension behind the head", "lying close grip bb triceps extension behind the head", "triceps extension", "estensioni tricipiti presa stretta", "estensioni tricipiti con bilanciere", "estensioni tricipiti da sdraiato con bilanciere"]
+    aliases: ["lying close grip barbell triceps extension behind the head", "lying close-grip barbell triceps extension behind the head", "lying close grip bb triceps extension behind the head", "estensioni tricipiti presa stretta", "estensioni tricipiti da sdraiato con bilanciere"]
   },
   {
     canonicalName: "Lying Close-Grip Barbell Triceps Press To Chin",
     slug: "lying_closegrip_barbell_triceps_press_to_chin",
-    aliases: ["lying close grip bb triceps press to chin", "lying close-grip barbell triceps press to chin", "Lying Close Grip Barbell triceps Press to Chin", "press con bilanciere", "spinte con bilanciere", "press presa stretta", "press sdraiato", "press sdraiato con bilanciere", "press da sdraiato con bilanciere"]
+    aliases: ["lying close grip bb triceps press to chin", "lying close-grip barbell triceps press to chin", "Lying Close Grip Barbell triceps Press to Chin", "press sdraiato con bilanciere", "press da sdraiato con bilanciere"]
   },
   {
     canonicalName: "Lying crossover",
@@ -2252,7 +2252,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying Dumbbell Tricep Extension",
     slug: "lying_dumbbell_tricep_extension",
-    aliases: ["lying dumbbell triceps extensions", "lying db triceps extension", "Lying Dumbbell triceps Extension", "triceps extension", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio", "estensioni tricipiti da sdraiato con manubri", "estensioni tricipiti da sdraiato con manubrio"]
+    aliases: ["lying dumbbell triceps extensions", "lying db triceps extension", "Lying Dumbbell triceps Extension", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio", "estensioni tricipiti da sdraiato con manubri", "estensioni tricipiti da sdraiato con manubrio"]
   },
   {
     canonicalName: "Lying face down plate neck resistance",
@@ -2277,12 +2277,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying High Bench Barbell Curl",
     slug: "lying_high_bench_barbell_curl",
-    aliases: ["lying high bench barbell curls", "lying high bench bb curl", "curl con bilanciere", "curl bilanciere", "curl sdraiato", "curl su panca", "curl sdraiato con bilanciere", "curl sdraiato su panca", "curl da sdraiato con bilanciere", "curl da sdraiato su panca"]
+    aliases: ["lying high bench barbell curls", "lying high bench bb curl", "curl su panca", "curl sdraiato con bilanciere", "curl sdraiato su panca", "curl da sdraiato con bilanciere", "curl da sdraiato su panca"]
   },
   {
     canonicalName: "Lying Leg Curls",
     slug: "lying_leg_curls",
-    aliases: ["Lying Leg Curl", "leg curl", "curl femorali", "flessioni gambe", "curl sdraiato", "femorali macchina"]
+    aliases: ["Lying Leg Curl", "curl sdraiato", "femorali macchina"]
   },
   {
     canonicalName: "Lying Machine Squat",
@@ -2292,7 +2292,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying One-Arm Lateral Raise",
     slug: "lying_onearm_lateral_raise",
-    aliases: ["lying one arm lateral raises", "Lying One Arm Lateral Raise", "alzate laterali", "alzate laterali a un braccio", "alzate laterali monolaterale"]
+    aliases: ["lying one arm lateral raises", "Lying One Arm Lateral Raise"]
   },
   {
     canonicalName: "Lying prone quadriceps",
@@ -2302,12 +2302,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying Rear Delt Raise",
     slug: "lying_rear_delt_raise",
-    aliases: ["lying rear-delt raise", "lying rear delt raises", "alzate posteriori", "alzate sdraiato", "alzate posteriore"]
+    aliases: ["lying rear-delt raise", "lying rear delt raises", "alzate sdraiato", "alzate posteriore"]
   },
   {
     canonicalName: "Lying Supine Dumbbell Curl",
     slug: "lying_supine_dumbbell_curl",
-    aliases: ["lying supine db curl", "lying supine dumbbell curls", "curl con manubri", "curl con manubrio", "curl sdraiato", "curl sdraiato con manubri", "curl sdraiato con manubrio", "curl da sdraiato con manubri", "curl da sdraiato con manubrio"]
+    aliases: ["lying supine db curl", "lying supine dumbbell curls", "curl sdraiato con manubri", "curl sdraiato con manubrio", "curl da sdraiato con manubri", "curl da sdraiato con manubrio"]
   },
   {
     canonicalName: "Lying T-Bar Row",
@@ -2317,12 +2317,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Lying Triceps Press",
     slug: "lying_triceps_press",
-    aliases: ["lying triceps press", "press sdraiato"]
+    aliases: ["lying triceps press", "french press", "skull crusher", "press sdraiato", "french press con bilanciere"]
   },
   {
     canonicalName: "Machine Bench Press",
     slug: "machine_bench_press",
-    aliases: ["machine bench press", "mach bench press", "distensioni su panca piana", "panca piana alla macchina", "panca piana machine"]
+    aliases: ["machine bench press", "mach bench press", "panca piana alla macchina", "panca piana machine"]
   },
   {
     canonicalName: "Machine Bicep Curl",
@@ -2342,7 +2342,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Machine Dips",
     slug: "machine_dips",
-    aliases: ["mach dips", "machine dip", "dip machine", "dip alla macchina"]
+    aliases: ["mach dips", "machine dip", "dip machine"]
   },
   {
     canonicalName: "Machine Preacher Curls",
@@ -2352,7 +2352,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Machine Shoulder (Military) Press",
     slug: "machine_shoulder_military_press",
-    aliases: ["machine shoulder military press", "Machine Shoulder Press", "mach shoulder military press", "press alla macchina", "press machine"]
+    aliases: ["machine shoulder military press", "Machine Shoulder Press", "mach shoulder military press", "press machine"]
   },
   {
     canonicalName: "Machine Triceps Extension",
@@ -2377,7 +2377,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Middle Back Shrug",
     slug: "middle_back_shrug",
-    aliases: ["scrollate", "middle back shrug"]
+    aliases: ["middle back shrug"]
   },
   {
     canonicalName: "Middle Back Stretch",
@@ -2392,7 +2392,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Monster Walk",
     slug: "monster_walk",
-    aliases: ["camminata", "walk"]
+    aliases: ["monster walk", "camminata a mostro", "monster walk con elastico"]
   },
   {
     canonicalName: "Mountain climbers",
@@ -2417,12 +2417,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Narrow Stance Hack Squats",
     slug: "narrow_stance_hack_squats",
-    aliases: ["hack squat", "hack squat stretto"]
+    aliases: ["hack squat stretto"]
   },
   {
     canonicalName: "Narrow Stance Leg Press",
     slug: "narrow_stance_leg_press",
-    aliases: ["narrow stance leg press", "pressa", "leg press"]
+    aliases: ["narrow stance leg press"]
   },
   {
     canonicalName: "Narrow Stance Squats",
@@ -2432,7 +2432,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Natural Glute Ham Raise",
     slug: "natural_glute_ham_raise",
-    aliases: ["natural glute ham raises", "glute-ham raise", "GHR"]
+    aliases: ["natural glute ham raises"]
   },
   {
     canonicalName: "Neck Press",
@@ -2442,7 +2442,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Neck-SMR",
     slug: "necksmr",
-    aliases: ["Neck Smr", "auto-massaggio", "SMR"]
+    aliases: ["Neck Smr"]
   },
   {
     canonicalName: "Oblique Crunches",
@@ -2477,22 +2477,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One Arm Chin-Up",
     slug: "one_arm_chinup",
-    aliases: ["One Arm Chin Up", "one-arm chin up", "trazioni presa supina", "chin-up", "trazioni presa supina a un braccio", "trazioni presa supina monolaterale"]
+    aliases: ["One Arm Chin Up", "one-arm chin up", "chin-up", "trazioni presa supina a un braccio", "trazioni presa supina monolaterale"]
   },
   {
     canonicalName: "One Arm Dumbbell Bench Press",
     slug: "one_arm_dumbbell_bench_press",
-    aliases: ["one arm db bench press", "one-arm dumbbell bench press", "one arm dumbbell bench press", "panca piana con manubri", "distensioni su panca piana con manubri", "panca piana a un braccio", "panca piana monolaterale", "panca piana con manubrio"]
+    aliases: ["one arm db bench press", "one-arm dumbbell bench press", "one arm dumbbell bench press", "panca piana a un braccio", "panca piana monolaterale"]
   },
   {
     canonicalName: "One Arm Dumbbell Preacher Curl",
     slug: "one_arm_dumbbell_preacher_curl",
-    aliases: ["one arm dumbbell preacher curls", "one-arm dumbbell preacher curl", "one arm db preacher curl", "preacher curl a un braccio", "preacher curl monolaterale", "preacher curl con manubri", "preacher curl con manubrio"]
+    aliases: ["one arm dumbbell preacher curls", "one-arm dumbbell preacher curl", "one arm db preacher curl", "preacher curl a un braccio", "preacher curl monolaterale"]
   },
   {
     canonicalName: "One Arm Floor Press",
     slug: "one_arm_floor_press",
-    aliases: ["one arm floor press", "one-arm floor press", "floor press", "distensioni da terra", "press a un braccio", "floor press a un braccio", "floor press monolaterale"]
+    aliases: ["one arm floor press", "one-arm floor press", "press a un braccio", "floor press a un braccio", "floor press monolaterale"]
   },
   {
     canonicalName: "One Arm Lat Pulldown",
@@ -2502,12 +2502,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One Arm Pronated Dumbbell Triceps Extension",
     slug: "one_arm_pronated_dumbbell_triceps_extension",
-    aliases: ["One Arm Pronated Dumbbell triceps Extension", "one-arm pronated dumbbell triceps extension", "one arm pronated db triceps extension", "one arm pronated dumbbell triceps extensions", "triceps extension", "estensioni tricipiti presa prona", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["One Arm Pronated Dumbbell triceps Extension", "one-arm pronated dumbbell triceps extension", "one arm pronated db triceps extension", "one arm pronated dumbbell triceps extensions"]
   },
   {
     canonicalName: "One Arm Supinated Dumbbell Triceps Extension",
     slug: "one_arm_supinated_dumbbell_triceps_extension",
-    aliases: ["one arm supinated dumbbell triceps extensions", "one arm supinated db triceps extension", "One Arm Supinated Dumbbell triceps Extension", "one-arm supinated dumbbell triceps extension", "triceps extension", "estensioni tricipiti presa supina", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["one arm supinated dumbbell triceps extensions", "one arm supinated db triceps extension", "One Arm Supinated Dumbbell triceps Extension", "one-arm supinated dumbbell triceps extension", "estensioni tricipiti presa supina"]
   },
   {
     canonicalName: "One half locust",
@@ -2527,7 +2527,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One Leg Barbell Squat",
     slug: "one_leg_barbell_squat",
-    aliases: ["one leg bb squat", "one-leg barbell squat", "squat con bilanciere", "squat a una gamba", "squat monolaterale", "squat a una gamba con bilanciere", "squat monolaterale con bilanciere"]
+    aliases: ["one leg bb squat", "one-leg barbell squat", "squat a una gamba", "squat monolaterale", "squat a una gamba con bilanciere", "squat monolaterale con bilanciere"]
   },
   {
     canonicalName: "One-Arm Dumbbell Row",
@@ -2537,72 +2537,72 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One-Arm Flat Bench Dumbbell Flye",
     slug: "onearm_flat_bench_dumbbell_flye",
-    aliases: ["One Arm Flat Bench Dumbbell Flye", "one arm flat bench db flye", "croci con manubri", "croci a un braccio", "croci monolaterale", "croci con manubrio", "croci su panca", "croci a un braccio con manubri", "croci a un braccio con manubrio", "croci monolaterale con manubri", "croci monolaterale con manubrio"]
+    aliases: ["One Arm Flat Bench Dumbbell Flye", "one arm flat bench db flye", "croci a un braccio", "croci monolaterale", "croci a un braccio con manubri", "croci a un braccio con manubrio", "croci monolaterale con manubri", "croci monolaterale con manubrio"]
   },
   {
     canonicalName: "One-Arm High-Pulley Cable Side Bends",
     slug: "onearm_highpulley_cable_side_bends",
-    aliases: ["one-arm high pulley cable side bends", "One Arm High Pulley Cable Side Bends", "one arm high-pulley cable side bends", "flessione laterale", "side bend", "flessione laterale a un braccio", "flessione laterale monolaterale", "flessione laterale ai cavi", "flessione laterale al cavo"]
+    aliases: ["one-arm high pulley cable side bends", "One Arm High Pulley Cable Side Bends", "one arm high-pulley cable side bends", "flessione laterale a un braccio", "flessione laterale monolaterale", "flessione laterale ai cavi", "flessione laterale al cavo"]
   },
   {
     canonicalName: "One-Arm Incline Lateral Raise",
     slug: "onearm_incline_lateral_raise",
-    aliases: ["one arm incline lateral raises", "One Arm Incline Lateral Raise", "alzate laterali", "alzate laterali a un braccio", "alzate laterali monolaterale", "alzate laterali inclinato", "alzate laterali su panca inclinata"]
+    aliases: ["one arm incline lateral raises", "One Arm Incline Lateral Raise", "alzate laterali inclinato", "alzate laterali su panca inclinata"]
   },
   {
     canonicalName: "One-Arm Kettlebell Clean",
     slug: "onearm_kettlebell_clean",
-    aliases: ["One Arm Kettlebell Clean", "one arm kb clean", "girata a un braccio", "girata monolaterale", "girata con kettlebell", "girata con girya", "girata a un braccio con kettlebell", "girata a un braccio con girya", "girata monolaterale con kettlebell", "girata monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Clean", "one arm kb clean", "girata a un braccio", "girata monolaterale", "girata a un braccio con kettlebell", "girata a un braccio con girya", "girata monolaterale con kettlebell", "girata monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Clean and Jerk",
     slug: "onearm_kettlebell_clean_and_jerk",
-    aliases: ["one arm kb clean and jerk", "One Arm Kettlebell Clean and Jerk", "girata e slancio", "clean and jerk", "slancio", "girata e slancio a un braccio", "girata e slancio monolaterale", "girata e slancio con kettlebell", "girata e slancio con girya", "girata e slancio a un braccio con kettlebell", "girata e slancio a un braccio con girya", "girata e slancio monolaterale con kettlebell", "girata e slancio monolaterale con girya"]
+    aliases: ["one arm kb clean and jerk", "One Arm Kettlebell Clean and Jerk", "clean and jerk", "girata e slancio a un braccio", "girata e slancio monolaterale", "girata e slancio con kettlebell", "girata e slancio con girya", "girata e slancio a un braccio con kettlebell", "girata e slancio a un braccio con girya", "girata e slancio monolaterale con kettlebell", "girata e slancio monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Floor Press",
     slug: "onearm_kettlebell_floor_press",
-    aliases: ["one arm kb floor press", "one arm kettlebell floor press", "floor press", "distensioni da terra", "press con kettlebell", "press a un braccio", "floor press a un braccio", "floor press monolaterale", "floor press con kettlebell", "floor press con girya"]
+    aliases: ["one arm kb floor press", "one arm kettlebell floor press", "floor press con kettlebell", "floor press con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Jerk",
     slug: "onearm_kettlebell_jerk",
-    aliases: ["One Arm Kettlebell Jerk", "one arm kb jerk", "slancio", "slancio a un braccio", "slancio monolaterale", "slancio con kettlebell", "slancio con girya", "slancio a un braccio con kettlebell", "slancio a un braccio con girya", "slancio monolaterale con kettlebell", "slancio monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Jerk", "one arm kb jerk", "slancio a un braccio", "slancio monolaterale", "slancio a un braccio con kettlebell", "slancio a un braccio con girya", "slancio monolaterale con kettlebell", "slancio monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Military Press To The Side",
     slug: "onearm_kettlebell_military_press_to_the_side",
-    aliases: ["One Arm Kettlebell Military Press to the Side", "one arm kb military press to the side", "press con kettlebell", "press a un braccio", "press monolaterale", "press con girya", "press a un braccio con kettlebell", "press a un braccio con girya", "press monolaterale con kettlebell", "press monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Military Press to the Side", "one arm kb military press to the side"]
   },
   {
     canonicalName: "One-Arm Kettlebell Para Press",
     slug: "onearm_kettlebell_para_press",
-    aliases: ["one arm kb para press", "one arm kettlebell para press", "press con kettlebell", "press a un braccio", "press monolaterale", "press con girya", "press a un braccio con kettlebell", "press a un braccio con girya", "press monolaterale con kettlebell", "press monolaterale con girya"]
+    aliases: ["one arm kb para press", "one arm kettlebell para press", "press monolaterale", "press a un braccio con kettlebell", "press a un braccio con girya", "press monolaterale con kettlebell", "press monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Push Press",
     slug: "onearm_kettlebell_push_press",
-    aliases: ["One Arm Kettlebell Push Press", "one arm kb push press", "push press", "spinta con slancio", "press con kettlebell", "press a un braccio", "push press a un braccio", "push press monolaterale", "push press con kettlebell", "push press con girya"]
+    aliases: ["One Arm Kettlebell Push Press", "one arm kb push press", "push press a un braccio", "push press monolaterale"]
   },
   {
     canonicalName: "One-Arm Kettlebell Row",
     slug: "onearm_kettlebell_row",
-    aliases: ["One Arm Kettlebell Row", "one arm kb row", "one arm kettlebell rows", "rematore con kettlebell", "rematore a un braccio", "rematore monolaterale", "rematore con girya", "rematore a un braccio con kettlebell", "rematore a un braccio con girya", "rematore monolaterale con kettlebell", "rematore monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Row", "one arm kb row", "one arm kettlebell rows", "rematore con kettlebell", "rematore con girya", "rematore a un braccio con kettlebell", "rematore a un braccio con girya", "rematore monolaterale con kettlebell", "rematore monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Snatch",
     slug: "onearm_kettlebell_snatch",
-    aliases: ["One Arm Kettlebell Snatch", "one arm kb snatch", "strappo a un braccio", "strappo monolaterale", "strappo con kettlebell", "strappo con girya", "strappo a un braccio con kettlebell", "strappo a un braccio con girya", "strappo monolaterale con kettlebell", "strappo monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Snatch", "one arm kb snatch", "strappo a un braccio", "strappo monolaterale", "strappo a un braccio con kettlebell", "strappo a un braccio con girya", "strappo monolaterale con kettlebell", "strappo monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Kettlebell Split Jerk",
     slug: "onearm_kettlebell_split_jerk",
-    aliases: ["One Arm Kettlebell Split Jerk", "one arm kb split jerk", "slancio", "slancio a un braccio", "slancio monolaterale", "slancio con kettlebell", "slancio con girya", "slancio a un braccio con kettlebell", "slancio a un braccio con girya", "slancio monolaterale con kettlebell", "slancio monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Split Jerk", "one arm kb split jerk"]
   },
   {
     canonicalName: "One-Arm Kettlebell Split Snatch",
     slug: "onearm_kettlebell_split_snatch",
-    aliases: ["One Arm Kettlebell Split Snatch", "one arm kb split snatch", "strappo a un braccio", "strappo monolaterale", "strappo con kettlebell", "strappo con girya", "strappo a un braccio con kettlebell", "strappo a un braccio con girya", "strappo monolaterale con kettlebell", "strappo monolaterale con girya"]
+    aliases: ["One Arm Kettlebell Split Snatch", "one arm kb split snatch"]
   },
   {
     canonicalName: "One-Arm Kettlebell Swings",
@@ -2612,17 +2612,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One-Arm Long Bar Row",
     slug: "onearm_long_bar_row",
-    aliases: ["one arm long bar rows", "One Arm Long Bar Row", "rematore a un braccio", "rematore monolaterale"]
+    aliases: ["one arm long bar rows", "One Arm Long Bar Row"]
   },
   {
     canonicalName: "One-Arm Open Palm Kettlebell Clean",
     slug: "onearm_open_palm_kettlebell_clean",
-    aliases: ["one arm open palm kb clean", "One Arm Open Palm Kettlebell Clean", "girata a un braccio", "girata monolaterale", "girata con kettlebell", "girata con girya", "girata a un braccio con kettlebell", "girata a un braccio con girya", "girata monolaterale con kettlebell", "girata monolaterale con girya"]
+    aliases: ["one arm open palm kb clean", "One Arm Open Palm Kettlebell Clean"]
   },
   {
     canonicalName: "One-Arm Overhead Kettlebell Squats",
     slug: "onearm_overhead_kettlebell_squats",
-    aliases: ["One Arm Overhead Kettlebell Squats", "one arm overhead kb squats", "squat con kettlebell", "squat sopra la testa", "squat a un braccio", "squat monolaterale", "squat con girya", "squat sopra la testa con kettlebell", "squat sopra la testa con girya", "squat a un braccio con kettlebell", "squat a un braccio con girya", "squat monolaterale con kettlebell", "squat monolaterale con girya"]
+    aliases: ["One Arm Overhead Kettlebell Squats", "one arm overhead kb squats", "squat a un braccio", "squat sopra la testa con kettlebell", "squat sopra la testa con girya", "squat a un braccio con kettlebell", "squat a un braccio con girya", "squat monolaterale con kettlebell", "squat monolaterale con girya"]
   },
   {
     canonicalName: "One-Arm Side Deadlift",
@@ -2632,7 +2632,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "One-Arm Side Laterals",
     slug: "onearm_side_laterals",
-    aliases: ["One Arm Side Laterals", "alzate laterali", "alzate laterali a un braccio", "alzate laterali monolaterale"]
+    aliases: ["One Arm Side Laterals", "alzate laterali a un braccio", "alzate laterali monolaterale"]
   },
   {
     canonicalName: "One-Legged Cable Kickback",
@@ -2642,7 +2642,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Open Palm Kettlebell Clean",
     slug: "open_palm_kettlebell_clean",
-    aliases: ["open palm kb clean", "girata con kettlebell", "girata con girya"]
+    aliases: ["open palm kb clean"]
   },
   {
     canonicalName: "Otis up",
@@ -2652,7 +2652,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Overhead Cable Curl",
     slug: "overhead_cable_curl",
-    aliases: ["overhead cable curls", "curl al cavo", "curl ai cavi", "curl sopra la testa", "curl sopra la testa ai cavi", "curl sopra la testa al cavo"]
+    aliases: ["overhead cable curls", "curl sopra la testa", "curl sopra la testa ai cavi", "curl sopra la testa al cavo"]
   },
   {
     canonicalName: "Overhead lat",
@@ -2687,22 +2687,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Palms-Down Dumbbell Wrist Curl Over A Bench",
     slug: "palmsdown_dumbbell_wrist_curl_over_a_bench",
-    aliases: ["Palms Down Dumbbell Wrist Curl Over A Bench", "palms down db wrist curl over a bench", "curl con manubri", "curl con manubrio", "curl palmi in giù", "curl su panca", "curl palmi in giù con manubri", "curl palmi in giù con manubrio"]
+    aliases: ["Palms Down Dumbbell Wrist Curl Over A Bench", "palms down db wrist curl over a bench"]
   },
   {
     canonicalName: "Palms-Down Wrist Curl Over A Bench",
     slug: "palmsdown_wrist_curl_over_a_bench",
-    aliases: ["Palms Down Wrist Curl Over A Bench", "curl palmi in giù", "curl su panca", "curl palmi in giù su panca"]
+    aliases: ["Palms Down Wrist Curl Over A Bench", "curl palmi in giù", "curl palmi in giù su panca"]
   },
   {
     canonicalName: "Palms-Up Barbell Wrist Curl Over A Bench",
     slug: "palmsup_barbell_wrist_curl_over_a_bench",
-    aliases: ["Palms Up Barbell Wrist Curl Over A Bench", "palms up bb wrist curl over a bench", "curl con bilanciere", "curl bilanciere", "curl palmi in su", "curl su panca", "curl palmi in su con bilanciere", "curl palmi in su su panca"]
+    aliases: ["Palms Up Barbell Wrist Curl Over A Bench", "palms up bb wrist curl over a bench", "curl palmi in su con bilanciere", "curl palmi in su su panca"]
   },
   {
     canonicalName: "Palms-Up Dumbbell Wrist Curl Over A Bench",
     slug: "palmsup_dumbbell_wrist_curl_over_a_bench",
-    aliases: ["palms up db wrist curl over a bench", "Palms Up Dumbbell Wrist Curl Over A Bench", "curl con manubri", "curl con manubrio", "curl palmi in su", "curl su panca", "curl palmi in su con manubri", "curl palmi in su con manubrio"]
+    aliases: ["palms up db wrist curl over a bench", "Palms Up Dumbbell Wrist Curl Over A Bench"]
   },
   {
     canonicalName: "Parallel Bar Dip",
@@ -2712,7 +2712,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Pelvic Tilt Into Bridge",
     slug: "pelvic_tilt_into_bridge",
-    aliases: ["ponte", "pelvic tilt into bridge"]
+    aliases: ["pelvic tilt into bridge"]
   },
   {
     canonicalName: "Peroneals Stretch",
@@ -2722,12 +2722,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Peroneals-SMR",
     slug: "peronealssmr",
-    aliases: ["Peroneals Smr", "auto-massaggio", "SMR"]
+    aliases: ["Peroneals Smr"]
   },
   {
     canonicalName: "Physioball Hip Bridge",
     slug: "physioball_hip_bridge",
-    aliases: ["ponte", "physioball hip bridge"]
+    aliases: ["physioball hip bridge"]
   },
   {
     canonicalName: "Pin Presses",
@@ -2737,7 +2737,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Piriformis-SMR",
     slug: "piriformissmr",
-    aliases: ["Piriformis Smr", "auto-massaggio", "SMR"]
+    aliases: ["Piriformis Smr"]
   },
   {
     canonicalName: "Plank",
@@ -2762,7 +2762,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Plie Dumbbell Squat",
     slug: "plie_dumbbell_squat",
-    aliases: ["plie db squat", "squat con manubri", "squat con manubrio"]
+    aliases: ["plie db squat"]
   },
   {
     canonicalName: "Plyo Kettlebell Pushups",
@@ -2787,7 +2787,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Power Clean from Blocks",
     slug: "power_clean_from_blocks",
-    aliases: ["power clean", "girata di potenza"]
+    aliases: ["power clean"]
   },
   {
     canonicalName: "Power Jerk",
@@ -2807,7 +2807,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Power Snatch from Blocks",
     slug: "power_snatch_from_blocks",
-    aliases: ["power snatch", "strappo di potenza"]
+    aliases: ["power snatch"]
   },
   {
     canonicalName: "Power stairs",
@@ -2822,12 +2822,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Preacher Hammer Dumbbell Curl",
     slug: "preacher_hammer_dumbbell_curl",
-    aliases: ["preacher hammer db curl", "preacher hammer dumbbell curls", "curl con manubri", "curl con manubrio"]
+    aliases: ["preacher hammer db curl", "preacher hammer dumbbell curls"]
   },
   {
     canonicalName: "Press Sit-Up",
     slug: "press_situp",
-    aliases: ["Press Sit Up", "sit-up", "addominali completi", "sit up"]
+    aliases: ["Press Sit Up"]
   },
   {
     canonicalName: "Prone manual hamstring",
@@ -2857,7 +2857,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Push Press - Behind the Neck",
     slug: "push_press_behind_the_neck",
-    aliases: ["Push Press Behind the Neck", "push press", "spinta con slancio"]
+    aliases: ["Push Press Behind the Neck"]
   },
   {
     canonicalName: "Push Up to Side Plank",
@@ -2892,7 +2892,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Pushups (Close and Wide Hand Positions)",
     slug: "pushups_close_and_wide_hand_positions",
-    aliases: ["Push Ups Close and Wide Hand Positions", "push-ups close and wide hand positions", "Pushups", "piegamenti largo"]
+    aliases: ["Push Ups Close and Wide Hand Positions", "push-ups close and wide hand positions", "Pushups"]
   },
   {
     canonicalName: "Pyramid",
@@ -2907,7 +2907,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Quadriceps-SMR",
     slug: "quadricepssmr",
-    aliases: ["Quadriceps Smr", "auto-massaggio", "SMR"]
+    aliases: ["Quadriceps Smr"]
   },
   {
     canonicalName: "Quick leap",
@@ -2932,7 +2932,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Rear Leg Raises",
     slug: "rear_leg_raises",
-    aliases: ["Rear Leg Raise", "sollevamento gambe", "leg raise", "alzate posteriori", "sollevamento gambe posteriore"]
+    aliases: ["Rear Leg Raise", "sollevamento gambe", "leg raise", "sollevamento gambe posteriore"]
   },
   {
     canonicalName: "Recumbent bike",
@@ -2947,32 +2947,32 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Reverse Band Bench Press",
     slug: "reverse_band_bench_press",
-    aliases: ["reverse band bench press", "panca piana con elastico", "distensioni su panca piana con elastico", "panca piana inverso", "panca piana reverse", "panca piana con banda", "panca piana inverso con banda", "panca piana reverse con banda"]
+    aliases: ["reverse band bench press", "panca piana inverso", "panca piana reverse", "panca piana inverso con banda", "panca piana reverse con banda"]
   },
   {
     canonicalName: "Reverse Band Box Squat",
     slug: "reverse_band_box_squat",
-    aliases: ["box squat", "box squat inverso", "box squat reverse", "box squat con elastico", "box squat con banda", "box squat inverso con banda", "box squat reverse con banda"]
+    aliases: ["box squat inverso", "box squat reverse", "box squat inverso con banda", "box squat reverse con banda"]
   },
   {
     canonicalName: "Reverse Band Deadlift",
     slug: "reverse_band_deadlift",
-    aliases: ["stacco da terra inverso", "stacco da terra reverse", "stacco da terra con elastico", "stacco da terra con banda", "stacco da terra inverso con elastico", "stacco da terra inverso con banda", "stacco da terra reverse con elastico", "stacco da terra reverse con banda"]
+    aliases: ["stacco da terra inverso", "stacco da terra reverse", "stacco da terra inverso con elastico", "stacco da terra inverso con banda", "stacco da terra reverse con elastico", "stacco da terra reverse con banda"]
   },
   {
     canonicalName: "Reverse Band Power Squat",
     slug: "reverse_band_power_squat",
-    aliases: ["squat inverso", "squat reverse", "squat di potenza", "squat con elastico", "squat con banda", "squat inverso con elastico", "squat inverso con banda", "squat reverse con elastico", "squat reverse con banda", "squat di potenza con elastico", "squat di potenza con banda"]
+    aliases: ["squat inverso", "squat reverse", "squat di potenza", "squat inverso con elastico", "squat inverso con banda", "squat reverse con elastico", "squat reverse con banda", "squat di potenza con elastico", "squat di potenza con banda"]
   },
   {
     canonicalName: "Reverse Band Sumo Deadlift",
     slug: "reverse_band_sumo_deadlift",
-    aliases: ["stacco sumo", "stacco sumo inverso", "stacco sumo reverse", "stacco sumo con elastico", "stacco sumo con banda", "stacco sumo inverso con banda", "stacco sumo reverse con banda"]
+    aliases: ["stacco sumo inverso", "stacco sumo reverse", "stacco sumo inverso con banda", "stacco sumo reverse con banda"]
   },
   {
     canonicalName: "Reverse Barbell Curl",
     slug: "reverse_barbell_curl",
-    aliases: ["reverse barbell curls", "reverse bb curl", "curl con bilanciere", "curl bilanciere", "curl inverso", "curl reverse", "curl inverso con bilanciere", "curl reverse con bilanciere"]
+    aliases: ["reverse barbell curls", "reverse bb curl", "curl inverso con bilanciere", "curl reverse con bilanciere"]
   },
   {
     canonicalName: "Reverse Barbell Preacher Curls",
@@ -2982,7 +2982,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Reverse Cable Curl",
     slug: "reverse_cable_curl",
-    aliases: ["reverse cable curls", "curl al cavo", "curl ai cavi", "curl inverso", "curl reverse", "curl inverso ai cavi", "curl inverso al cavo", "curl reverse ai cavi", "curl reverse al cavo"]
+    aliases: ["reverse cable curls", "curl inverso", "curl reverse", "curl inverso ai cavi", "curl inverso al cavo", "curl reverse ai cavi", "curl reverse al cavo"]
   },
   {
     canonicalName: "Reverse Crunch",
@@ -2997,17 +2997,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Reverse Flyes With External Rotation",
     slug: "reverse_flyes_with_external_rotation",
-    aliases: ["Reverse Fly with External Rotation", "croci inverse", "alzate posteriori", "reverse fly", "croci inverse inverso", "croci inverse reverse"]
+    aliases: ["Reverse Fly with External Rotation"]
   },
   {
     canonicalName: "Reverse Grip Bent-Over Rows",
     slug: "reverse_grip_bentover_rows",
-    aliases: ["reverse-grip bent over row", "reverse grip bent over rows", "Reverse Grip Bent Over Row", "rematore busto flesso", "rematore presa inversa", "rematore inverso", "rematore reverse"]
+    aliases: ["reverse-grip bent over row", "reverse grip bent over rows", "Reverse Grip Bent Over Row", "rematore presa inversa", "rematore inverso", "rematore reverse"]
   },
   {
     canonicalName: "Reverse Grip Triceps Pushdown",
     slug: "reverse_grip_triceps_pushdown",
-    aliases: ["reverse grip triceps pushdown", "reverse-grip triceps push down", "Reverse Grip triceps Push Down", "pushdown", "pushdown tricipiti", "pushdown presa inversa", "pushdown inverso", "pushdown reverse"]
+    aliases: ["reverse grip triceps pushdown", "reverse-grip triceps push down", "Reverse Grip triceps Push Down", "pushdown presa inversa", "pushdown inverso", "pushdown reverse"]
   },
   {
     canonicalName: "Reverse Hyperextension",
@@ -3017,22 +3017,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Reverse Machine Flyes",
     slug: "reverse_machine_flyes",
-    aliases: ["reverse mach fly", "Reverse Machine Fly", "reverse machine flys", "croci alla macchina", "butterfly", "croci inverso", "croci reverse", "croci machine", "croci inverso alla macchina", "croci inverso machine", "croci reverse alla macchina", "croci reverse machine"]
+    aliases: ["reverse mach fly", "Reverse Machine Fly", "reverse machine flys", "croci inverso", "croci reverse", "croci inverso alla macchina", "croci inverso machine", "croci reverse alla macchina", "croci reverse machine"]
   },
   {
     canonicalName: "Reverse Plate Curls",
     slug: "reverse_plate_curls",
-    aliases: ["Reverse Plate Curl", "curl inverso", "curl reverse"]
+    aliases: ["Reverse Plate Curl"]
   },
   {
     canonicalName: "Reverse Triceps Bench Press",
     slug: "reverse_triceps_bench_press",
-    aliases: ["Reverse triceps Bench Press", "distensioni su panca piana", "panca piana inverso", "panca piana reverse"]
+    aliases: ["Reverse triceps Bench Press"]
   },
   {
     canonicalName: "Rhomboids-SMR",
     slug: "rhomboidssmr",
-    aliases: ["Rhomboids Smr", "auto-massaggio", "SMR"]
+    aliases: ["Rhomboids Smr"]
   },
   {
     canonicalName: "Rickshaw Deadlift",
@@ -3052,12 +3052,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Rocking Standing Calf Raise",
     slug: "rocking_standing_calf_raise",
-    aliases: ["rocking standing calf raises", "calf raise", "sollevamenti polpacci"]
+    aliases: ["rocking standing calf raises"]
   },
   {
     canonicalName: "Rocky Pull-Ups/Pulldowns",
     slug: "rocky_pullupspulldowns",
-    aliases: ["rocky pull-ups pull downs", "rocky pull ups/pulldowns", "Rocky Pull Ups Pull Downs", "rocky pull ups pulldowns", "rocky pull-ups/pull downs", "pull-up", "trazioni alla sbarra"]
+    aliases: ["rocky pull-ups pull downs", "rocky pull ups/pulldowns", "Rocky Pull Ups Pull Downs", "rocky pull ups pulldowns", "rocky pull-ups/pull downs"]
   },
   {
     canonicalName: "Romanian Deadlift",
@@ -3067,7 +3067,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Romanian Deadlift from Deficit",
     slug: "romanian_deadlift_from_deficit",
-    aliases: ["stacco rumeno", "romanian deadlift from deficit"]
+    aliases: ["romanian deadlift from deficit"]
   },
   {
     canonicalName: "Rope climb",
@@ -3122,7 +3122,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Scapular Pull-Up",
     slug: "scapular_pullup",
-    aliases: ["Scapular Pull Up", "pull-up", "trazioni alla sbarra"]
+    aliases: ["Scapular Pull Up"]
   },
   {
     canonicalName: "Scissor kick",
@@ -3137,12 +3137,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Band Hamstring Curl",
     slug: "seated_band_hamstring_curl",
-    aliases: ["seated band hamstring curls", "curl seduto", "curl con elastico", "curl con banda", "curl seduto con elastico", "curl seduto con banda", "curl da seduto con elastico", "curl da seduto con banda"]
+    aliases: ["seated band hamstring curls", "curl con elastico", "curl con banda", "curl seduto con elastico", "curl seduto con banda", "curl da seduto con elastico", "curl da seduto con banda"]
   },
   {
     canonicalName: "Seated Barbell Military Press",
     slug: "seated_barbell_military_press",
-    aliases: ["seated bb military press", "seated barbell military press", "press con bilanciere", "spinte con bilanciere", "press seduto", "press seduto con bilanciere", "press da seduto con bilanciere", "military press", "pressa militare"]
+    aliases: ["seated bb military press", "seated barbell military press", "press con bilanciere", "spinte con bilanciere", "press seduto con bilanciere", "press da seduto con bilanciere"]
   },
   {
     canonicalName: "Seated barbell twist",
@@ -3152,17 +3152,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Bent-Over One-Arm Dumbbell Triceps Extension",
     slug: "seated_bentover_onearm_dumbbell_triceps_extension",
-    aliases: ["seated bent over one arm db triceps extension", "seated bent-over one arm dumbbell triceps extension", "seated bent over one arm dumbbell triceps extensions", "Seated Bent Over One Arm Dumbbell triceps Extension", "seated bent over one-arm dumbbell triceps extension", "triceps extension", "estensioni tricipiti busto flesso", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["seated bent over one arm db triceps extension", "seated bent-over one arm dumbbell triceps extension", "seated bent over one arm dumbbell triceps extensions", "Seated Bent Over One Arm Dumbbell triceps Extension", "seated bent over one-arm dumbbell triceps extension", "estensioni tricipiti busto flesso"]
   },
   {
     canonicalName: "Seated Bent-Over Rear Delt Raise",
     slug: "seated_bentover_rear_delt_raise",
-    aliases: ["seated bent over rear delt raises", "Seated Bent Over Rear Delt Raise", "seated bent over rear-delt raise", "alzate posteriori", "alzate busto flesso", "alzate seduto", "alzate posteriore"]
+    aliases: ["seated bent over rear delt raises", "Seated Bent Over Rear Delt Raise", "seated bent over rear-delt raise", "alzate busto flesso", "alzate seduto"]
   },
   {
     canonicalName: "Seated Bent-Over Two-Arm Dumbbell Triceps Extension",
     slug: "seated_bentover_twoarm_dumbbell_triceps_extension",
-    aliases: ["seated bent over two arm dumbbell triceps extensions", "Seated Bent Over Two Arm Dumbbell triceps Extension", "seated bent over two arm db triceps extension", "triceps extension", "estensioni tricipiti busto flesso", "estensioni tricipiti a due braccia", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["seated bent over two arm dumbbell triceps extensions", "Seated Bent Over Two Arm Dumbbell triceps Extension", "seated bent over two arm db triceps extension", "estensioni tricipiti a due braccia"]
   },
   {
     canonicalName: "Seated biceps",
@@ -3177,7 +3177,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Cable Shoulder Press",
     slug: "seated_cable_shoulder_press",
-    aliases: ["seated cable shoulder press", "spinte sopra la testa", "shoulder press", "spinte per le spalle", "lento avanti ai cavi", "lento avanti al cavo", "lento avanti da seduto ai cavi", "lento avanti da seduto al cavo"]
+    aliases: ["seated cable shoulder press", "lento avanti da seduto ai cavi", "lento avanti da seduto al cavo"]
   },
   {
     canonicalName: "Seated Calf Raise",
@@ -3192,32 +3192,32 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Close-Grip Concentration Barbell Curl",
     slug: "seated_closegrip_concentration_barbell_curl",
-    aliases: ["seated close grip concentration bb curl", "seated close grip concentration barbell curls", "Seated Close Grip Concentration Barbell Curl", "curl con bilanciere", "curl bilanciere", "curl presa stretta", "curl seduto", "curl seduto con bilanciere", "curl da seduto con bilanciere"]
+    aliases: ["seated close grip concentration bb curl", "seated close grip concentration barbell curls", "Seated Close Grip Concentration Barbell Curl"]
   },
   {
     canonicalName: "Seated Dumbbell Curl",
     slug: "seated_dumbbell_curl",
-    aliases: ["seated db curl", "seated dumbbell curls", "curl con manubri", "curl con manubrio", "curl seduto", "curl seduto con manubri", "curl seduto con manubrio", "curl da seduto con manubri", "curl da seduto con manubrio"]
+    aliases: ["seated db curl", "seated dumbbell curls", "curl seduto con manubri", "curl seduto con manubrio", "curl da seduto con manubri", "curl da seduto con manubrio"]
   },
   {
     canonicalName: "Seated Dumbbell Inner Biceps Curl",
     slug: "seated_dumbbell_inner_biceps_curl",
-    aliases: ["seated dumbbell inner biceps curls", "seated db inner biceps curl", "curl con manubri", "curl con manubrio", "curl seduto", "curl seduto con manubri", "curl seduto con manubrio", "curl da seduto con manubri", "curl da seduto con manubrio"]
+    aliases: ["seated dumbbell inner biceps curls", "seated db inner biceps curl"]
   },
   {
     canonicalName: "Seated Dumbbell Palms-Down Wrist Curl",
     slug: "seated_dumbbell_palmsdown_wrist_curl",
-    aliases: ["seated dumbbell palms down wrist curls", "seated db palms down wrist curl", "Seated Dumbbell Palms Down Wrist Curl", "curl con manubri", "curl con manubrio", "curl palmi in giù", "curl seduto", "curl palmi in giù con manubri", "curl palmi in giù con manubrio", "curl seduto con manubri", "curl seduto con manubrio", "curl da seduto con manubri", "curl da seduto con manubrio"]
+    aliases: ["seated dumbbell palms down wrist curls", "seated db palms down wrist curl", "Seated Dumbbell Palms Down Wrist Curl", "curl palmi in giù con manubri", "curl palmi in giù con manubrio"]
   },
   {
     canonicalName: "Seated Dumbbell Palms-Up Wrist Curl",
     slug: "seated_dumbbell_palmsup_wrist_curl",
-    aliases: ["Seated Dumbbell Palms Up Wrist Curl", "seated dumbbell palms up wrist curls", "seated db palms up wrist curl", "curl con manubri", "curl con manubrio", "curl palmi in su", "curl seduto", "curl palmi in su con manubri", "curl palmi in su con manubrio", "curl seduto con manubri", "curl seduto con manubrio", "curl da seduto con manubri", "curl da seduto con manubrio"]
+    aliases: ["Seated Dumbbell Palms Up Wrist Curl", "seated dumbbell palms up wrist curls", "seated db palms up wrist curl", "curl palmi in su", "curl palmi in su con manubri", "curl palmi in su con manubrio"]
   },
   {
     canonicalName: "Seated Dumbbell Press",
     slug: "seated_dumbbell_press",
-    aliases: ["seated db press", "seated dumbbell press", "press con manubri", "spinte con manubri", "press seduto", "press con manubrio", "press seduto con manubri", "press seduto con manubrio", "press da seduto con manubri", "press da seduto con manubrio"]
+    aliases: ["seated db press", "seated dumbbell press", "press seduto con manubri", "press seduto con manubrio", "press da seduto con manubri", "press da seduto con manubrio"]
   },
   {
     canonicalName: "Seated flat bench leg pull in",
@@ -3227,7 +3227,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Floor Hamstring Stretch",
     slug: "seated_floor_hamstring_stretch",
-    aliases: ["stretching seduto"]
+    aliases: ["seated floor hamstring stretch", "stretching femorali da seduto a terra"]
   },
   {
     canonicalName: "Seated front deltoid",
@@ -3252,7 +3252,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Hamstring and Calf Stretch",
     slug: "seated_hamstring_and_calf_stretch",
-    aliases: ["stretching seduto"]
+    aliases: ["seated hamstring and calf stretch", "stretching femorali e polpacci da seduto"]
   },
   {
     canonicalName: "Seated head harness neck resistance",
@@ -3262,7 +3262,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Leg Curl",
     slug: "seated_leg_curl",
-    aliases: ["seated leg curls", "leg curl", "curl femorali", "flessioni gambe", "curl seduto", "leg curl seduto"]
+    aliases: ["seated leg curls", "curl seduto", "leg curl seduto"]
   },
   {
     canonicalName: "Seated leg tucks",
@@ -3272,42 +3272,42 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Machine Calf Raise",
     slug: "seated_machine_calf_raise",
-    aliases: ["seated mach calf raise", "seated machine calf raises", "calf raise", "sollevamenti polpacci", "calf raise alla macchina", "calf raise machine", "calf raise seduto machine", "calf raise da seduto alla macchina", "calf raise da seduto machine"]
+    aliases: ["seated mach calf raise", "seated machine calf raises", "calf raise machine", "calf raise seduto machine", "calf raise da seduto alla macchina", "calf raise da seduto machine"]
   },
   {
     canonicalName: "Seated One-arm Cable Pulley Rows",
     slug: "seated_onearm_cable_pulley_rows",
-    aliases: ["seated one-arm cable pulley row", "Seated One Arm Cable Pulley Row", "seated one arm cable pulley rows", "rematore al cavo", "rematore ai cavi", "rematore a un braccio", "rematore monolaterale", "rematore seduto", "rematore a un braccio ai cavi", "rematore a un braccio al cavo", "rematore monolaterale ai cavi", "rematore monolaterale al cavo", "rematore seduto ai cavi", "rematore seduto al cavo"]
+    aliases: ["seated one-arm cable pulley row", "Seated One Arm Cable Pulley Row", "seated one arm cable pulley rows", "rematore a un braccio ai cavi", "rematore a un braccio al cavo", "rematore monolaterale ai cavi", "rematore monolaterale al cavo"]
   },
   {
     canonicalName: "Seated One-Arm Dumbbell Palms-Down Wrist Curl",
     slug: "seated_onearm_dumbbell_palmsdown_wrist_curl",
-    aliases: ["seated one-arm dumbbell palms down wrist curl", "seated one arm db palms down wrist curl", "seated one arm dumbbell palms down wrist curls", "seated one arm dumbbell palms-down wrist curl", "Seated One Arm Dumbbell Palms Down Wrist Curl", "curl con manubri", "curl con manubrio", "curl a un braccio", "curl monolaterale", "curl palmi in giù", "curl seduto", "curl palmi in giù con manubri", "curl palmi in giù con manubrio", "curl a un braccio con manubri", "curl a un braccio con manubrio", "curl monolaterale con manubri", "curl monolaterale con manubrio"]
+    aliases: ["seated one-arm dumbbell palms down wrist curl", "seated one arm db palms down wrist curl", "seated one arm dumbbell palms down wrist curls", "seated one arm dumbbell palms-down wrist curl", "Seated One Arm Dumbbell Palms Down Wrist Curl"]
   },
   {
     canonicalName: "Seated One-Arm Dumbbell Palms-Up Wrist Curl",
     slug: "seated_onearm_dumbbell_palmsup_wrist_curl",
-    aliases: ["Seated One Arm Dumbbell Palms Up Wrist Curl", "seated one arm dumbbell palms up wrist curls", "seated one arm db palms up wrist curl", "seated one arm dumbbell palms-up wrist curl", "seated one-arm dumbbell palms up wrist curl", "curl con manubri", "curl con manubrio", "curl a un braccio", "curl monolaterale", "curl palmi in su", "curl seduto", "curl palmi in su con manubri", "curl palmi in su con manubrio", "curl a un braccio con manubri", "curl a un braccio con manubrio", "curl monolaterale con manubri", "curl monolaterale con manubrio"]
+    aliases: ["Seated One Arm Dumbbell Palms Up Wrist Curl", "seated one arm dumbbell palms up wrist curls", "seated one arm db palms up wrist curl", "seated one arm dumbbell palms-up wrist curl", "seated one-arm dumbbell palms up wrist curl", "curl a un braccio con manubri", "curl a un braccio con manubrio", "curl monolaterale con manubri", "curl monolaterale con manubrio"]
   },
   {
     canonicalName: "Seated Overhead Stretch",
     slug: "seated_overhead_stretch",
-    aliases: ["stretching sopra la testa", "stretching seduto"]
+    aliases: ["seated overhead stretch", "stretching sopra la testa da seduto"]
   },
   {
     canonicalName: "Seated Palm-Up Barbell Wrist Curl",
     slug: "seated_palmup_barbell_wrist_curl",
-    aliases: ["seated palm up barbell wrist curls", "Seated Palm Up Barbell Wrist Curl", "seated palm up bb wrist curl", "curl con bilanciere", "curl bilanciere", "curl seduto", "curl seduto con bilanciere", "curl da seduto con bilanciere"]
+    aliases: ["seated palm up barbell wrist curls", "Seated Palm Up Barbell Wrist Curl", "seated palm up bb wrist curl", "curl seduto con bilanciere", "curl da seduto con bilanciere"]
   },
   {
     canonicalName: "Seated Palms-Down Barbell Wrist Curl",
     slug: "seated_palmsdown_barbell_wrist_curl",
-    aliases: ["seated palms down barbell wrist curls", "Seated Palms Down Barbell Wrist Curl", "seated palms down bb wrist curl", "curl con bilanciere", "curl bilanciere", "curl palmi in giù", "curl seduto", "curl palmi in giù con bilanciere", "curl seduto con bilanciere", "curl da seduto con bilanciere"]
+    aliases: ["seated palms down barbell wrist curls", "Seated Palms Down Barbell Wrist Curl", "seated palms down bb wrist curl", "curl palmi in giù con bilanciere"]
   },
   {
     canonicalName: "Seated Side Lateral Raise",
     slug: "seated_side_lateral_raise",
-    aliases: ["seated side lateral raises", "alzate laterali"]
+    aliases: ["seated side lateral raises"]
   },
   {
     canonicalName: "Seated Triceps Press",
@@ -3317,12 +3317,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Seated Two-Arm Palms-Up Low-Pulley Wrist Curl",
     slug: "seated_twoarm_palmsup_lowpulley_wrist_curl",
-    aliases: ["Seated Two Arm Palms Up Low Pulley Wrist Curl", "seated two arm palms up low pulley wrist curls", "curl palmi in su", "curl a due braccia", "curl seduto"]
+    aliases: ["Seated Two Arm Palms Up Low Pulley Wrist Curl", "seated two arm palms up low pulley wrist curls", "curl a due braccia"]
   },
   {
     canonicalName: "See-Saw Press (Alternating Side Press)",
     slug: "seesaw_press_alternating_side_press",
-    aliases: ["see saw press alternating side press", "See-Saw Press", "press alternato", "press alternata"]
+    aliases: ["see saw press alternating side press", "See-Saw Press"]
   },
   {
     canonicalName: "Shotgun Row",
@@ -3332,12 +3332,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Shoulder Circles",
     slug: "shoulder_circles",
-    aliases: ["circonduzioni", "cerchi"]
+    aliases: ["shoulder circles", "cerchi con le spalle", "rotazioni spalle"]
   },
   {
     canonicalName: "Shoulder Press - With Bands",
     slug: "shoulder_press_with_bands",
-    aliases: ["Shoulder Press with Bands", "spinte sopra la testa", "shoulder press", "spinte per le spalle", "lento avanti con elastico", "lento avanti con banda"]
+    aliases: ["Shoulder Press with Bands", "lento avanti con elastico", "lento avanti con banda"]
   },
   {
     canonicalName: "Shoulder Raise",
@@ -3372,17 +3372,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Side Laterals to Front Raise",
     slug: "side_laterals_to_front_raise",
-    aliases: ["side laterals to front raises", "alzate laterali", "alzate frontali", "alzate laterali frontale"]
+    aliases: ["side laterals to front raises", "alzate laterali frontale"]
   },
   {
     canonicalName: "Side Leg Raises",
     slug: "side_leg_raises",
-    aliases: ["Side Leg Raise", "sollevamento gambe", "leg raise"]
+    aliases: ["Side Leg Raise"]
   },
   {
     canonicalName: "Side Lying Groin Stretch",
     slug: "side_lying_groin_stretch",
-    aliases: ["stretching sdraiato"]
+    aliases: ["side lying groin stretch", "stretching inguinale laterale"]
   },
   {
     canonicalName: "Side Neck Stretch",
@@ -3392,7 +3392,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Side Standing Long Jump",
     slug: "side_standing_long_jump",
-    aliases: ["salto in piedi"]
+    aliases: ["side standing long jump", "salto in lungo laterale da fermo"]
   },
   {
     canonicalName: "Side to side box shuffle",
@@ -3427,7 +3427,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Single Dumbbell Raise",
     slug: "single_dumbbell_raise",
-    aliases: ["single dumbbell raises", "single db raise", "alzate con manubri", "alzate con manubrio"]
+    aliases: ["single dumbbell raises", "single db raise"]
   },
   {
     canonicalName: "Single leg butt kick",
@@ -3437,7 +3437,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Single Leg Glute Bridge",
     slug: "single_leg_glute_bridge",
-    aliases: ["single-leg glute bridge", "ponte glutei", "glute bridge", "ponte glutei a una gamba", "ponte glutei monolaterale"]
+    aliases: ["single-leg glute bridge", "ponte glutei a una gamba", "ponte glutei monolaterale"]
   },
   {
     canonicalName: "Single leg hop progression",
@@ -3457,7 +3457,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Single-Arm Cable Crossover",
     slug: "singlearm_cable_crossover",
-    aliases: ["Single Arm Cable Crossover", "crossover ai cavi", "cable crossover", "crossover ai cavi a un braccio", "crossover ai cavi monolaterale", "crossover ai cavi al cavo", "crossover ai cavi a un braccio ai cavi", "crossover ai cavi a un braccio al cavo", "crossover ai cavi monolaterale ai cavi", "crossover ai cavi monolaterale al cavo"]
+    aliases: ["Single Arm Cable Crossover", "crossover ai cavi a un braccio", "crossover ai cavi monolaterale", "crossover ai cavi a un braccio ai cavi", "crossover ai cavi a un braccio al cavo", "crossover ai cavi monolaterale ai cavi", "crossover ai cavi monolaterale al cavo"]
   },
   {
     canonicalName: "Single-Arm Push-Up",
@@ -3467,12 +3467,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Single-Leg High Box Squat",
     slug: "singleleg_high_box_squat",
-    aliases: ["Single Leg High Box Squat", "box squat", "box squat a una gamba", "box squat monolaterale"]
+    aliases: ["Single Leg High Box Squat", "box squat a una gamba", "box squat monolaterale"]
   },
   {
     canonicalName: "Single-Leg Leg Extension",
     slug: "singleleg_leg_extension",
-    aliases: ["single leg leg extensions", "Single Leg Leg Extension", "leg extension", "estensioni gambe", "leg extension a una gamba", "leg extension monolaterale"]
+    aliases: ["single leg leg extensions", "Single Leg Leg Extension", "leg extension a una gamba", "leg extension monolaterale"]
   },
   {
     canonicalName: "Single-Leg Stride Jump",
@@ -3512,12 +3512,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Sled Overhead Backward Walk",
     slug: "sled_overhead_backward_walk",
-    aliases: ["camminata", "walk", "camminata sopra la testa"]
+    aliases: ["camminata sopra la testa"]
   },
   {
     canonicalName: "Sled Overhead Triceps Extension",
     slug: "sled_overhead_triceps_extension",
-    aliases: ["Sled Overhead triceps Extension", "sled overhead triceps extensions", "triceps extension", "estensioni tricipiti sopra la testa"]
+    aliases: ["Sled Overhead triceps Extension", "sled overhead triceps extensions", "estensioni tricipiti sopra la testa"]
   },
   {
     canonicalName: "Sled push",
@@ -3527,7 +3527,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Sled Reverse Flye",
     slug: "sled_reverse_flye",
-    aliases: ["croci inverse", "alzate posteriori", "reverse fly", "croci inverse inverso", "croci inverse reverse"]
+    aliases: ["sled reverse flye", "aperture inverse alla slitta"]
   },
   {
     canonicalName: "Sled Row",
@@ -3542,77 +3542,77 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Smith Incline Shoulder Raise",
     slug: "smith_incline_shoulder_raise",
-    aliases: ["smith incline shoulder raises", "alzate inclinato", "alzate su panca inclinata", "alzate al multipower", "alzate alla Smith machine", "alzate inclinato al multipower", "alzate inclinato alla Smith machine", "alzate su panca inclinata al multipower", "alzate su panca inclinata alla Smith machine"]
+    aliases: ["smith incline shoulder raises", "alzate al multipower", "alzate alla Smith machine", "alzate inclinato al multipower", "alzate inclinato alla Smith machine", "alzate su panca inclinata al multipower", "alzate su panca inclinata alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Behind the Back Shrug",
     slug: "smith_machine_behind_the_back_shrug",
-    aliases: ["smith mach behind the back shrug", "scrollate", "scrollate dietro la schiena", "scrollate al multipower", "scrollate alla Smith machine", "scrollate alla macchina", "scrollate dietro la schiena al multipower", "scrollate dietro la schiena alla Smith machine"]
+    aliases: ["smith mach behind the back shrug", "scrollate al multipower", "scrollate alla Smith machine", "scrollate dietro la schiena al multipower", "scrollate dietro la schiena alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Bench Press",
     slug: "smith_machine_bench_press",
-    aliases: ["smith machine bench press", "smith mach bench press", "panca piana al multipower", "distensioni su panca piana al multipower", "panca piana alla Smith machine", "panca piana alla macchina"]
+    aliases: ["smith machine bench press", "smith mach bench press", "panca piana al multipower", "distensioni su panca piana al multipower", "panca piana alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Bent Over Row",
     slug: "smith_machine_bent_over_row",
-    aliases: ["smith mach bent over row", "smith machine bent over rows", "rematore alla macchina", "rematore busto flesso", "rematore al multipower", "rematore alla Smith machine", "rematore busto flesso al multipower", "rematore busto flesso alla Smith machine"]
+    aliases: ["smith mach bent over row", "smith machine bent over rows", "rematore alla macchina", "rematore al multipower", "rematore alla Smith machine", "rematore busto flesso al multipower", "rematore busto flesso alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Calf Raise",
     slug: "smith_machine_calf_raise",
-    aliases: ["smith machine calf raises", "smith mach calf raise", "calf raise", "sollevamenti polpacci", "calf raise al multipower", "calf raise alla Smith machine", "calf raise alla macchina"]
+    aliases: ["smith machine calf raises", "smith mach calf raise", "calf raise al multipower", "calf raise alla Smith machine", "calf raise alla macchina"]
   },
   {
     canonicalName: "Smith Machine Close-Grip Bench Press",
     slug: "smith_machine_closegrip_bench_press",
-    aliases: ["Smith Machine Close Grip Bench Press", "smith mach close grip bench press", "panca piana al multipower", "distensioni su panca piana al multipower", "panca piana presa stretta", "panca piana presa stretta al multipower", "panca piana alla Smith machine", "panca piana alla macchina", "panca piana presa stretta alla Smith machine"]
+    aliases: ["Smith Machine Close Grip Bench Press", "smith mach close grip bench press", "panca piana presa stretta al multipower", "panca piana presa stretta alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Decline Press",
     slug: "smith_machine_decline_press",
-    aliases: ["smith machine decline press", "smith mach decline press", "press declinato", "press su panca declinata", "press al multipower", "press alla Smith machine", "press alla macchina", "press declinato al multipower", "press declinato alla Smith machine", "press su panca declinata al multipower", "press su panca declinata alla Smith machine"]
+    aliases: ["smith machine decline press", "smith mach decline press"]
   },
   {
     canonicalName: "Smith Machine Hang Power Clean",
     slug: "smith_machine_hang_power_clean",
-    aliases: ["smith mach hang power clean", "power clean", "girata di potenza", "girata da sospensione", "girata al multipower", "girata alla Smith machine", "girata alla macchina", "girata di potenza al multipower", "girata di potenza alla Smith machine", "girata da sospensione al multipower", "girata da sospensione alla Smith machine"]
+    aliases: ["smith mach hang power clean", "girata al multipower", "girata alla Smith machine", "girata alla macchina", "girata di potenza al multipower", "girata di potenza alla Smith machine", "girata da sospensione al multipower", "girata da sospensione alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Hip Raise",
     slug: "smith_machine_hip_raise",
-    aliases: ["smith mach hip raise", "smith machine hip raises", "sollevamento anche", "sollevamento anche al multipower", "sollevamento anche alla Smith machine", "sollevamento anche alla macchina"]
+    aliases: ["smith mach hip raise", "smith machine hip raises", "sollevamento anche al multipower", "sollevamento anche alla Smith machine", "sollevamento anche alla macchina"]
   },
   {
     canonicalName: "Smith Machine Incline Bench Press",
     slug: "smith_machine_incline_bench_press",
-    aliases: ["smith mach incline bench press", "smith machine incline bench press", "panca inclinata al multipower", "distensioni su panca inclinata al multipower", "panca inclinata su panca inclinata", "panca inclinata alla Smith machine", "panca inclinata su panca inclinata al multipower", "panca inclinata su panca inclinata alla Smith machine"]
+    aliases: ["smith mach incline bench press", "smith machine incline bench press", "panca inclinata al multipower", "distensioni su panca inclinata al multipower", "panca inclinata alla Smith machine", "panca inclinata su panca inclinata al multipower", "panca inclinata su panca inclinata alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Leg Press",
     slug: "smith_machine_leg_press",
-    aliases: ["smith mach leg press", "smith machine leg press", "pressa", "leg press", "press al multipower", "press alla Smith machine", "press alla macchina"]
+    aliases: ["smith mach leg press", "smith machine leg press", "press alla macchina"]
   },
   {
     canonicalName: "Smith Machine One-Arm Upright Row",
     slug: "smith_machine_onearm_upright_row",
-    aliases: ["smith mach one arm upright row", "Smith Machine One Arm Upright Row", "smith machine one arm upright rows", "tirate al mento", "upright row", "tirate al mento a un braccio", "tirate al mento monolaterale", "tirate al mento al multipower", "tirate al mento alla Smith machine", "tirate al mento alla macchina", "tirate al mento a un braccio al multipower", "tirate al mento a un braccio alla Smith machine", "tirate al mento monolaterale al multipower", "tirate al mento monolaterale alla Smith machine"]
+    aliases: ["smith mach one arm upright row", "Smith Machine One Arm Upright Row", "smith machine one arm upright rows", "tirate al mento a un braccio al multipower", "tirate al mento a un braccio alla Smith machine", "tirate al mento monolaterale al multipower", "tirate al mento monolaterale alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Overhead Shoulder Press",
     slug: "smith_machine_overhead_shoulder_press",
-    aliases: ["smith machine overhead shoulder press", "smith mach overhead shoulder press", "spinte sopra la testa", "shoulder press", "spinte per le spalle", "lento avanti sopra la testa", "lento avanti al multipower", "lento avanti alla Smith machine", "lento avanti alla macchina", "lento avanti sopra la testa al multipower", "lento avanti sopra la testa alla Smith machine"]
+    aliases: ["smith machine overhead shoulder press", "smith mach overhead shoulder press", "lento avanti sopra la testa", "lento avanti al multipower", "lento avanti alla Smith machine", "lento avanti alla macchina", "lento avanti sopra la testa al multipower", "lento avanti sopra la testa alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Pistol Squat",
     slug: "smith_machine_pistol_squat",
-    aliases: ["smith mach pistol squat", "squat al multipower", "squat al multipower alla Smith machine", "squat al multipower alla macchina"]
+    aliases: ["smith mach pistol squat"]
   },
   {
     canonicalName: "Smith Machine Reverse Calf Raises",
     slug: "smith_machine_reverse_calf_raises",
-    aliases: ["Smith Machine Reverse Calf Raise", "smith mach reverse calf raise", "calf raise", "sollevamenti polpacci", "calf raise inverso", "calf raise reverse", "calf raise al multipower", "calf raise alla Smith machine", "calf raise alla macchina", "calf raise inverso al multipower", "calf raise inverso alla Smith machine", "calf raise reverse al multipower", "calf raise reverse alla Smith machine"]
+    aliases: ["Smith Machine Reverse Calf Raise", "smith mach reverse calf raise", "calf raise inverso", "calf raise reverse", "calf raise inverso al multipower", "calf raise inverso alla Smith machine", "calf raise reverse al multipower", "calf raise reverse alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Squat",
@@ -3622,17 +3622,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Smith Machine Stiff-Legged Deadlift",
     slug: "smith_machine_stifflegged_deadlift",
-    aliases: ["smith mach stiff legged deadlift", "Smith Machine Stiff Legged Deadlift", "stacco a gambe tese", "stacco a gambe tese al multipower", "stacco a gambe tese alla Smith machine"]
+    aliases: ["smith mach stiff legged deadlift", "Smith Machine Stiff Legged Deadlift", "stacco a gambe tese al multipower", "stacco a gambe tese alla Smith machine"]
   },
   {
     canonicalName: "Smith Machine Upright Row",
     slug: "smith_machine_upright_row",
-    aliases: ["smith machine upright rows", "smith mach upright row", "tirate al mento", "upright row", "tirate al mento al multipower", "tirate al mento alla Smith machine", "tirate al mento alla macchina"]
+    aliases: ["smith machine upright rows", "smith mach upright row", "tirate al mento al multipower", "tirate al mento alla Smith machine", "tirate al mento alla macchina"]
   },
   {
     canonicalName: "Smith Single-Leg Split Squat",
     slug: "smith_singleleg_split_squat",
-    aliases: ["Smith Single Leg Split Squat", "split squat", "affondo statico", "split squat a una gamba", "split squat monolaterale", "split squat al multipower", "split squat alla Smith machine", "split squat a una gamba al multipower", "split squat a una gamba alla Smith machine", "split squat monolaterale al multipower", "split squat monolaterale alla Smith machine"]
+    aliases: ["Smith Single Leg Split Squat", "split squat a una gamba", "split squat monolaterale", "split squat al multipower", "split squat alla Smith machine", "split squat a una gamba al multipower", "split squat a una gamba alla Smith machine", "split squat monolaterale al multipower", "split squat monolaterale alla Smith machine"]
   },
   {
     canonicalName: "Snatch",
@@ -3662,7 +3662,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Snatch Shrug",
     slug: "snatch_shrug",
-    aliases: ["scrollate"]
+    aliases: ["snatch shrug", "scrollata da strappo"]
   },
   {
     canonicalName: "Speed band overhead triceps",
@@ -3672,7 +3672,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Speed Box Squat",
     slug: "speed_box_squat",
-    aliases: ["box squat", "speed box squat"]
+    aliases: ["speed box squat"]
   },
   {
     canonicalName: "Speed Squats",
@@ -3707,7 +3707,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Split Jerk",
     slug: "split_jerk",
-    aliases: ["slancio", "split jerk"]
+    aliases: ["split jerk"]
   },
   {
     canonicalName: "Split Jump",
@@ -3722,7 +3722,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Split Squat with Dumbbells",
     slug: "split_squat_with_dumbbells",
-    aliases: ["split squat with dbs", "split squat", "affondo statico", "split squat con manubri", "split squat con manubrio"]
+    aliases: ["split squat with dbs", "split squat con manubri", "split squat con manubrio"]
   },
   {
     canonicalName: "Split Squats",
@@ -3732,7 +3732,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Squat Jerk",
     slug: "squat_jerk",
-    aliases: ["slancio", "squat jerk"]
+    aliases: ["squat jerk"]
   },
   {
     canonicalName: "Squat with Bands",
@@ -3752,7 +3752,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Squats - With Bands",
     slug: "squats_with_bands",
-    aliases: ["Squats with Bands", "squat con elastico", "squat con banda"]
+    aliases: ["Squats with Bands"]
   },
   {
     canonicalName: "Stacco deficit",
@@ -3767,32 +3767,32 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Alternating Dumbbell Press",
     slug: "standing_alternating_dumbbell_press",
-    aliases: ["standing alternating dumbbell press", "standing alternating db press", "press con manubri", "spinte con manubri", "press alternato", "press alternata", "press in piedi", "press con manubrio", "press alternato con manubri", "press alternato con manubrio", "press alternata con manubri", "press alternata con manubrio"]
+    aliases: ["standing alternating dumbbell press", "standing alternating db press", "press alternato con manubri", "press alternato con manubrio", "press alternata con manubri", "press alternata con manubrio"]
   },
   {
     canonicalName: "Standing Barbell Calf Raise",
     slug: "standing_barbell_calf_raise",
-    aliases: ["standing bb calf raise", "standing barbell calf raises", "calf raise", "sollevamenti polpacci", "calf raise con bilanciere"]
+    aliases: ["standing bb calf raise", "standing barbell calf raises"]
   },
   {
     canonicalName: "Standing Barbell Press Behind Neck",
     slug: "standing_barbell_press_behind_neck",
-    aliases: ["standing bb press behind neck", "press con bilanciere", "spinte con bilanciere", "press in piedi"]
+    aliases: ["standing bb press behind neck"]
   },
   {
     canonicalName: "Standing Bent-Over One-Arm Dumbbell Triceps Extension",
     slug: "standing_bentover_onearm_dumbbell_triceps_extension",
-    aliases: ["Standing Bent Over One Arm Dumbbell triceps Extension", "standing bent over one-arm dumbbell triceps extension", "standing bent over one arm dumbbell triceps extensions", "standing bent over one arm db triceps extension", "standing bent-over one arm dumbbell triceps extension", "triceps extension", "estensioni tricipiti busto flesso", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["Standing Bent Over One Arm Dumbbell triceps Extension", "standing bent over one-arm dumbbell triceps extension", "standing bent over one arm dumbbell triceps extensions", "standing bent over one arm db triceps extension", "standing bent-over one arm dumbbell triceps extension"]
   },
   {
     canonicalName: "Standing Bent-Over Two-Arm Dumbbell Triceps Extension",
     slug: "standing_bentover_twoarm_dumbbell_triceps_extension",
-    aliases: ["Standing Bent Over Two Arm Dumbbell triceps Extension", "standing bent over two arm dumbbell triceps extensions", "standing bent over two arm db triceps extension", "triceps extension", "estensioni tricipiti busto flesso", "estensioni tricipiti a due braccia", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["Standing Bent Over Two Arm Dumbbell triceps Extension", "standing bent over two arm dumbbell triceps extensions", "standing bent over two arm db triceps extension"]
   },
   {
     canonicalName: "Standing Biceps Cable Curl",
     slug: "standing_biceps_cable_curl",
-    aliases: ["standing biceps cable curls", "curl al cavo", "curl ai cavi", "curl in piedi"]
+    aliases: ["standing biceps cable curls"]
   },
   {
     canonicalName: "Standing Biceps Stretch",
@@ -3807,7 +3807,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Cable Chest Press",
     slug: "standing_cable_chest_press",
-    aliases: ["standing cable chest press", "press in piedi", "press ai cavi", "press al cavo"]
+    aliases: ["standing cable chest press"]
   },
   {
     canonicalName: "Standing cable lift",
@@ -3822,67 +3822,67 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Calf Raises",
     slug: "standing_calf_raises",
-    aliases: ["Standing Calf Raise", "calf raise", "sollevamenti polpacci", "polpacci", "sollevamento polpacci"]
+    aliases: ["Standing Calf Raise", "polpacci", "sollevamento polpacci"]
   },
   {
     canonicalName: "Standing Concentration Curl",
     slug: "standing_concentration_curl",
-    aliases: ["standing concentration curls", "curl di concentrazione"]
+    aliases: ["standing concentration curls"]
   },
   {
     canonicalName: "Standing Dumbbell Calf Raise",
     slug: "standing_dumbbell_calf_raise",
-    aliases: ["standing db calf raise", "standing dumbbell calf raises", "calf raise", "sollevamenti polpacci", "calf raise con manubri", "calf raise con manubrio"]
+    aliases: ["standing db calf raise", "standing dumbbell calf raises"]
   },
   {
     canonicalName: "Standing Dumbbell Press",
     slug: "standing_dumbbell_press",
-    aliases: ["standing dumbbell press", "standing db press", "press con manubri", "spinte con manubri", "press in piedi", "press con manubrio"]
+    aliases: ["standing dumbbell press", "standing db press"]
   },
   {
     canonicalName: "Standing Dumbbell Reverse Curl",
     slug: "standing_dumbbell_reverse_curl",
-    aliases: ["standing db reverse curl", "standing dumbbell reverse curls", "curl con manubri", "curl con manubrio", "curl inverso", "curl in piedi", "curl reverse", "curl inverso con manubri", "curl inverso con manubrio", "curl reverse con manubri", "curl reverse con manubrio"]
+    aliases: ["standing db reverse curl", "standing dumbbell reverse curls", "curl inverso con manubri", "curl inverso con manubrio", "curl reverse con manubri", "curl reverse con manubrio"]
   },
   {
     canonicalName: "Standing Dumbbell Straight-Arm Front Delt Raise Above Head",
     slug: "standing_dumbbell_straightarm_front_delt_raise_above_head",
-    aliases: ["standing db straight arm front delt raise above head", "Standing Dumbbell Straight Arm Front Delt Raise Above Head", "alzate con manubri", "alzate frontali", "alzate in piedi", "alzate frontale", "alzate con manubrio", "alzate frontale con manubri", "alzate frontale con manubrio"]
+    aliases: ["standing db straight arm front delt raise above head", "Standing Dumbbell Straight Arm Front Delt Raise Above Head"]
   },
   {
     canonicalName: "Standing Dumbbell Triceps Extension",
     slug: "standing_dumbbell_triceps_extension",
-    aliases: ["standing db triceps extension", "standing dumbbell triceps extensions", "Standing Dumbbell triceps Extension", "triceps extension", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["standing db triceps extension", "standing dumbbell triceps extensions", "Standing Dumbbell triceps Extension"]
   },
   {
     canonicalName: "Standing Dumbbell Upright Row",
     slug: "standing_dumbbell_upright_row",
-    aliases: ["standing dumbbell upright rows", "standing db upright row", "tirate al mento", "upright row", "tirate al mento con manubri", "tirate al mento con manubrio"]
+    aliases: ["standing dumbbell upright rows", "standing db upright row"]
   },
   {
     canonicalName: "Standing Elevated Quad Stretch",
     slug: "standing_elevated_quad_stretch",
-    aliases: ["stretching in piedi"]
+    aliases: ["standing elevated quad stretch", "stretching quadricipite in piedi rialzato"]
   },
   {
     canonicalName: "Standing Front Barbell Raise Over Head",
     slug: "standing_front_barbell_raise_over_head",
-    aliases: ["standing front bb raise over head", "standing front-barbell raise over head", "alzate frontali", "alzate in piedi", "alzate frontale", "alzate con bilanciere", "alzate frontale con bilanciere"]
+    aliases: ["standing front bb raise over head", "standing front-barbell raise over head", "alzate frontale con bilanciere"]
   },
   {
     canonicalName: "Standing Gastrocnemius Calf Stretch",
     slug: "standing_gastrocnemius_calf_stretch",
-    aliases: ["stretching in piedi"]
+    aliases: ["standing gastrocnemius calf stretch", "stretching gastrocnemio in piedi"]
   },
   {
     canonicalName: "Standing Hamstring and Calf Stretch",
     slug: "standing_hamstring_and_calf_stretch",
-    aliases: ["stretching in piedi"]
+    aliases: ["standing hamstring and calf stretch", "stretching femorali e polpacci in piedi"]
   },
   {
     canonicalName: "Standing Hip Circles",
     slug: "standing_hip_circles",
-    aliases: ["circonduzioni", "cerchi", "circonduzioni in piedi"]
+    aliases: ["circonduzioni in piedi"]
   },
   {
     canonicalName: "Standing hip flexors",
@@ -3892,17 +3892,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Inner-Biceps Curl",
     slug: "standing_innerbiceps_curl",
-    aliases: ["standing inner biceps curls", "Standing Inner Biceps Curl", "curl in piedi"]
+    aliases: ["standing inner biceps curls", "Standing Inner Biceps Curl"]
   },
   {
     canonicalName: "Standing Lateral Stretch",
     slug: "standing_lateral_stretch",
-    aliases: ["stretching in piedi"]
+    aliases: ["standing lateral stretch", "stretching laterale in piedi"]
   },
   {
     canonicalName: "Standing Leg Curl",
     slug: "standing_leg_curl",
-    aliases: ["standing leg curls", "leg curl", "curl femorali", "flessioni gambe", "curl in piedi"]
+    aliases: ["standing leg curls", "curl in piedi"]
   },
   {
     canonicalName: "Standing Long Jump",
@@ -3917,17 +3917,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Low-Pulley One-Arm Triceps Extension",
     slug: "standing_lowpulley_onearm_triceps_extension",
-    aliases: ["standing low pulley one arm triceps extensions", "standing low-pulley one arm triceps extension", "Standing Low Pulley One Arm triceps Extension", "standing low pulley one-arm triceps extension", "triceps extension", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale"]
+    aliases: ["standing low pulley one arm triceps extensions", "standing low-pulley one arm triceps extension", "Standing Low Pulley One Arm triceps Extension", "standing low pulley one-arm triceps extension"]
   },
   {
     canonicalName: "Standing Machine Calf Raise",
     slug: "standing_machine_calf_raise",
-    aliases: ["standing mach calf raise", "standing machine calf raises", "calf raise", "sollevamenti polpacci", "calf raise alla macchina", "calf raise machine", "calf raise in piedi machine"]
+    aliases: ["standing mach calf raise", "standing machine calf raises", "calf raise in piedi machine"]
   },
   {
     canonicalName: "Standing Military Press",
     slug: "standing_military_press",
-    aliases: ["standing military press", "press in piedi", "military press", "pressa militare"]
+    aliases: ["standing military press"]
   },
   {
     canonicalName: "Standing olympic plate hand squeeze",
@@ -3937,37 +3937,37 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing One-Arm Cable Curl",
     slug: "standing_onearm_cable_curl",
-    aliases: ["Standing One Arm Cable Curl", "standing one arm cable curls", "curl al cavo", "curl ai cavi", "curl a un braccio", "curl monolaterale", "curl in piedi", "curl a un braccio ai cavi", "curl a un braccio al cavo", "curl monolaterale ai cavi", "curl monolaterale al cavo"]
+    aliases: ["Standing One Arm Cable Curl", "standing one arm cable curls", "curl a un braccio", "curl monolaterale", "curl a un braccio ai cavi", "curl a un braccio al cavo", "curl monolaterale ai cavi", "curl monolaterale al cavo"]
   },
   {
     canonicalName: "Standing One-Arm Dumbbell Curl Over Incline Bench",
     slug: "standing_onearm_dumbbell_curl_over_incline_bench",
-    aliases: ["standing one arm db curl over incline bench", "Standing One Arm Dumbbell Curl Over Incline Bench", "curl con manubri", "curl con manubrio", "curl inclinato", "curl su panca inclinata", "curl a un braccio", "curl monolaterale", "curl in piedi", "curl in piedi su panca inclinata", "curl a un braccio su panca inclinata", "curl a un braccio con manubri", "curl monolaterale su panca inclinata", "curl monolaterale con manubri"]
+    aliases: ["standing one arm db curl over incline bench", "Standing One Arm Dumbbell Curl Over Incline Bench", "curl in piedi su panca inclinata", "curl a un braccio su panca inclinata", "curl monolaterale su panca inclinata"]
   },
   {
     canonicalName: "Standing One-Arm Dumbbell Triceps Extension",
     slug: "standing_onearm_dumbbell_triceps_extension",
-    aliases: ["standing one-arm dumbbell triceps extension", "standing one arm dumbbell triceps extension", "standing one arm dumbbell triceps extensions", "standing one arm db triceps extension", "triceps extension", "estensioni tricipiti a un braccio", "estensioni tricipiti monolaterale", "estensioni tricipiti con manubri", "estensioni tricipiti con manubrio"]
+    aliases: ["standing one-arm dumbbell triceps extension", "standing one arm dumbbell triceps extension", "standing one arm dumbbell triceps extensions", "standing one arm db triceps extension"]
   },
   {
     canonicalName: "Standing Overhead Barbell Triceps Extension",
     slug: "standing_overhead_barbell_triceps_extension",
-    aliases: ["Standing Overhead Barbell triceps Extension", "standing overhead bb triceps extension", "standing overhead barbell triceps extensions", "triceps extension", "estensioni tricipiti sopra la testa", "estensioni tricipiti con bilanciere"]
+    aliases: ["Standing Overhead Barbell triceps Extension", "standing overhead bb triceps extension", "standing overhead barbell triceps extensions"]
   },
   {
     canonicalName: "Standing Palm-In One-Arm Dumbbell Press",
     slug: "standing_palmin_onearm_dumbbell_press",
-    aliases: ["standing palm in one arm dumbbell press", "standing palm-in one arm dumbbell press", "standing palm in one arm db press", "standing palm in one-arm dumbbell press", "press con manubri", "spinte con manubri", "press a un braccio", "press in piedi", "press monolaterale", "press con manubrio", "press a un braccio con manubri", "press a un braccio con manubrio", "press monolaterale con manubri", "press monolaterale con manubrio"]
+    aliases: ["standing palm in one arm dumbbell press", "standing palm-in one arm dumbbell press", "standing palm in one arm db press", "standing palm in one-arm dumbbell press", "press a un braccio con manubri", "press a un braccio con manubrio", "press monolaterale con manubri", "press monolaterale con manubrio"]
   },
   {
     canonicalName: "Standing Palms-In Dumbbell Press",
     slug: "standing_palmsin_dumbbell_press",
-    aliases: ["standing palms in db press", "Standing Palms in Dumbbell Press", "press con manubri", "spinte con manubri", "press in piedi", "press con manubrio"]
+    aliases: ["standing palms in db press", "Standing Palms in Dumbbell Press"]
   },
   {
     canonicalName: "Standing Palms-Up Barbell Behind The Back Wrist Curl",
     slug: "standing_palmsup_barbell_behind_the_back_wrist_curl",
-    aliases: ["standing palms up barbell behind the back wrist curls", "Standing Palms Up Barbell Behind the Back Wrist Curl", "standing palms up bb behind the back wrist curl", "curl con bilanciere", "curl bilanciere", "curl dietro la schiena", "curl in piedi", "curl palmi in su", "curl dietro la schiena con bilanciere", "curl palmi in su con bilanciere"]
+    aliases: ["standing palms up barbell behind the back wrist curls", "Standing Palms Up Barbell Behind the Back Wrist Curl", "standing palms up bb behind the back wrist curl", "curl dietro la schiena", "curl dietro la schiena con bilanciere"]
   },
   {
     canonicalName: "Standing pelvic tilt",
@@ -3982,7 +3982,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Soleus And Achilles Stretch",
     slug: "standing_soleus_and_achilles_stretch",
-    aliases: ["stretching in piedi"]
+    aliases: ["standing soleus and achilles stretch", "stretching soleo e achille in piedi"]
   },
   {
     canonicalName: "Standing toe touches",
@@ -3992,7 +3992,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Standing Towel Triceps Extension",
     slug: "standing_towel_triceps_extension",
-    aliases: ["Standing Towel triceps Extension", "standing towel triceps extensions", "triceps extension"]
+    aliases: ["Standing Towel triceps Extension", "standing towel triceps extensions"]
   },
   {
     canonicalName: "Standing Two-Arm Overhead Throw",
@@ -4012,12 +4012,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Step-up with Knee Raise",
     slug: "stepup_with_knee_raise",
-    aliases: ["step up with knee raises", "Step Up with Knee Raise", "step-up", "salita al box", "step up"]
+    aliases: ["step up with knee raises", "Step Up with Knee Raise"]
   },
   {
     canonicalName: "Stiff Leg Barbell Good Morning",
     slug: "stiff_leg_barbell_good_morning",
-    aliases: ["stiff leg bb good morning", "good morning con bilanciere"]
+    aliases: ["stiff leg bb good morning"]
   },
   {
     canonicalName: "Stiff-Legged Barbell Deadlift",
@@ -4027,7 +4027,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Stiff-Legged Dumbbell Deadlift",
     slug: "stifflegged_dumbbell_deadlift",
-    aliases: ["Stiff Legged Dumbbell Deadlift", "stiff legged db deadlift", "stacco a gambe tese"]
+    aliases: ["Stiff Legged Dumbbell Deadlift", "stiff legged db deadlift"]
   },
   {
     canonicalName: "Stomach vacuum",
@@ -4042,12 +4042,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Straight Raises on Incline Bench",
     slug: "straight_raises_on_incline_bench",
-    aliases: ["Straight Raise on Incline Bench", "alzate inclinato", "alzate su panca inclinata", "alzate su panca", "alzate su panca inclinata su panca"]
+    aliases: ["Straight Raise on Incline Bench", "alzate su panca", "alzate su panca inclinata su panca"]
   },
   {
     canonicalName: "Straight-Arm Dumbbell Pullover",
     slug: "straightarm_dumbbell_pullover",
-    aliases: ["straight arm db pullover", "Straight Arm Dumbbell Pullover", "pullover", "pullover con manubri", "pullover con manubrio"]
+    aliases: ["straight arm db pullover", "Straight Arm Dumbbell Pullover"]
   },
   {
     canonicalName: "Straight-Arm Pulldown",
@@ -4067,12 +4067,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Sumo Deadlift with Bands",
     slug: "sumo_deadlift_with_bands",
-    aliases: ["stacco sumo", "stacco sumo con elastico", "stacco sumo con banda"]
+    aliases: ["stacco sumo con elastico", "stacco sumo con banda"]
   },
   {
     canonicalName: "Sumo Deadlift with Chains",
     slug: "sumo_deadlift_with_chains",
-    aliases: ["stacco sumo", "sumo deadlift with chains"]
+    aliases: ["sumo deadlift with chains"]
   },
   {
     canonicalName: "Superman",
@@ -4107,7 +4107,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Suspended Reverse Crunch",
     slug: "suspended_reverse_crunch",
-    aliases: ["crunch inverso", "crunch reverse"]
+    aliases: ["suspended reverse crunch", "crunch inverso sospeso"]
   },
   {
     canonicalName: "Suspended Row",
@@ -4117,7 +4117,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Suspended Split Squat",
     slug: "suspended_split_squat",
-    aliases: ["split squat", "affondo statico"]
+    aliases: ["suspended split squat", "split squat sospeso", "squat bulgaro sospeso"]
   },
   {
     canonicalName: "Svend Press",
@@ -4127,7 +4127,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "T-Bar Row with Handle",
     slug: "tbar_row_with_handle",
-    aliases: ["T Bar Row with Handle", "rematore T-bar", "t-bar row"]
+    aliases: ["T Bar Row with Handle"]
   },
   {
     canonicalName: "Tate Press",
@@ -4147,7 +4147,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Thigh adductor",
     slug: "thigh_adductor",
-    aliases: ["adduttore", "adduttori", "adductor machine", "chiusura gambe"]
+    aliases: ["chiusura gambe"]
   },
   {
     canonicalName: "Thruster",
@@ -4172,7 +4172,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Trail Running/Walking",
     slug: "trail_runningwalking",
-    aliases: ["Trail Running Walking", "camminata", "walk", "corsa su sentiero"]
+    aliases: ["Trail Running Walking", "corsa su sentiero"]
   },
   {
     canonicalName: "Trap Bar Deadlift",
@@ -4197,7 +4197,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Triceps Overhead Extension with Rope",
     slug: "triceps_overhead_extension_with_rope",
-    aliases: ["triceps Overhead Extension with Rope", "triceps extension", "estensioni tricipiti sopra la testa"]
+    aliases: ["triceps Overhead Extension with Rope"]
   },
   {
     canonicalName: "Triceps Pushdown",
@@ -4207,12 +4207,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Triceps Pushdown - Rope Attachment",
     slug: "triceps_pushdown_rope_attachment",
-    aliases: ["triceps Push Down Rope Attachment", "triceps pushdown rope attachment", "triceps push down - rope attachment", "pushdown", "pushdown tricipiti"]
+    aliases: ["triceps Push Down Rope Attachment", "triceps pushdown rope attachment", "triceps push down - rope attachment"]
   },
   {
     canonicalName: "Triceps Pushdown - V-Bar Attachment",
     slug: "triceps_pushdown_vbar_attachment",
-    aliases: ["triceps push down - v-bar attachment", "triceps pushdown v bar attachment", "triceps Push Down V Bar Attachment", "pushdown", "pushdown tricipiti"]
+    aliases: ["triceps push down - v-bar attachment", "triceps pushdown v bar attachment", "triceps Push Down V Bar Attachment"]
   },
   {
     canonicalName: "Triceps Stretch",
@@ -4227,27 +4227,27 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Two-Arm Dumbbell Preacher Curl",
     slug: "twoarm_dumbbell_preacher_curl",
-    aliases: ["two arm dumbbell preacher curls", "Two Arm Dumbbell Preacher Curl", "two arm db preacher curl", "preacher curl a due braccia", "preacher curl con manubri", "preacher curl con manubrio"]
+    aliases: ["two arm dumbbell preacher curls", "Two Arm Dumbbell Preacher Curl", "two arm db preacher curl", "preacher curl a due braccia"]
   },
   {
     canonicalName: "Two-Arm Kettlebell Clean",
     slug: "twoarm_kettlebell_clean",
-    aliases: ["Two Arm Kettlebell Clean", "two arm kb clean", "girata a due braccia", "girata con kettlebell", "girata con girya"]
+    aliases: ["Two Arm Kettlebell Clean", "two arm kb clean", "girata a due braccia"]
   },
   {
     canonicalName: "Two-Arm Kettlebell Jerk",
     slug: "twoarm_kettlebell_jerk",
-    aliases: ["two arm kb jerk", "Two Arm Kettlebell Jerk", "slancio", "slancio a due braccia", "slancio con kettlebell", "slancio con girya"]
+    aliases: ["two arm kb jerk", "Two Arm Kettlebell Jerk", "slancio a due braccia"]
   },
   {
     canonicalName: "Two-Arm Kettlebell Military Press",
     slug: "twoarm_kettlebell_military_press",
-    aliases: ["two arm kb military press", "Two Arm Kettlebell Military Press", "press con kettlebell", "press a due braccia", "press con girya"]
+    aliases: ["two arm kb military press", "Two Arm Kettlebell Military Press", "press a due braccia"]
   },
   {
     canonicalName: "Two-Arm Kettlebell Row",
     slug: "twoarm_kettlebell_row",
-    aliases: ["Two Arm Kettlebell Row", "two arm kettlebell rows", "two arm kb row", "rematore con kettlebell", "rematore a due braccia", "rematore con girya"]
+    aliases: ["Two Arm Kettlebell Row", "two arm kettlebell rows", "two arm kb row", "rematore a due braccia"]
   },
   {
     canonicalName: "Underhand Cable Pulldowns",
@@ -4277,7 +4277,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Upright Row - With Bands",
     slug: "upright_row_with_bands",
-    aliases: ["Upright Row with Bands", "tirate al mento", "upright row", "tirate al mento con elastico", "tirate al mento con banda"]
+    aliases: ["Upright Row with Bands", "tirate al mento con elastico", "tirate al mento con banda"]
   },
   {
     canonicalName: "Upward Stretch",
@@ -4292,7 +4292,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "V-Bar Pullup",
     slug: "vbar_pullup",
-    aliases: ["V Bar Pull Up", "v bar pull-up", "pull-up", "trazioni alla sbarra"]
+    aliases: ["V Bar Pull Up", "v bar pull-up"]
   },
   {
     canonicalName: "Vertical Swing",
@@ -4302,7 +4302,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Walking, Treadmill",
     slug: "walking_treadmill",
-    aliases: ["Walking Treadmill", "camminata", "walk", "camminata su tapis roulant"]
+    aliases: ["Walking Treadmill", "camminata su tapis roulant"]
   },
   {
     canonicalName: "Weighted Ball Hyperextension",
@@ -4312,12 +4312,12 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Weighted Ball Side Bend",
     slug: "weighted_ball_side_bend",
-    aliases: ["flessione laterale", "side bend", "flessione laterale zavorrato"]
+    aliases: ["flessione laterale zavorrato"]
   },
   {
     canonicalName: "Weighted Bench Dip",
     slug: "weighted_bench_dip",
-    aliases: ["weighted bench dips", "dip zavorrato", "dip su panca", "dip zavorrato su panca"]
+    aliases: ["weighted bench dips", "dip zavorrato", "dip zavorrato su panca"]
   },
   {
     canonicalName: "Weighted Crunches",
@@ -4327,22 +4327,22 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Weighted Jump Squat",
     slug: "weighted_jump_squat",
-    aliases: ["jump squat", "squat saltato", "jump squat zavorrato"]
+    aliases: ["jump squat zavorrato"]
   },
   {
     canonicalName: "Weighted Pull Ups",
     slug: "weighted_pull_ups",
-    aliases: ["weighted pull-ups", "pull-up", "trazioni alla sbarra", "trazioni zavorrato"]
+    aliases: ["weighted pull-ups", "trazioni zavorrato"]
   },
   {
     canonicalName: "Weighted Sissy Squat",
     slug: "weighted_sissy_squat",
-    aliases: ["squat zavorrato", "weighted sissy squat"]
+    aliases: ["weighted sissy squat"]
   },
   {
     canonicalName: "Weighted Sit-Ups - With Bands",
     slug: "weighted_situps_with_bands",
-    aliases: ["Weighted Sit Ups with Bands", "weighted sit-ups with bands", "weighted sit ups - with bands", "sit-up", "addominali completi", "sit up", "sit-up zavorrato", "sit-up con elastico", "sit-up con banda", "sit-up zavorrato con elastico", "sit-up zavorrato con banda"]
+    aliases: ["Weighted Sit Ups with Bands", "weighted sit-ups with bands", "weighted sit ups - with bands", "sit-up zavorrato", "sit-up con elastico", "sit-up con banda", "sit-up zavorrato con elastico", "sit-up zavorrato con banda"]
   },
   {
     canonicalName: "Weighted Squat",
@@ -4352,7 +4352,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Wide Stance Barbell Squat",
     slug: "wide_stance_barbell_squat",
-    aliases: ["wide stance bb squat", "squat con bilanciere", "squat largo", "squat largo con bilanciere"]
+    aliases: ["wide stance bb squat", "squat largo", "squat largo con bilanciere"]
   },
   {
     canonicalName: "Wide stance stiff legs",
@@ -4362,17 +4362,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Wide-Grip Barbell Bench Press",
     slug: "widegrip_barbell_bench_press",
-    aliases: ["wide grip barbell bench press", "wide grip bb bench press", "panca piana con bilanciere", "distensioni su panca piana con bilanciere", "panca piana presa larga", "panca piana largo"]
+    aliases: ["wide grip barbell bench press", "wide grip bb bench press", "panca piana presa larga", "panca piana largo"]
   },
   {
     canonicalName: "Wide-Grip Decline Barbell Bench Press",
     slug: "widegrip_decline_barbell_bench_press",
-    aliases: ["Wide Grip Decline Barbell Bench Press", "wide grip decline bb bench press", "panca declinata con bilanciere", "distensioni su panca declinata con bilanciere", "panca declinata presa larga", "panca declinata su panca declinata", "panca declinata largo"]
+    aliases: ["Wide Grip Decline Barbell Bench Press", "wide grip decline bb bench press", "panca declinata presa larga", "panca declinata largo"]
   },
   {
     canonicalName: "Wide-Grip Decline Barbell Pullover",
     slug: "widegrip_decline_barbell_pullover",
-    aliases: ["wide grip decline bb pullover", "Wide Grip Decline Barbell Pullover", "pullover", "pullover presa larga", "pullover declinato", "pullover su panca declinata", "pullover largo", "pullover con bilanciere", "pullover declinato con bilanciere", "pullover su panca declinata con bilanciere"]
+    aliases: ["wide grip decline bb pullover", "Wide Grip Decline Barbell Pullover", "pullover presa larga", "pullover declinato", "pullover su panca declinata", "pullover largo", "pullover declinato con bilanciere", "pullover su panca declinata con bilanciere"]
   },
   {
     canonicalName: "Wide-Grip Lat Pulldown",
@@ -4382,17 +4382,17 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Wide-Grip Pulldown Behind The Neck",
     slug: "widegrip_pulldown_behind_the_neck",
-    aliases: ["Wide Grip Pull Down Behind the Neck", "wide-grip pull down behind the neck", "wide grip pulldown behind the neck", "lat machine presa larga", "lat machine largo"]
+    aliases: ["Wide Grip Pull Down Behind the Neck", "wide-grip pull down behind the neck", "wide grip pulldown behind the neck"]
   },
   {
     canonicalName: "Wide-Grip Rear Pull-Up",
     slug: "widegrip_rear_pullup",
-    aliases: ["wide grip rear pull-up", "wide-grip rear pull up", "Wide Grip Rear Pull Up", "pull-up", "trazioni alla sbarra", "trazioni presa larga", "trazioni posteriore", "trazioni largo"]
+    aliases: ["wide grip rear pull-up", "wide-grip rear pull up", "Wide Grip Rear Pull Up", "trazioni presa larga", "trazioni posteriore", "trazioni largo"]
   },
   {
     canonicalName: "Wide-Grip Standing Barbell Curl",
     slug: "widegrip_standing_barbell_curl",
-    aliases: ["Wide Grip Standing Barbell Curl", "wide grip standing bb curl", "wide grip standing barbell curls", "curl con bilanciere", "curl bilanciere", "curl presa larga", "curl in piedi", "curl largo", "curl largo con bilanciere"]
+    aliases: ["Wide Grip Standing Barbell Curl", "wide grip standing bb curl", "wide grip standing barbell curls", "curl presa larga", "curl largo", "curl largo con bilanciere"]
   },
   {
     canonicalName: "Wind sprints",
@@ -4412,7 +4412,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Wrist Circles",
     slug: "wrist_circles",
-    aliases: ["circonduzioni", "cerchi"]
+    aliases: ["wrist circles", "cerchi con i polsi", "rotazioni polsi"]
   },
   {
     canonicalName: "Wrist roller",
@@ -4422,7 +4422,7 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Wrist Rotations with Straight Bar",
     slug: "wrist_rotations_with_straight_bar",
-    aliases: ["wrist rotations with straight-bar", "rotazione"]
+    aliases: ["wrist rotations with straight-bar"]
   },
   {
     canonicalName: "Yoke Walk",
@@ -4442,6 +4442,6 @@ export const SEED_EXERCISES: { canonicalName: string; slug: string; aliases: str
   {
     canonicalName: "Bulgarian Split Squat",
     slug: "bulgarian_split_squat",
-    aliases: ["split squat bulgaro", "affondo bulgaro", "squat bulgaro", "bulgarian split squat", "split squat"]
+    aliases: ["split squat bulgaro", "affondo bulgaro", "squat bulgaro", "bulgarian split squat"]
   }
 ];
