@@ -137,8 +137,8 @@ const normalizeSpeechArtifacts = (text: string) =>
     .replace(/\bripetizione\b/gi, " ripetizioni ")
     .replace(/\breps\b/gi, " rep ")
     // Filler words / speech artifacts
-    .replace(/\b(?:ehm|emm|mmm|hmm|ah|oh|uhm|tipo|cioè|praticamente|diciamo|insomma|ecco|niente|vabbè|ok)\b/gi, " ")
-    // "un" / "una" before exercise — often noise from speech
+    .replace(/\b(?:ehm|emm|mmm|hmm|ah|oh|uhm|tipo|cioÃ¨|praticamente|diciamo|insomma|ecco|niente|vabbÃ¨|ok)\b/gi, " ")
+    // "un" / "una" before exercise â€” often noise from speech
     .replace(/\b(?:ho fatto|faccio|facciamo|metto|metti|aggiungi)\b/gi, " ")
     // Normalize whitespace
     .replace(/\s+/g, " ")
@@ -222,14 +222,14 @@ const replaceWordNumbers = (text: string) => {
   while (i < tokens.length) {
     const token = tokens[i];
 
-    // Already a digit — pass through
+    // Already a digit â€” pass through
     if (/^\d+(?:[.,]\d+)?$/.test(token)) {
       result.push(token);
       i++;
       continue;
     }
 
-    // Try two-word Italian compound: "cento cinque" → 105, "ottanta due" → 82
+    // Try two-word Italian compound: "cento cinque" â†’ 105, "ottanta due" â†’ 82
     if (i + 1 < tokens.length) {
       const combined = token + tokens[i + 1];
       const compoundValue = parseItalianNumberWord(combined);
@@ -238,7 +238,7 @@ const replaceWordNumbers = (text: string) => {
         i += 2;
         continue;
       }
-      // Also try "cento e cinque" → skip "e"
+      // Also try "cento e cinque" â†’ skip "e"
       if (i + 2 < tokens.length && tokens[i + 1] === "e") {
         const combinedWithE = token + tokens[i + 2];
         const withEValue = parseItalianNumberWord(combinedWithE);
@@ -303,27 +303,45 @@ const extractSetCount = (text: string) => {
 
 const extractWeightAndReps = (text: string) => {
   const combinedPatterns = [
-    // "80 chili per 8", "80 kg x 8", "80 chili per 8 ripetizioni"
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
-    // "80 chili 8 ripetizioni" (no connector)
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s+(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
-    // "80 chili ... 8 rip" (with up to 24 chars gap)
-    /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
-    // "80 per 8", "80x8"
-    /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
-    // "80 da 8 ripetizioni" (weight "da" reps)
-    /(\d+(?:[.,]\d+)?)\s*(?:da)\s*(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)/i
+    {
+      pattern: /(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\s*(?:x|per)\s*(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\b/i,
+      reversed: true
+    },
+    {
+      pattern: /(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\s+(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\b/i,
+      reversed: true
+    },
+    {
+      pattern: /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
+      reversed: false
+    },
+    {
+      pattern: /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili)\s+(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
+      reversed: false
+    },
+    {
+      pattern: /(?:con\s+|da\s+|peso\s+)?(\d+(?:[.,]\d+)?)\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\b/i,
+      reversed: false
+    },
+    {
+      pattern: /(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte))?/i,
+      reversed: false
+    },
+    {
+      pattern: /(\d+(?:[.,]\d+)?)\s*(?:da)\s*(\d+)\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)/i,
+      reversed: false
+    }
   ];
 
-  for (const pattern of combinedPatterns) {
+  for (const { pattern, reversed } of combinedPatterns) {
     const match = text.match(pattern);
     if (!match) {
       continue;
     }
 
     return {
-      weight: toNumber(match[1]),
-      reps: Number(match[2])
+      weight: reversed ? toNumber(match[2]) : toNumber(match[1]),
+      reps: reversed ? Number(match[1]) : Number(match[2])
     };
   }
 
@@ -350,6 +368,8 @@ const extractExerciseText = (text: string) =>
     .replace(/\b(?:serie|set)\s*\d+\b/gi, " ")
     .replace(/\b\d+\s*(?:serie|set)\b/gi, " ")
     .replace(/\b(?:primo|prima|secondo|seconda|terzo|terza|quarto|quarta|quinto|quinta|sesto|sesta|settimo|settima|ottavo|ottava|nono|nona|decimo|decima)(?:\s+(?:serie|set))?\b/gi, " ")
+    .replace(/\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\s*(?:x|per)\s*\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
+    .replace(/\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi|volte)\s+\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\b/gi, " ")
     .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili)\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/gi, " ")
     .replace(/(?:con\s+|da\s+|peso\s+)?\d+(?:[.,]\d+)?\s*(?:kg|chilogrammi|chili|kili).{0,24}?\b\d+\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi)\b/gi, " ")
     .replace(/\d+(?:[.,]\d+)?\s*(?:x|per)\s*\d+(?:\s*(?:rip|rep|reps|rap|ripetizioni|colpo|colpi))?/gi, " ")
@@ -362,7 +382,7 @@ const extractExerciseText = (text: string) =>
     .trim();
 
 // ---------------------------------------------------------------------------
-// Multi-set parsing — "squat 70 per 8, 50 per 7, 90 per 5"
+// Multi-set parsing â€” "squat 70 per 8, 50 per 7, 90 per 5"
 // Also supports: "panca 4 serie da 100, 80, 90, 70 chili e 7, 8, 9, 5 ripetizioni"
 // ---------------------------------------------------------------------------
 
@@ -455,7 +475,7 @@ const extractMultiSetEntries = (text: string): MultiSetEntry[] | null => {
         entries.push({ weight: prevWeight, reps: wr.reps });
         prevReps = wr.reps;
       } else {
-        // Bare number — infer weight or reps from context
+        // Bare number â€” infer weight or reps from context
         const bare = seg.match(/^(\d+)$/);
         if (bare) {
           const val = Number(bare[1]);
@@ -473,7 +493,7 @@ const extractMultiSetEntries = (text: string): MultiSetEntry[] | null => {
     if (entries.length >= 2) return entries;
   }
 
-  // 2) Fallback: find all weight×reps patterns in full text
+  // 2) Fallback: find all weightÃ—reps patterns in full text
   const allMatches = [...text.matchAll(/(\d+(?:[.,]\d+)?)\s*(?:x|per)\s*(\d+)/gi)];
   if (allMatches.length >= 2) {
     return allMatches.map((m) => ({
@@ -567,7 +587,7 @@ export const parseVoiceSet = async (rawText: string): Promise<ParsedVoiceSet> =>
 };
 
 // ---------------------------------------------------------------------------
-// Multi-exercise parsing — "trazioni, panca piana, military press, alzate laterali"
+// Multi-exercise parsing â€” "trazioni, panca piana, military press, alzate laterali"
 // Used for voice-based template creation
 // ---------------------------------------------------------------------------
 
@@ -587,7 +607,7 @@ export const parseMultipleExercises = async (rawText: string): Promise<ResolvedE
   const speechNorm = normalizeSpeechArtifacts(normalized);
   const withDigits = replaceWordNumbers(speechNorm);
 
-  // Strip number-heavy content (weights, reps) — keep only exercise names
+  // Strip number-heavy content (weights, reps) â€” keep only exercise names
   const cleaned = withDigits
     .replace(/\d+(?:[.,]\d+)?\s*(?:kg|chili|kili|chilogrammi|x|per|rep|reps|rip|ripetizioni|colpo|colpi|serie|set)\b/gi, " ")
     .replace(/\b(?:serie|set)\s*\d+/gi, " ")

@@ -3,16 +3,16 @@ import { describe, it, expect, beforeAll } from "vitest";
 import { parseVoiceSet, parseMultiSetCommand } from "./voiceParser";
 import { seedDatabase } from "../../../db/seed";
 
-// Seed DB once — exercises needed for alias resolution
+// Seed DB once â€” exercises needed for alias resolution
 beforeAll(async () => {
   await seedDatabase();
 });
 
 // ---------------------------------------------------------------------------
-// Single-set: weight × reps patterns
+// Single-set: weight Ã— reps patterns
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — weight × reps", () => {
+describe("parseVoiceSet â€” weight Ã— reps", () => {
   it("80 per 8", async () => {
     const r = await parseVoiceSet("80 per 8");
     expect(r.weight).toBe(80);
@@ -37,10 +37,21 @@ describe("parseVoiceSet — weight × reps", () => {
     expect(r.reps).toBe(10);
   });
 
-  // NOTE: decimal dots are stripped by normalizeText ("70.5" → "70 5").
+  // NOTE: decimal dots are stripped by normalizeText ("70.5" â†’ "70 5").
   // Italian speech recognition uses "virgola" for decimals, which is handled separately.
   // These tests verify integer weights work correctly.
 
+  it("8 ripetizioni per 86 chili", async () => {
+    const r = await parseVoiceSet("8 ripetizioni per 86 chili");
+    expect(r.weight).toBe(86);
+    expect(r.reps).toBe(8);
+  });
+
+  it("12 rep 40 chili", async () => {
+    const r = await parseVoiceSet("12 rep 40 chili");
+    expect(r.weight).toBe(40);
+    expect(r.reps).toBe(12);
+  });
   it("3 kg per 15", async () => {
     const r = await parseVoiceSet("3 kg per 15");
     expect(r.weight).toBe(3);
@@ -52,7 +63,7 @@ describe("parseVoiceSet — weight × reps", () => {
 // Italian number words
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — Italian number words", () => {
+describe("parseVoiceSet â€” Italian number words", () => {
   it("ottanta per otto", async () => {
     const r = await parseVoiceSet("ottanta per otto");
     expect(r.weight).toBe(80);
@@ -88,7 +99,7 @@ describe("parseVoiceSet — Italian number words", () => {
 // Exercise recognition
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — exercise recognition", () => {
+describe("parseVoiceSet â€” exercise recognition", () => {
   it("squat 100 per 8", async () => {
     const r = await parseVoiceSet("squat 100 per 8");
     expect(r.canonicalExerciseId).toBeTruthy();
@@ -122,7 +133,7 @@ describe("parseVoiceSet — exercise recognition", () => {
 // Set count
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — set count", () => {
+describe("parseVoiceSet â€” set count", () => {
   it("3 serie da 80 per 8", async () => {
     const r = await parseVoiceSet("3 serie da 80 per 8");
     expect(r.setCount).toBe(3);
@@ -142,7 +153,7 @@ describe("parseVoiceSet — set count", () => {
 // Set number (ordinal)
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — set number / ordinal", () => {
+describe("parseVoiceSet â€” set number / ordinal", () => {
   it("seconda 80 per 8", async () => {
     const r = await parseVoiceSet("seconda 80 per 8");
     expect(r.setNumber).toBe(2);
@@ -162,7 +173,7 @@ describe("parseVoiceSet — set number / ordinal", () => {
 // Multi-set parsing
 // ---------------------------------------------------------------------------
 
-describe("parseMultiSetCommand — multiple sets", () => {
+describe("parseMultiSetCommand â€” multiple sets", () => {
   it("squat 70 per 8, 50 per 7, 90 per 5", async () => {
     const r = await parseMultiSetCommand("squat 70 per 8, 50 per 7, 90 per 5");
     expect(r).not.toBeNull();
@@ -182,7 +193,7 @@ describe("parseMultiSetCommand — multiple sets", () => {
     expect(r!.entries[2]).toEqual({ weight: 90, reps: 5 });
   });
 
-  it("80 per 8, 7, 5 — reps-only shorthand with shared weight", async () => {
+  it("80 per 8, 7, 5 â€” reps-only shorthand with shared weight", async () => {
     const r = await parseMultiSetCommand("80 per 8, 7, 5");
     expect(r).not.toBeNull();
     expect(r!.entries).toHaveLength(3);
@@ -201,7 +212,7 @@ describe("parseMultiSetCommand — multiple sets", () => {
 // Edge cases
 // ---------------------------------------------------------------------------
 
-describe("parseVoiceSet — edge cases", () => {
+describe("parseVoiceSet â€” edge cases", () => {
   it("empty string", async () => {
     const r = await parseVoiceSet("");
     expect(r.isValid).toBe(false);

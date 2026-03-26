@@ -22,6 +22,7 @@ export const seedExercises: SeedExerciseDefinition[] = [
     slug: "barbell_bench_press",
     aliases: [
       "barbell bench press",
+      "bench press",
       "bench press bilanciere",
       "bench press piana bilanciere",
       "panca bilanciere",
