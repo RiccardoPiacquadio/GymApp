@@ -30,7 +30,7 @@ import {
 } from "../services/voiceFeedback";
 
 // ---------------------------------------------------------------------------
-// Reactive conversation state — single source of truth from DB
+// Reactive conversation state â€” single source of truth from DB
 // ---------------------------------------------------------------------------
 
 const VOICE_STATE_KEY = "voice.conversationState";
@@ -52,7 +52,7 @@ const useConversationState = () => {
 };
 
 // ---------------------------------------------------------------------------
-// Reducer — handles only UI-local state (no conversation state)
+// Reducer â€” handles only UI-local state (no conversation state)
 // ---------------------------------------------------------------------------
 
 type ListeningPhase = "idle" | "listening" | "hearing" | "processing";
@@ -137,7 +137,7 @@ const voiceReducer = (state: VoiceLocalState, action: VoiceAction): VoiceLocalSt
 // Confirmation helpers
 // ---------------------------------------------------------------------------
 
-const CONFIRMATION_RE = /^(?:s[iì]|confermo|ok|chiudi|esatto|certo|vai)$/;
+const CONFIRMATION_RE = /^(?:s[iÃ¬]|confermo|ok|chiudi|esatto|certo|vai)$/;
 const CANCELLATION_RE = /^(?:no|annulla|aspetta|cancel)$/;
 
 // ---------------------------------------------------------------------------
@@ -160,7 +160,7 @@ export type VoiceSessionState = {
 };
 
 export type VoiceSessionActions = {
-  handleVoiceCapture: () => Promise<void>;
+  handleVoiceCapture: () => Promise<boolean>;
   toggleHandsFree: () => void;
   setPendingSessionClose: (value: boolean) => void;
   setVoiceFeedback: (value: string | undefined) => void;
@@ -187,7 +187,7 @@ export const useVoiceSession = (
   const [localState, dispatch] = useReducer(voiceReducer, initialState);
   const handsFreeRef = useRef<HandsFreeController | null>(null);
 
-  // Reactive conversation state from DB — single source of truth
+  // Reactive conversation state from DB â€” single source of truth
   const conversationState = useConversationState();
 
   // Derive active exercise name reactively from conversation state
@@ -245,7 +245,7 @@ export const useVoiceSession = (
       dispatch({ type: "SET_PENDING_CLOSE", pendingSessionClose: false });
     }
 
-    // processVoiceCommand writes conversation state to DB →
+    // processVoiceCommand writes conversation state to DB â†’
     // useLiveQuery auto-picks it up, no manual sync needed
     const result = await processVoiceCommand(transcript, profileId);
 
@@ -263,7 +263,7 @@ export const useVoiceSession = (
       voiceExerciseName,
       voiceCandidateNames: result.candidateNames ?? []
     });
-  }, []); // no deps — uses refs for everything
+  }, []); // no deps â€” uses refs for everything
 
   // Stable ref for hands-free callback
   const processTranscriptRef = useRef(processTranscript);
@@ -271,7 +271,12 @@ export const useVoiceSession = (
 
   // -- Manual voice capture (button tap) --
   const handleVoiceCapture = useCallback(async () => {
-    if (!activeProfileIdRef.current) return;
+    if (localStateRef.current.speechState === "listening") {
+      cancelSpeechCapture();
+      return false;
+    }
+
+    if (!activeProfileIdRef.current) return false;
 
     handsFreeRef.current?.pauseListening();
 
@@ -286,7 +291,12 @@ export const useVoiceSession = (
       });
 
       await processTranscriptRef.current(transcript);
+      return true;
     } catch (error) {
+      if (isSpeechCaptureCancelledError(error)) {
+        return false;
+      }
+
       dispatch({
         type: "CAPTURE_ERROR",
         voiceFeedback:
@@ -294,6 +304,7 @@ export const useVoiceSession = (
             ? FB_NOTHING_HEARD
             : FB_RECOGNITION_ERROR
       });
+      return false;
     } finally {
       dispatch({ type: "CAPTURE_ENDED" });
 

@@ -2,16 +2,16 @@ import type { SpeechCaptureState } from "../types/voice";
 
 type VoiceCaptureButtonProps = {
   state: SpeechCaptureState;
-  onStart: () => Promise<void>;
+  onToggle: () => Promise<boolean>;
 };
 
-export const VoiceCaptureButton = ({ state, onStart }: VoiceCaptureButtonProps) => (
+export const VoiceCaptureButton = ({ state, onToggle }: VoiceCaptureButtonProps) => (
   <button
     type="button"
     className="secondary-button w-full"
-    disabled={state === "unsupported" || state === "listening"}
-    onClick={() => void onStart()}
+    disabled={state === "unsupported"}
+    onClick={() => void onToggle()}
   >
-    {state === "unsupported" ? "Voce non supportata" : state === "listening" ? "Ascolto..." : "Aggiungi via voce"}
+    {state === "unsupported" ? "Voce non supportata" : state === "listening" ? "Ferma ascolto" : "Aggiungi via voce"}
   </button>
 );

@@ -108,12 +108,12 @@ export const ActiveWorkoutPage = () => {
         onClose={() => void handleComplete()}
       />
 
-      {/* Action buttons — moved to top for quick access */}
+      {/* Action buttons â€” moved to top for quick access */}
       <div className="grid grid-cols-2 gap-3">
         <Link className="primary-button" to="/workout/active/exercises">
           Aggiungi esercizio
         </Link>
-        <VoiceCaptureButton state={voice.speechState} onStart={async () => { await voice.handleVoiceCapture(); triggerFlash(); }} />
+        <VoiceCaptureButton state={voice.speechState} onToggle={async () => { const didSave = await voice.handleVoiceCapture(); if (didSave) triggerFlash(); }} />
       </div>
 
       {/* Hands-free toggle */}
@@ -129,17 +129,17 @@ export const ActiveWorkoutPage = () => {
         {voice.handsFreeEnabled ? (
           <span className="flex items-center justify-center gap-2">
             <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-white" />
-            Vivavoce ON — dì &quot;GYM&quot;
-            {voice.handsFreeStatus === "wake_detected" ? " — parla ora" : ""}
+            Vivavoce ON â€” dÃ¬ &quot;GYM&quot;
+            {voice.handsFreeStatus === "wake_detected" ? " â€” parla ora" : ""}
           </span>
         ) : (
-          "Vivavoce OFF — attiva per AirPods e parola chiave"
+          "Vivavoce OFF â€” attiva per AirPods e parola chiave"
         )}
       </button>
 
       <SessionSummaryCard {...sessionSummary} />
 
-      {/* Voice context panel — collapsible */}
+      {/* Voice context panel â€” collapsible */}
       <VoiceErrorBoundary>
       <div className="dark-panel overflow-hidden">
         <button
@@ -184,7 +184,7 @@ export const ActiveWorkoutPage = () => {
                   type="button"
                   onClick={() => void handleComplete().then(() => voice.setPendingSessionClose(false))}
                 >
-                  Sì, chiudi
+                  SÃ¬, chiudi
                 </button>
                 <button
                   className="flex-1 rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold text-white"
@@ -218,7 +218,7 @@ export const ActiveWorkoutPage = () => {
                   : voice.listeningPhase === "hearing"
                     ? "Ti sto sentendo"
                     : voice.pendingSessionClose
-                      ? "Dimmi: sì per confermare, no per annullare"
+                      ? "Dimmi: sÃ¬ per confermare, no per annullare"
                       : "In ascolto"}
               </p>
             </div>

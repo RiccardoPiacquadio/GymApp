@@ -12,6 +12,22 @@ type SpeechCaptureOptions = {
 
 const getRecognitionCtor = () => window.SpeechRecognition ?? window.webkitSpeechRecognition;
 
+const CAPTURE_CANCELLED = "VOICE_CAPTURE_CANCELLED";
+
+type ActiveCapture = {
+  recognition: SpeechRecognition;
+  cancel: () => void;
+};
+
+let activeCapture: ActiveCapture | null = null;
+
+export const isSpeechCaptureCancelledError = (error: unknown) =>
+  error instanceof Error && error.message === CAPTURE_CANCELLED;
+
+export const cancelSpeechCapture = () => {
+  activeCapture?.cancel();
+};
+
 export const getSpeechSupportState = (): SpeechCaptureState =>
   getRecognitionCtor() ? "idle" : "unsupported";
 
@@ -31,16 +47,22 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
     recognition.maxAlternatives = 1;
 
     const silenceMs = config.silenceMs ?? 5000;
-    let finalTranscript = "";
     let latestTranscript = "";
     let settled = false;
     let requestedStop = false;
+    let cancelledByUser = false;
     let silenceTimer: ReturnType<typeof setTimeout> | undefined;
 
     const clearSilenceTimer = () => {
       if (silenceTimer) {
         clearTimeout(silenceTimer);
         silenceTimer = undefined;
+      }
+    };
+
+    const cleanup = () => {
+      if (activeCapture?.recognition === recognition) {
+        activeCapture = null;
       }
     };
 
@@ -59,8 +81,21 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
       }
       settled = true;
       clearSilenceTimer();
+      cleanup();
       handler();
     };
+
+    const cancel = () => {
+      if (settled) {
+        return;
+      }
+      requestedStop = true;
+      cancelledByUser = true;
+      clearSilenceTimer();
+      recognition.stop();
+    };
+
+    activeCapture = { recognition, cancel };
 
     recognition.onstart = () => {
       config.onStateChange?.("listening");
@@ -85,7 +120,7 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
         }
       }
 
-      finalTranscript = finalParts.join(" ").trim();
+      const finalTranscript = finalParts.join(" ").trim();
       const interimTranscript = interimParts.join(" ").trim();
       latestTranscript = [finalTranscript, interimTranscript].filter(Boolean).join(" ").trim();
 
@@ -104,6 +139,11 @@ export const captureSpeechOnce = (options: SpeechCaptureOptions | string = "it-I
 
     recognition.onend = () => {
       settle(() => {
+        if (cancelledByUser) {
+          reject(new Error(CAPTURE_CANCELLED));
+          return;
+        }
+
         const transcript = latestTranscript.trim();
         if (!transcript) {
           reject(new Error(FB_NO_TEXT_RECOGNIZED));
