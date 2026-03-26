@@ -18,7 +18,6 @@ import {
   SUBSTRING_MIN_LENGTH
 } from "./aliasResolverConstants";
 
-// In-memory cache — exercises change only on seed, so cache is nearly always valid.
 let cachedAliases: ExerciseAlias[] | null = null;
 let cachedCanonicals: ExerciseCanonical[] | null = null;
 
@@ -31,6 +30,8 @@ const getCanonicals = async (): Promise<ExerciseCanonical[]> => {
   if (!cachedCanonicals) cachedCanonicals = await db.exerciseCanonicals.toArray();
   return cachedCanonicals;
 };
+
+const isSelectableExercise = (exercise: ExerciseCanonical) => exercise.isSelectable !== false;
 
 /** Call after seeding or adding exercises to invalidate the cache. */
 export const invalidateAliasCache = () => {
@@ -122,7 +123,8 @@ const getBestResolutionFromCandidates = (candidates: MatchCandidate[]): AliasRes
 
   if (
     candidateExerciseIds.length === 1 ||
-    (bestCandidate.score >= DISAMBIGUATION_MIN_SCORE && (!secondCandidate || bestCandidate.score - secondCandidate.score >= DISAMBIGUATION_SCORE_GAP))
+    (bestCandidate.score >= DISAMBIGUATION_MIN_SCORE &&
+      (!secondCandidate || bestCandidate.score - secondCandidate.score >= DISAMBIGUATION_SCORE_GAP))
   ) {
     return {
       canonicalExerciseId: bestCandidate.canonicalExerciseId,
@@ -146,7 +148,11 @@ export const resolveExerciseAlias = async (input: string): Promise<AliasResoluti
     return { confidence: 0, isAmbiguous: false, reason: "not_found" };
   }
 
-  const aliases = await getAliases();
+  const canonicals = await getCanonicals();
+  const selectableCanonicals = canonicals.filter(isSelectableExercise);
+  const selectableIds = new Set(selectableCanonicals.map((canonical) => canonical.id));
+
+  const aliases = (await getAliases()).filter((alias) => selectableIds.has(alias.canonicalExerciseId));
   const aliasCandidates = aliases
     .map((alias) => ({
       canonicalExerciseId: alias.canonicalExerciseId,
@@ -160,8 +166,7 @@ export const resolveExerciseAlias = async (input: string): Promise<AliasResoluti
     return aliasResolution;
   }
 
-  const canonicals = await getCanonicals();
-  const canonicalCandidates = canonicals
+  const canonicalCandidates = selectableCanonicals
     .map((canonical) => ({
       canonicalExerciseId: canonical.id,
       matchedAlias: canonical.canonicalName,

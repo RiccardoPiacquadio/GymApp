@@ -1,11 +1,24 @@
 import { db } from "../../../db";
 import { normalizeExerciseInput } from "../../../lib/normalize";
+import type { ExerciseCanonical } from "../../../types";
+
+const isSelectableExercise = (exercise: ExerciseCanonical) => exercise.isSelectable !== false;
 
 export const getExerciseById = (exerciseId: string) => db.exerciseCanonicals.get(exerciseId);
 
-export const getAllExercises = () => db.exerciseCanonicals.orderBy("canonicalName").toArray();
+export const getAllExercises = async () => {
+  const exercises = await db.exerciseCanonicals.orderBy("canonicalName").toArray();
+  return exercises.filter(isSelectableExercise);
+};
 
-export const getAllAliases = () => db.exerciseAliases.toArray();
+export const getAllAliases = async () => {
+  const [aliases, canonicals] = await Promise.all([
+    db.exerciseAliases.toArray(),
+    db.exerciseCanonicals.toArray()
+  ]);
+  const selectableIds = new Set(canonicals.filter(isSelectableExercise).map((exercise) => exercise.id));
+  return aliases.filter((alias) => selectableIds.has(alias.canonicalExerciseId));
+};
 
 export const getAliasesForExercise = (canonicalExerciseId: string) =>
   db.exerciseAliases.where("canonicalExerciseId").equals(canonicalExerciseId).toArray();
@@ -17,17 +30,21 @@ export const searchExercises = async (query: string) => {
     db.exerciseAliases.toArray()
   ]);
 
+  const selectableCanonicals = canonicals.filter(isSelectableExercise);
+  const selectableIds = new Set(selectableCanonicals.map((exercise) => exercise.id));
+  const selectableAliases = aliases.filter((alias) => selectableIds.has(alias.canonicalExerciseId));
+
   if (!normalizedQuery) {
-    return canonicals.sort((left, right) => left.canonicalName.localeCompare(right.canonicalName));
+    return selectableCanonicals.sort((left, right) => left.canonicalName.localeCompare(right.canonicalName));
   }
 
   const aliasMatchIds = new Set(
-    aliases
+    selectableAliases
       .filter((alias) => alias.normalizedAliasText.includes(normalizedQuery))
       .map((alias) => alias.canonicalExerciseId)
   );
 
-  return canonicals
+  return selectableCanonicals
     .filter(
       (exercise) =>
         normalizeExerciseInput(exercise.canonicalName).includes(normalizedQuery) ||

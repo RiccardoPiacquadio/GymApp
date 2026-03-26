@@ -10,6 +10,7 @@ export type ExerciseCanonical = {
   id: string;
   canonicalName: string;
   slug: string;
+  isSelectable?: boolean;
   category?: string;
   primaryMuscle?: string;
   createdAt: string;
